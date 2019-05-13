@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">SUNTECH IoT-Sewing</string>
+
+    <!-- 타이틀 -->
+    <string name="title_setting">SETTING</string>
+    <string name="title_server_info">SERVER INFO</string>
+    <string name="title_device_info">DEVICE INFO</string>
+    <string name="title_counter_device_info">COUNTER DEVICE INFO</string>
+    <string name="title_etc">ETC</string>
+    <string name="title_blink_effect">SCREEN BLINK EFFECT</string>
+    <string name="title_function">FUNCTION</string>
+    <string name="title_count_info">COUNT INFO</string>
+    <string name="title_target_type">TARGET TYPE</string>
+
+    <!-- SETTING 화면 -->
+    <string name="label_wifi">WiFi</string>
+    <string name="label_ip">IP</string>
+    <string name="label_mac">MAC</string>
+    <string name="label_factory">FACTORY</string>
+    <string name="label_room">ZONE</string>
+    <string name="label_line">LINE</string>
+    <string name="label_mc_no">M/C No</string>
+    <string name="label_mc_model">MC MODEL</string>
+    <string name="label_mc_serial">MC SERIAL</string>
+    <string name="label_server_ip">SERVER IP</string>
+    <string name="label_server_port">PORT</string>
+    <string name="label_from_server">FROM SERVER</string>
+    <string name="label_from_device">FROM DEVICE</string>
+
+    <!-- 홈화면 -->
+    <string name="bottom_label_machine_info">MACHINE INFO</string>
+    <string name="bottom_label_operator_info">OPERATOR INFO</string>
+    <string name="bottom_label_employee_number">Employee Number : \u0020</string>
+    <string name="bottom_label_employee_name">Name : \u0020</string>
+    <string name="bottom_label_factory">FACTORY : \u0020</string>
+    <string name="bottom_label_room">ZONE : \u0020</string>
+    <string name="bottom_label_line">LINE : \u0020</string>
+    <string name="bottom_label_number">M/C NUMBER : \u0020</string>
+    <string name="bottom_label_mc_model">MODEL : \u0020</string>
+
+    <!-- COUNT VIEW 화면 -->
+    <string name="label_target">TARGET</string>
+    <string name="label_actual">ACTUAL</string>
+    <string name="label_rate">RATE</string>
+
+    <!-- COMPONENT COUNT VIEW 화면 -->
+    <string name="list_item_wos">WOS</string>
+    <string name="list_item_model">MODEL</string>
+    <string name="list_item_size">SIZE</string>
+    <string name="list_item_target">TARGET</string>
+    <string name="list_item_actual">ACTUAL</string>
+    <string name="list_item_balance">BALANCE</string>
+
+    <!-- Buttons -->
+    <string name="button_total_count_view">Total Count View</string>
+    <string name="button_component_count_view">Component Count View</string>
+    <string name="button_select_component">Select Component</string>
+
+    <!-- Common -->
+    <string name="server">SERVER</string>
+    <string name="manual">Manual</string>
+    <string name="confirm">Confirm</string>
+    <string name="save">Save</string>
+    <string name="exit">Exit</string>
+    <string name="cancel">Cancel</string>
+    <string name="check">Check</string>
+    <string name="search">SEARCH</string>
+    <string name="notice">Notice</string>
+
+    <!-- Message -->
+    <string name="msg_connection_fail">The connection to the server failed.</string>
+    <string name="msg_no_setting">Setting not found</string>
+
+</resources>
