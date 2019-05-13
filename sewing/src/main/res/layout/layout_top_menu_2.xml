@@ -5,15 +5,15 @@
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="54dp"
             android:paddingLeft="20dp"
-            android:paddingRight="30dp"
+            android:paddingRight="40dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:background="@color/colorBackgroundTop">
 
         <ImageView
-                android:layout_width="80dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:src="@mipmap/brand_logo"
@@ -32,7 +32,7 @@
                     android:layout_height="50dp"
                     android:gravity="center"
                     android:text="INFO"
-                    android:textSize="18sp"
+                    android:textSize="22sp"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"
                     android:background="@color/transparent" />
@@ -46,14 +46,14 @@
                 android:orientation="horizontal">
             <ImageButton
                     android:id="@+id/btn_server_state"
-                    android:layout_width="19dp"
-                    android:layout_height="19dp"
-                    android:layout_marginRight="26dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="38dp"
                     android:background="@drawable/btn_icon_server_state"/>
             <ImageButton
                     android:id="@+id/btn_wifi_state"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:background="@drawable/btn_icon_wifi_state"/>
         </LinearLayout>
     </LinearLayout>

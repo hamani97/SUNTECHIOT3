@@ -8,10 +8,13 @@ import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.View
+import android.widget.Toast
 import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.common.AppGlobal
 import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.layout_top_menu_2.*
+import org.joda.time.DateTime
+import java.util.*
 
 class SettingActivity : BaseActivity() {
 
@@ -70,15 +73,15 @@ class SettingActivity : BaseActivity() {
         _selected_mc_model_idx = AppGlobal.instance.get_mc_model_idx()
 
         // widget
-//        tv_setting_wifi.text = AppGlobal.instance.getWiFiSSID(this)
-//        tv_setting_ip.text = AppGlobal.instance.get_local_ip()
-//        tv_setting_mac.text = AppGlobal.instance.get_mac_address()
-//        tv_setting_factory.text = AppGlobal.instance.get_factory()
-//        tv_setting_room.text = AppGlobal.instance.get_room()
-//        tv_setting_line.text = AppGlobal.instance.get_line()
-//        tv_setting_mc_model.text = AppGlobal.instance.get_mc_model()
-//        tv_setting_mc_no1.setText(AppGlobal.instance.get_mc_no1())
-//        et_setting_mc_serial.setText(AppGlobal.instance.get_mc_serial())
+        tv_setting_wifi.text = AppGlobal.instance.getWiFiSSID(this)
+        tv_setting_ip.text = AppGlobal.instance.get_local_ip()
+        tv_setting_mac.text = AppGlobal.instance.get_mac_address()
+        tv_setting_factory.text = AppGlobal.instance.get_factory()
+        tv_setting_room.text = AppGlobal.instance.get_room()
+        tv_setting_line.text = AppGlobal.instance.get_line()
+        tv_setting_mc_model.text = AppGlobal.instance.get_mc_model()
+        tv_setting_mc_no1.setText(AppGlobal.instance.get_mc_no1())
+        et_setting_mc_serial.setText(AppGlobal.instance.get_mc_serial())
 
         et_setting_server_ip.setText(AppGlobal.instance.get_server_ip())
         et_setting_port.setText(AppGlobal.instance.get_server_port())
@@ -123,14 +126,14 @@ class SettingActivity : BaseActivity() {
 //        if (_selected_layer_3 != "") tv_layer_3.text = addPairText(_selected_layer_3)
 //        if (_selected_layer_4 != "") tv_layer_4.text = addPairText(_selected_layer_4)
 //        if (_selected_layer_5 != "") tv_layer_5.text = addPairText(_selected_layer_5)
-//
-//        // target setting
-//        if (AppGlobal.instance.get_target_type() == "") targetTypeChange("device_per_accumulate")
-//        else targetTypeChange(AppGlobal.instance.get_target_type())
-//
-//        tv_shift_1.setText(AppGlobal.instance.get_target_manual_shift("1"))
-//        tv_shift_2.setText(AppGlobal.instance.get_target_manual_shift("2"))
-//        tv_shift_3.setText(AppGlobal.instance.get_target_manual_shift("3"))
+
+        // target setting
+        if (AppGlobal.instance.get_target_type() == "") targetTypeChange("device_per_accumulate")
+        else targetTypeChange(AppGlobal.instance.get_target_type())
+
+        tv_shift_1.setText(AppGlobal.instance.get_target_manual_shift("1"))
+        tv_shift_2.setText(AppGlobal.instance.get_target_manual_shift("2"))
+        tv_shift_3.setText(AppGlobal.instance.get_target_manual_shift("3"))
 
 
         // click listener
@@ -141,11 +144,11 @@ class SettingActivity : BaseActivity() {
         btn_setting_target.setOnClickListener { tabChange(4) }
         btn_setting_test.setOnClickListener { tabChange(5) }
 
-//        // System setting button listener
-//        tv_setting_factory.setOnClickListener { fetchDataForFactory() }
-//        tv_setting_room.setOnClickListener { fetchDataForRoom() }
-//        tv_setting_line.setOnClickListener { fetchDataForLine() }
-//        tv_setting_mc_model.setOnClickListener { fetchDataForMCModel() }
+        // System setting button listener
+        tv_setting_factory.setOnClickListener { fetchDataForFactory() }
+        tv_setting_room.setOnClickListener { fetchDataForRoom() }
+        tv_setting_line.setOnClickListener { fetchDataForLine() }
+        tv_setting_mc_model.setOnClickListener { fetchDataForMCModel() }
 
 //        // Count setting button listener
 //        tv_layer_0.setOnClickListener { fetchPairData("0") }
@@ -155,40 +158,40 @@ class SettingActivity : BaseActivity() {
 //        tv_layer_4.setOnClickListener { fetchPairData("4") }
 //        tv_layer_5.setOnClickListener { fetchPairData("5") }
 
-//        // Target setting button listener
-////        btn_server_accumulate.setOnClickListener { targetTypeChange("server_per_accumulate") }
-////        btn_server_hourly.setOnClickListener { targetTypeChange("server_per_hourly") }
-////        btn_server_shifttotal.setOnClickListener { targetTypeChange("server_per_day_total") }
-//        btn_server_accumulate.setOnClickListener {
-//            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
-//        }
-//        btn_server_hourly.setOnClickListener {
-//            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
-//        }
-//        btn_server_shifttotal.setOnClickListener {
-//            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
-//        }
-//        btn_manual_accumulate.setOnClickListener { targetTypeChange("device_per_accumulate") }
-//        btn_manual_hourly.setOnClickListener { targetTypeChange("device_per_hourly") }
-//        btn_manual_shifttotal.setOnClickListener { targetTypeChange("device_per_day_total") }
+        // Target setting button listener
+//        btn_server_accumulate.setOnClickListener { targetTypeChange("server_per_accumulate") }
+//        btn_server_hourly.setOnClickListener { targetTypeChange("server_per_hourly") }
+//        btn_server_shifttotal.setOnClickListener { targetTypeChange("server_per_day_total") }
+        btn_server_accumulate.setOnClickListener {
+            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
+        }
+        btn_server_hourly.setOnClickListener {
+            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
+        }
+        btn_server_shifttotal.setOnClickListener {
+            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
+        }
+        btn_manual_accumulate.setOnClickListener { targetTypeChange("device_per_accumulate") }
+        btn_manual_hourly.setOnClickListener { targetTypeChange("device_per_hourly") }
+        btn_manual_shifttotal.setOnClickListener { targetTypeChange("device_per_day_total") }
 
-//        // check server button
-//        btn_setting_check_server.setOnClickListener {
-//            checkServer(true)
-//            var new_ip = et_setting_server_ip.text.toString()
-//            var old_ip = AppGlobal.instance.get_server_ip()
-//            if (!new_ip.equals(old_ip)) {
-//                tv_setting_factory.text = ""
-//                tv_setting_room.text = ""
-//                tv_setting_line.text = ""
-//                tv_setting_mc_model.text = ""
-//            }
-//        }
-//
-//        // Save button click
-//        btn_setting_confirm.setOnClickListener {
-//            saveSettingData()
-//        }
+        // check server button
+        btn_setting_check_server.setOnClickListener {
+            checkServer(true)
+            var new_ip = et_setting_server_ip.text.toString()
+            var old_ip = AppGlobal.instance.get_server_ip()
+            if (!new_ip.equals(old_ip)) {
+                tv_setting_factory.text = ""
+                tv_setting_room.text = ""
+                tv_setting_line.text = ""
+                tv_setting_mc_model.text = ""
+            }
+        }
+
+        // Save button click
+        btn_setting_confirm.setOnClickListener {
+            saveSettingData()
+        }
 
         // Cancel button click
         btn_setting_cancel.setOnClickListener { finish() }
@@ -201,6 +204,282 @@ class SettingActivity : BaseActivity() {
 
         if (et_setting_server_ip.text.toString() == "") et_setting_server_ip.setText("49.247.203.100")     // 10.10.10.90
         if (et_setting_port.text.toString() == "") et_setting_port.setText("80")
+    }
+
+    private fun checkServer(show_toast:Boolean = false) {
+        val url = "http://"+ et_setting_server_ip.text.toString()
+        val port = et_setting_port.text.toString()
+        val uri = "/ping.php"
+        var params = listOf("" to "")
+
+        request(this, url, port, uri, false, false,false, params, { result ->
+            var code = result.getString("code")
+            if (show_toast) Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+            if (code == "00") {
+                btn_server_state.isSelected = true
+            } else {
+                btn_server_state.isSelected = false
+            }
+        }, {
+            btn_server_state.isSelected = false
+            if (show_toast) Toast.makeText(this, getString(R.string.msg_connection_fail), Toast.LENGTH_SHORT).show()
+        })
+    }
+
+    private fun saveSettingData() {
+        // check value
+        if (_selected_factory_idx == "" || _selected_room_idx == "" || _selected_line_idx == "" || tv_setting_mac.text.toString().trim() == "") {
+            Toast.makeText(this, getString(R.string.msg_require_info), Toast.LENGTH_SHORT).show()
+            return
+        }
+//        if (_selected_layer_1.trim() == "") {
+//            Toast.makeText(this, getString(R.string.msg_select_layer1), Toast.LENGTH_SHORT).show()
+//            return
+//        }
+        if (_selected_target_type.substring(0, 6) == "device") {
+            if (tv_shift_1.text.toString().trim()=="" || tv_shift_2.text.toString().trim()=="" || tv_shift_3.text.toString().trim()=="") {
+                Toast.makeText(this, getString(R.string.msg_require_target_quantity), Toast.LENGTH_SHORT).show()
+                return
+            }
+        }
+        val remain_num = if (et_remain_number.text.toString()=="") 10 else et_remain_number.text.toString().toInt()
+        if (remain_num < 5 || remain_num > 30) {
+            Toast.makeText(this, getString(R.string.msg_remain_out_of_range), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // setting value
+        AppGlobal.instance.set_factory_idx(_selected_factory_idx)
+        AppGlobal.instance.set_room_idx(_selected_room_idx)
+        AppGlobal.instance.set_line_idx(_selected_line_idx)
+        AppGlobal.instance.set_mc_no_idx(_selected_mc_no_idx)
+        AppGlobal.instance.set_mc_model_idx(_selected_mc_model_idx)
+
+        AppGlobal.instance.set_factory(tv_setting_factory.text.toString())
+        AppGlobal.instance.set_room(tv_setting_room.text.toString())
+        AppGlobal.instance.set_line(tv_setting_line.text.toString())
+        AppGlobal.instance.set_mc_model(tv_setting_mc_model.text.toString())
+        AppGlobal.instance.set_mc_no1(tv_setting_mc_no1.text.toString())
+        AppGlobal.instance.set_mc_serial(et_setting_mc_serial.text.toString())
+
+        AppGlobal.instance.set_server_ip(et_setting_server_ip.text.toString())
+        AppGlobal.instance.set_server_port(et_setting_port.text.toString())
+        AppGlobal.instance.set_long_touch(sw_long_touch.isChecked)
+        AppGlobal.instance.set_sound_at_count(sw_sound_at_count.isChecked)
+        AppGlobal.instance.set_without_component(sw_without_component.isChecked)
+
+        AppGlobal.instance.set_screen_blink(sw_screen_blink_effect.isChecked)
+        AppGlobal.instance.set_remain_number(remain_num)
+        AppGlobal.instance.set_blink_color(_selected_blink_color)
+
+//        // count layer
+//        AppGlobal.instance.set_layer_pairs("0", _selected_layer_0)
+//        AppGlobal.instance.set_layer_pairs("1", _selected_layer_1)
+//        AppGlobal.instance.set_layer_pairs("2", _selected_layer_2)
+//        AppGlobal.instance.set_layer_pairs("3", _selected_layer_3)
+//        AppGlobal.instance.set_layer_pairs("4", _selected_layer_4)
+//        AppGlobal.instance.set_layer_pairs("5", _selected_layer_5)
+
+        // target type
+        AppGlobal.instance.set_target_type(_selected_target_type)
+        AppGlobal.instance.set_target_manual_shift("1", tv_shift_1.text.toString())
+        AppGlobal.instance.set_target_manual_shift("2", tv_shift_2.text.toString())
+        AppGlobal.instance.set_target_manual_shift("3", tv_shift_3.text.toString())
+
+        // 장비 설정값 저장
+        val uri = "/setting1.php"
+        var params = listOf(
+            "code" to "server",
+            "factory_parent_idx" to _selected_factory_idx,
+            "factory_idx" to _selected_room_idx,
+            "line_idx" to _selected_line_idx,
+            "shift_idx" to AppGlobal.instance.get_current_shift_idx(),
+            "mac_addr" to tv_setting_mac.text,
+            "machine_no" to tv_setting_mc_no1.text.toString(),
+            "ip_addr" to tv_setting_ip.text,
+            "mc_model" to tv_setting_mc_model.text,
+            "mc_serial" to et_setting_mc_serial.text.toString()
+        )
+        request(this, uri, false, params, { result ->
+            var code = result.getString("code")
+            Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+            if(code == "00") {
+                sendAppStartTime()      // 앱 시작을 알림. 결과에 상관없이 종료
+                finish()
+            }
+        })
+    }
+
+    private fun sendAppStartTime() {
+        val now = DateTime()
+        val uri = "/setting1.php"
+        var params = listOf(
+            "code" to "time",
+            "mac_addr" to AppGlobal.instance.getMACAddress(),
+            "start_time" to now.toString("yyyy-MM-dd HH:mm:ss"))
+        request(this, uri, true, params, { result ->
+            var code = result.getString("code")
+        })
+    }
+
+    private fun fetchDataForFactory() {
+        val url = "http://"+ et_setting_server_ip.text.toString()
+        val port = et_setting_port.text.toString()
+        val uri = "/getlist1.php"
+        var params = listOf("code" to "factory_parent")
+
+        request(this, url, port, uri, false, false,false, params, { result ->
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if (code == "00"){
+                var arr: ArrayList<String> = arrayListOf<String>()
+                var list = result.getJSONArray("item")
+                var lists : ArrayList<HashMap<String, String>> = arrayListOf()
+
+                for (i in 0..(list.length() - 1)) {
+                    val item = list.getJSONObject(i)
+                    var map = hashMapOf(
+                        "idx" to item.getString("idx"),
+                        "name" to item.getString("name")
+                    )
+                    lists.add(map)
+                    arr.add(item.getString("name"))
+                }
+
+                val intent = Intent(this, PopupSelectList::class.java)
+                intent.putStringArrayListExtra("list", arr)
+                startActivity(intent, { r, c, m, d ->
+                    if (r) {
+                        _selected_factory_idx = lists[c]["idx"] ?: ""
+                        tv_setting_factory.text = lists[c]["name"] ?: ""
+                        tv_setting_room.text = ""
+                        tv_setting_line.text = ""
+                    }
+                })
+            } else {
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun fetchDataForRoom() {
+        val url = "http://"+ et_setting_server_ip.text.toString()
+        val port = et_setting_port.text.toString()
+        val uri = "/getlist1.php"
+        var params = listOf(
+            "code" to "factory",
+            "factory_parent_idx" to _selected_factory_idx)
+
+        request(this, url, port, uri, false, false,false, params, { result ->
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if (code == "00") {
+                var arr: ArrayList<String> = arrayListOf<String>()
+                var list = result.getJSONArray("item")
+                var lists : ArrayList<HashMap<String, String>> = arrayListOf()
+
+                for (i in 0..(list.length() - 1)) {
+                    val item = list.getJSONObject(i)
+                    var map=hashMapOf(
+                        "idx" to item.getString("idx"),
+                        "name" to item.getString("name")
+                    )
+                    lists.add(map)
+                    arr.add(item.getString("name"))
+                }
+
+                val intent = Intent(this, PopupSelectList::class.java)
+                intent.putStringArrayListExtra("list", arr)
+                startActivity(intent, { r, c, m, d ->
+                    if (r) {
+                        _selected_room_idx = lists[c]["idx"] ?: ""
+                        tv_setting_room.text = lists[c]["name"] ?: ""
+                        tv_setting_line.text = ""
+                    }
+                })
+            } else {
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun fetchDataForLine() {
+        val url = "http://"+ et_setting_server_ip.text.toString()
+        val port = et_setting_port.text.toString()
+        val uri = "/getlist1.php"
+        var params = listOf(
+            "code" to "line",
+            "factory_parent_idx" to _selected_factory_idx,
+            "factory_idx" to _selected_room_idx)
+
+        request(this, url, port, uri, false, false,false, params, { result ->
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if (code == "00") {
+                var arr: ArrayList<String> = arrayListOf<String>()
+                var list = result.getJSONArray("item")
+                var lists : ArrayList<HashMap<String, String>> = arrayListOf()
+
+                for (i in 0..(list.length() - 1)) {
+                    val item = list.getJSONObject(i)
+                    var map=hashMapOf(
+                        "idx" to item.getString("idx"),
+                        "name" to item.getString("name")
+                    )
+                    lists.add(map)
+                    arr.add(item.getString("name"))
+                }
+
+                val intent = Intent(this, PopupSelectList::class.java)
+                intent.putStringArrayListExtra("list", arr)
+                startActivity(intent, { r, c, m, d ->
+                    if (r) {
+                        _selected_line_idx = lists[c]["idx"] ?: ""
+                        tv_setting_line.text = lists[c]["name"] ?: ""
+                    }
+                })
+            } else {
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun fetchDataForMCModel() {
+        val url = "http://"+ et_setting_server_ip.text.toString()
+        val port = et_setting_port.text.toString()
+        val uri = "/getlist1.php"
+        var params = listOf("code" to "machine_model")
+
+        request(this, url, port, uri, false, false,false, params, { result ->
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if (code == "00") {
+                var arr: ArrayList<String> = arrayListOf<String>()
+                var list = result.getJSONArray("item")
+                var lists : ArrayList<HashMap<String, String>> = arrayListOf()
+
+                for (i in 0..(list.length() - 1)) {
+                    val item = list.getJSONObject(i)
+                    var map=hashMapOf(
+                        "idx" to item.getString("idx"),
+                        "name" to item.getString("name")
+                    )
+                    lists.add(map)
+                    arr.add(item.getString("name"))
+                }
+
+                val intent = Intent(this, PopupSelectList::class.java)
+                intent.putStringArrayListExtra("list", arr)
+                startActivity(intent, { r, c, m, d ->
+                    if (r) {
+                        _selected_mc_model_idx = lists[c]["idx"] ?: ""
+                        tv_setting_mc_model.text = lists[c]["name"] ?: ""
+                    }
+                })
+            } else {
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun tabChange(v : Int) {
@@ -259,6 +538,35 @@ class SettingActivity : BaseActivity() {
                 btn_setting_test.setBackgroundResource(R.color.colorButtonBlue)
                 layout_setting_test.visibility = View.VISIBLE
             }
+        }
+    }
+
+    private fun targetTypeChange(v : String) {
+        if (_selected_target_type == v) return
+        when (_selected_target_type) {
+            "server_per_accumulate" -> btn_server_accumulate.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+            "server_per_hourly" -> btn_server_hourly.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+            "server_per_day_total" -> btn_server_shifttotal.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+            "device_per_accumulate" -> btn_manual_accumulate.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+            "device_per_hourly" -> btn_manual_hourly.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+            "device_per_day_total" -> btn_manual_shifttotal.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+        }
+        when (_selected_target_type.substring(0, 6)) {
+            "server" -> tv_setting_target_type_server.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
+            "device" -> tv_setting_target_type_manual.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
+        }
+        _selected_target_type = v
+        when (_selected_target_type) {
+            "server_per_accumulate" -> btn_server_accumulate.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+            "server_per_hourly" -> btn_server_hourly.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+            "server_per_day_total" -> btn_server_shifttotal.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+            "device_per_accumulate" -> btn_manual_accumulate.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+            "device_per_hourly" -> btn_manual_hourly.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+            "device_per_day_total" -> btn_manual_shifttotal.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+        }
+        when (_selected_target_type.substring(0, 6)) {
+            "server" -> tv_setting_target_type_server.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+            "device" -> tv_setting_target_type_manual.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
         }
     }
 

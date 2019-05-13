@@ -5,10 +5,11 @@
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@color/colorBackground">
 
         <TextView
                 android:layout_width="wrap_content"
@@ -16,84 +17,55 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:text="WORK INFO"
-                android:textSize="26sp"
+                android:textSize="22sp"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"/>
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
             <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
                 <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
-                        android:text="WOS NO :  "
-                        android:textSize="20sp"
-                        android:textColor="@color/colorWhite"/>
+                        style="@style/bottom_text_title"
+                        android:text="WOS NO :  " />
                 <TextView
                         android:id="@+id/tv_wosno"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textSize="20sp"
-                        android:textColor="@color/colorOrange"/>
+                        style="@style/bottom_text_data"
+                        android:text="-" />
 
                 <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
-                        android:text="MODEL :  "
-                        android:textSize="20sp"
-                        android:textColor="@color/colorWhite"/>
+                        style="@style/bottom_text_title"
+                        android:text="MODEL :  " />
                 <TextView
                         android:id="@+id/tv_model"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textSize="20sp"
-                        android:textColor="@color/colorOrange"/>
+                        style="@style/bottom_text_data"
+                        android:text="-" />
             </LinearLayout>
             <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:orientation="horizontal">
                 <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
-                        android:text="COMPONENT :  "
-                        android:textSize="20sp"
-                        android:textColor="@color/colorWhite"/>
+                        style="@style/bottom_text_title"
+                        android:text="COMPONENT :  " />
                 <TextView
                         android:id="@+id/tv_component"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textSize="20sp"
-                        android:textColor="@color/colorOrange"/>
+                        style="@style/bottom_text_data"
+                        android:text="-" />
 
                 <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
-                        android:text="STYLE NO :  "
-                        android:textSize="20sp"
-                        android:textColor="@color/colorWhite"/>
+                        style="@style/bottom_text_title"
+                        android:text="STYLE NO :  " />
                 <TextView
                         android:id="@+id/tv_style_no"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textSize="20sp"
-                        android:textColor="@color/colorOrange"/>
+                        style="@style/bottom_text_data"
+                        android:text="-" />
 
             </LinearLayout>
 

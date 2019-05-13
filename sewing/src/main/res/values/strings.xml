@@ -3,6 +3,9 @@
 
     <!-- 타이틀 -->
     <string name="title_setting">SETTING</string>
+    <string name="title_available_info">AVAILABLE INFO</string>
+    <string name="title_operator_info">OPERATOR INFO</string>
+    <string name="title_last_worker">LAST WORKER</string>
     <string name="title_server_info">SERVER INFO</string>
     <string name="title_device_info">DEVICE INFO</string>
     <string name="title_counter_device_info">COUNTER DEVICE INFO</string>
@@ -67,8 +70,20 @@
     <string name="search">SEARCH</string>
     <string name="notice">Notice</string>
 
+    <string name="list_item_shift">SHIFT</string>
+    <string name="list_item_work_time">WORK TIME</string>
+    <string name="list_item_planned_time1">PLANNED TIME1</string>
+    <string name="list_item_planned_time2">PLANNED TIME2</string>
+
+    <string name="list_item_employee_number">EMPLOYEE NUMBER</string>
+    <string name="list_item_name">NAME</string>
+
     <!-- Message -->
     <string name="msg_connection_fail">The connection to the server failed.</string>
+    <string name="msg_require_info">Info not complete</string>
     <string name="msg_no_setting">Setting not found</string>
+    <string name="msg_require_target_quantity">Please enter a target quantity</string>
+    <string name="msg_remain_out_of_range">Remaining value is out of range.</string>
+    <string name="msg_has_notselected">Nothing Selected</string>
 
 </resources>
