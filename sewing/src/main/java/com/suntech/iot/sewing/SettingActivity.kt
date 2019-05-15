@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.common.AppGlobal
 import kotlinx.android.synthetic.main.activity_setting.*
+import kotlinx.android.synthetic.main.activity_setting.view.*
 import kotlinx.android.synthetic.main.layout_top_menu_2.*
 import org.joda.time.DateTime
 import java.util.*
@@ -19,8 +20,12 @@ import java.util.*
 class SettingActivity : BaseActivity() {
 
     private var tab_pos: Int = 1
+    private var _selected_count_type: String = ""
     private var _selected_target_type: String = "device"
     private var _selected_blink_color: String = AppGlobal.instance.get_blink_color()
+
+    private var _selected_trim_pair: String = ""
+    private var _selected_stitch_pair: String = ""
 
     private var _selected_factory_idx: String = ""
     private var _selected_room_idx: String = ""
@@ -111,6 +116,15 @@ class SettingActivity : BaseActivity() {
             blinkColorChange("888888")
         }
 
+        tv_trim_qty.setText(AppGlobal.instance.get_trim_qty())
+        tv_trim_pairs.text = AppGlobal.instance.get_trim_pairs()
+
+        tv_stitch_start.setText(AppGlobal.instance.get_stitch_qty_start())
+        tv_stitch_end.setText(AppGlobal.instance.get_stitch_qty_end())
+        tv_stitch_delay_time.setText(AppGlobal.instance.get_stitch_delay_time())
+        tv_stitch_pairs.text = AppGlobal.instance.get_stitch_pairs()
+
+
         // count setting
 //        _selected_layer_0 = AppGlobal.instance.get_layer_pairs("0")     // 1 layer = 0.5 pair
 //        _selected_layer_1 = AppGlobal.instance.get_layer_pairs("1")     // 2 layer = 1 pair
@@ -118,8 +132,8 @@ class SettingActivity : BaseActivity() {
 //        _selected_layer_3 = AppGlobal.instance.get_layer_pairs("3")     // 6 layer = 3 pairs
 //        _selected_layer_4 = AppGlobal.instance.get_layer_pairs("4")     // 8 layer = 4 pairs
 //        _selected_layer_5 = AppGlobal.instance.get_layer_pairs("5")     // 10 layer = 5 pairs
-//
-//        // widget
+
+        // widget
 //        if (_selected_layer_0 != "") tv_layer_0.text = addPairText(_selected_layer_0)
 //        if (_selected_layer_1 != "") tv_layer_1.text = addPairText(_selected_layer_1)
 //        if (_selected_layer_2 != "") tv_layer_2.text = addPairText(_selected_layer_2)
@@ -127,9 +141,37 @@ class SettingActivity : BaseActivity() {
 //        if (_selected_layer_4 != "") tv_layer_4.text = addPairText(_selected_layer_4)
 //        if (_selected_layer_5 != "") tv_layer_5.text = addPairText(_selected_layer_5)
 
+        // count type setting
+        if (AppGlobal.instance.get_count_type() == "") countTypeChange("trim")
+        else countTypeChange(AppGlobal.instance.get_count_type())
+
+        tv_setting_count_trim.setOnClickListener { countTypeChange("trim") }
+        tv_setting_count_stitch.setOnClickListener { countTypeChange("stitch") }
+
+        tv_trim_pairs.setOnClickListener { selectTrimPair() }
+        tv_stitch_pairs.setOnClickListener { selectStitchPair() }
+
         // target setting
         if (AppGlobal.instance.get_target_type() == "") targetTypeChange("device_per_accumulate")
         else targetTypeChange(AppGlobal.instance.get_target_type())
+
+        // Target setting button listener
+//        btn_server_accumulate.setOnClickListener { targetTypeChange("server_per_accumulate") }
+//        btn_server_hourly.setOnClickListener { targetTypeChange("server_per_hourly") }
+//        btn_server_shifttotal.setOnClickListener { targetTypeChange("server_per_day_total") }
+        btn_server_accumulate.setOnClickListener {
+            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
+        }
+        btn_server_hourly.setOnClickListener {
+            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
+        }
+        btn_server_shifttotal.setOnClickListener {
+            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
+        }
+        btn_manual_accumulate.setOnClickListener { targetTypeChange("device_per_accumulate") }
+        btn_manual_hourly.setOnClickListener { targetTypeChange("device_per_hourly") }
+        btn_manual_shifttotal.setOnClickListener { targetTypeChange("device_per_day_total") }
+
 
         tv_shift_1.setText(AppGlobal.instance.get_target_manual_shift("1"))
         tv_shift_2.setText(AppGlobal.instance.get_target_manual_shift("2"))
@@ -158,22 +200,10 @@ class SettingActivity : BaseActivity() {
 //        tv_layer_4.setOnClickListener { fetchPairData("4") }
 //        tv_layer_5.setOnClickListener { fetchPairData("5") }
 
-        // Target setting button listener
-//        btn_server_accumulate.setOnClickListener { targetTypeChange("server_per_accumulate") }
-//        btn_server_hourly.setOnClickListener { targetTypeChange("server_per_hourly") }
-//        btn_server_shifttotal.setOnClickListener { targetTypeChange("server_per_day_total") }
-        btn_server_accumulate.setOnClickListener {
+        // test mode
+        btn_test_mode_refresh.setOnClickListener {
             Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
         }
-        btn_server_hourly.setOnClickListener {
-            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
-        }
-        btn_server_shifttotal.setOnClickListener {
-            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
-        }
-        btn_manual_accumulate.setOnClickListener { targetTypeChange("device_per_accumulate") }
-        btn_manual_hourly.setOnClickListener { targetTypeChange("device_per_hourly") }
-        btn_manual_shifttotal.setOnClickListener { targetTypeChange("device_per_day_total") }
 
         // check server button
         btn_setting_check_server.setOnClickListener {
@@ -227,8 +257,15 @@ class SettingActivity : BaseActivity() {
     }
 
     private fun saveSettingData() {
+        val remain_num = if (et_remain_number.text.toString()=="") 10 else et_remain_number.text.toString().toInt()
+        if (remain_num < 5 || remain_num > 30) {
+            tabChange(1)
+            Toast.makeText(this, getString(R.string.msg_remain_out_of_range), Toast.LENGTH_SHORT).show()
+            return
+        }
         // check value
         if (_selected_factory_idx == "" || _selected_room_idx == "" || _selected_line_idx == "" || tv_setting_mac.text.toString().trim() == "") {
+            tabChange(2)
             Toast.makeText(this, getString(R.string.msg_require_info), Toast.LENGTH_SHORT).show()
             return
         }
@@ -236,16 +273,29 @@ class SettingActivity : BaseActivity() {
 //            Toast.makeText(this, getString(R.string.msg_select_layer1), Toast.LENGTH_SHORT).show()
 //            return
 //        }
-        if (_selected_target_type.substring(0, 6) == "device") {
-            if (tv_shift_1.text.toString().trim()=="" || tv_shift_2.text.toString().trim()=="" || tv_shift_3.text.toString().trim()=="") {
-                Toast.makeText(this, getString(R.string.msg_require_target_quantity), Toast.LENGTH_SHORT).show()
+        // count type check
+        if (_selected_count_type == "trim") {
+            if (tv_trim_qty.text.toString().trim()=="" || tv_trim_pairs.text.toString()=="") {
+                tabChange(3)
+                Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
+                return
+            }
+        } else if (_selected_count_type == "stitch") {
+            if (tv_stitch_start.text.toString().trim()=="" || tv_stitch_end.text.toString().trim()=="" ||
+                tv_stitch_delay_time.text.toString().trim()=="" || tv_stitch_pairs.text.toString()=="") {
+                tabChange(3)
+                Toast.makeText(this, getString(R.string.msg_require_stitch_info), Toast.LENGTH_SHORT).show()
                 return
             }
         }
-        val remain_num = if (et_remain_number.text.toString()=="") 10 else et_remain_number.text.toString().toInt()
-        if (remain_num < 5 || remain_num > 30) {
-            Toast.makeText(this, getString(R.string.msg_remain_out_of_range), Toast.LENGTH_SHORT).show()
-            return
+
+        // target check
+        if (_selected_target_type.substring(0, 6) == "device") {
+            if (tv_shift_1.text.toString().trim()=="" || tv_shift_2.text.toString().trim()=="" || tv_shift_3.text.toString().trim()=="") {
+                tabChange(4)
+                Toast.makeText(this, getString(R.string.msg_require_target_quantity), Toast.LENGTH_SHORT).show()
+                return
+            }
         }
 
         // setting value
@@ -272,7 +322,15 @@ class SettingActivity : BaseActivity() {
         AppGlobal.instance.set_remain_number(remain_num)
         AppGlobal.instance.set_blink_color(_selected_blink_color)
 
-//        // count layer
+        // count setting
+        AppGlobal.instance.set_count_type(_selected_count_type)
+        AppGlobal.instance.set_trim_qty(tv_trim_qty.text.toString())
+        AppGlobal.instance.set_trim_pairs(tv_trim_pairs.text.toString())
+
+        AppGlobal.instance.set_stitch_qty_start(tv_stitch_start.text.toString())
+        AppGlobal.instance.set_stitch_qty_end(tv_stitch_end.text.toString())
+        AppGlobal.instance.set_stitch_delay_time(tv_stitch_delay_time.text.toString())
+        AppGlobal.instance.set_stitch_pairs(tv_stitch_pairs.text.toString())
 //        AppGlobal.instance.set_layer_pairs("0", _selected_layer_0)
 //        AppGlobal.instance.set_layer_pairs("1", _selected_layer_1)
 //        AppGlobal.instance.set_layer_pairs("2", _selected_layer_2)
@@ -319,6 +377,40 @@ class SettingActivity : BaseActivity() {
             "start_time" to now.toString("yyyy-MM-dd HH:mm:ss"))
         request(this, uri, true, params, { result ->
             var code = result.getString("code")
+        })
+    }
+
+    private fun selectTrimPair() {
+        var arr: ArrayList<String> = arrayListOf<String>()
+        arr.add("1/8")
+        arr.add("1/4")
+        arr.add("1/2")
+        arr.add("1")
+
+        val intent = Intent(this, PopupSelectList::class.java)
+        intent.putStringArrayListExtra("list", arr)
+        startActivity(intent, { r, c, m, d ->
+            if (r) {
+                tv_trim_pairs.text = arr[c]
+                _selected_trim_pair = arr[c]
+            }
+        })
+    }
+
+    private fun selectStitchPair() {
+        var arr: ArrayList<String> = arrayListOf<String>()
+        arr.add("1/8")
+        arr.add("1/4")
+        arr.add("1/2")
+        arr.add("1")
+
+        val intent = Intent(this, PopupSelectList::class.java)
+        intent.putStringArrayListExtra("list", arr)
+        startActivity(intent, { r, c, m, d ->
+            if (r) {
+                tv_stitch_pairs.text = arr[c]
+                _selected_stitch_pair = arr[c]
+            }
         })
     }
 
@@ -538,6 +630,19 @@ class SettingActivity : BaseActivity() {
                 btn_setting_test.setBackgroundResource(R.color.colorButtonBlue)
                 layout_setting_test.visibility = View.VISIBLE
             }
+        }
+    }
+
+    private fun countTypeChange(v : String) {
+        if (_selected_count_type == v) return
+        when (_selected_count_type) {
+            "trim" -> tv_setting_count_trim.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
+            "stitch" -> tv_setting_count_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
+        }
+        _selected_count_type = v
+        when (_selected_count_type) {
+            "trim" -> tv_setting_count_trim.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+            "stitch" -> tv_setting_count_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
         }
     }
 

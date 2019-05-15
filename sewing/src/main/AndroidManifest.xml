@@ -48,6 +48,10 @@
         <activity android:name=".WorkInfoActivity" android:screenOrientation="landscape" />
         <activity android:name=".SettingActivity" android:screenOrientation="landscape" />
         <activity android:name=".PopupSelectList" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.PushActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.ActualCountEditActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.ActualCountEditInputActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".ProductionReportActivity" android:screenOrientation="landscape" />
     </application>
 
 </manifest>

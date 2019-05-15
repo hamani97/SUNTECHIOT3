@@ -256,9 +256,26 @@ class AppGlobal private constructor() {
     fun get_color_code() : JSONArray { return UtilLocalStorage.getJSONArray(instance._context!!, "color_code") }
 
 
+    // count type
+    fun set_count_type(value: String) { UtilLocalStorage.setString(instance._context!!, "count_type", value) }
+    fun get_count_type() : String { return UtilLocalStorage.getString(instance._context!!, "count_type") }
+
     // Layer정보 = pair 수
-    fun set_layer_pairs(layer_no: String, pair: String) { UtilLocalStorage.setString(instance._context!!, "current_layer_" + layer_no, pair) }
-    fun get_layer_pairs(layer_no: String) : String { return UtilLocalStorage.getString(instance._context!!, "current_layer_" + layer_no) }
+//    fun set_layer_pairs(layer_no: String, pair: String) { UtilLocalStorage.setString(instance._context!!, "current_layer_" + layer_no, pair) }
+//    fun get_layer_pairs(layer_no: String) : String { return UtilLocalStorage.getString(instance._context!!, "current_layer_" + layer_no) }
+    fun set_trim_qty(value: String) { UtilLocalStorage.setString(instance._context!!, "current_trim_qty", value) }
+    fun get_trim_qty() : String { return UtilLocalStorage.getString(instance._context!!, "current_trim_qty") }
+    fun set_trim_pairs(pair: String) { UtilLocalStorage.setString(instance._context!!, "current_trim_pair", pair) }
+    fun get_trim_pairs() : String { return UtilLocalStorage.getString(instance._context!!, "current_trim_pair") }
+
+    fun set_stitch_qty_start(value: String) { UtilLocalStorage.setString(instance._context!!, "current_stitch_start", value) }
+    fun get_stitch_qty_start() : String { return UtilLocalStorage.getString(instance._context!!, "current_stitch_start") }
+    fun set_stitch_qty_end(value: String) { UtilLocalStorage.setString(instance._context!!, "current_stitch_end", value) }
+    fun get_stitch_qty_end() : String { return UtilLocalStorage.getString(instance._context!!, "current_stitch_end") }
+    fun set_stitch_delay_time(value: String) { UtilLocalStorage.setString(instance._context!!, "current_stitch_delay_time", value) }
+    fun get_stitch_delay_time() : String { return UtilLocalStorage.getString(instance._context!!, "current_stitch_delay_time") }
+    fun set_stitch_pairs(pair: String) { UtilLocalStorage.setString(instance._context!!, "current_stitch_pair", pair) }
+    fun get_stitch_pairs() : String { return UtilLocalStorage.getString(instance._context!!, "current_stitch_pair") }
 
     // server, manual 방식
     fun set_target_type(value: String) { UtilLocalStorage.setString(instance._context!!, "target_type", value) }

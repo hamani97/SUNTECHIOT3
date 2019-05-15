@@ -14,6 +14,7 @@
     <string name="title_function">FUNCTION</string>
     <string name="title_count_info">COUNT INFO</string>
     <string name="title_target_type">TARGET TYPE</string>
+    <string name="title_push_info">PUSH INFO</string>
 
     <!-- SETTING 화면 -->
     <string name="label_wifi">WiFi</string>
@@ -27,8 +28,14 @@
     <string name="label_mc_serial">MC SERIAL</string>
     <string name="label_server_ip">SERVER IP</string>
     <string name="label_server_port">PORT</string>
-    <string name="label_from_server">FROM SERVER</string>
-    <string name="label_from_device">FROM DEVICE</string>
+    <string name="label_from_server">TARGET TYPE FROM SERVER</string>
+    <string name="label_from_device">TARGET TYPE FROM DEVICE</string>
+    <string name="label_count_trim">TRIM</string>
+    <string name="label_count_stitch">STITCH</string>
+    <string name="label_count_trim_qty">Trim Q\'ty</string>
+    <string name="label_count_trim_pairs">Pair(s)</string>
+    <string name="label_count_stitch_qty">Stitch Q\'ty</string>
+    <string name="label_count_stitch_delay_time">Delay Time(sec)</string>
 
     <!-- 홈화면 -->
     <string name="bottom_label_machine_info">MACHINE INFO</string>
@@ -53,6 +60,11 @@
     <string name="list_item_target">TARGET</string>
     <string name="list_item_actual">ACTUAL</string>
     <string name="list_item_balance">BALANCE</string>
+
+    <!-- 액츄얼카운트화면 -->
+    <string name="title_actual_count_edit">ACTUAL Q\'ty EDIT</string>
+    <string name="title_actual_count_edit_input">EDIT ACTUAL Q\'ty</string>
+    <string name="label_actual_count_edit_input">EDIT ACTUAL Q\'ty</string>
 
     <!-- Buttons -->
     <string name="button_total_count_view">Total Count View</string>
@@ -82,8 +94,12 @@
     <string name="msg_connection_fail">The connection to the server failed.</string>
     <string name="msg_require_info">Info not complete</string>
     <string name="msg_no_setting">Setting not found</string>
-    <string name="msg_require_target_quantity">Please enter a target quantity</string>
+    <string name="msg_require_trim_info">Please enter a Trim info.</string>
+    <string name="msg_require_stitch_info">Please enter a Stitch info.</string>
+    <string name="msg_require_target_quantity">Please enter a Target quantity</string>
     <string name="msg_remain_out_of_range">Remaining value is out of range.</string>
     <string name="msg_has_notselected">Nothing Selected</string>
+    <string name="msg_data_not_found">Data not found</string>
+    <string name="msg_has_not_server_info">Cannot find server</string>
 
 </resources>

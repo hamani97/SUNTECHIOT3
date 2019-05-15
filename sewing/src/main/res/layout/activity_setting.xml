@@ -47,7 +47,6 @@
                 <Button
                         android:id="@+id/btn_setting_test"
                         style="@style/tab_btn_off"
-                        android:layout_width="120dp"
                         android:stateListAnimator="@null"
                         android:text="TEST MODE" />
             </LinearLayout>
@@ -74,9 +73,9 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginRight="12dp"
                             android:orientation="vertical">
-                        <TextView style="@style/table_title" android:text="@string/title_server_info" />
+                        <TextView style="@style/table_title" android:text="@string/title_server_info"/>
 
                         <LinearLayout style="@style/table_row">
                             <TextView style="@style/table_row_title" android:text="@string/label_server_ip" />
@@ -144,7 +143,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="12dp"
                             android:orientation="vertical">
                         <TextView style="@style/table_title" android:text="@string/title_blink_effect" />
 
@@ -188,8 +187,8 @@
                                 android:orientation="horizontal">
                             <TextView
                                     android:id="@+id/blink_color_f8ad13"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
                                     android:layout_marginRight="8dp"
                                     android:gravity="center"
                                     android:text=""
@@ -199,8 +198,8 @@
                                     android:background="@color/colorOrange"/>
                             <TextView
                                     android:id="@+id/blink_color_ff0000"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
                                     android:layout_marginRight="8dp"
                                     android:gravity="center"
                                     android:text=""
@@ -210,8 +209,8 @@
                                     android:background="@color/colorRed"/>
                             <TextView
                                     android:id="@+id/blink_color_0079BA"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
                                     android:layout_marginRight="8dp"
                                     android:gravity="center"
                                     android:text=""
@@ -221,8 +220,8 @@
                                     android:background="@color/colorReadonly2"/>
                             <TextView
                                     android:id="@+id/blink_color_888888"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
                                     android:gravity="center"
                                     android:text=""
                                     android:textSize="20sp"
@@ -231,7 +230,7 @@
                                     android:background="@color/colorGray"/>
                         </LinearLayout>
 
-                        <TextView style="@style/table_title" android:text="@string/title_function" android:layout_marginTop="20dp" />
+                        <TextView style="@style/table_title" android:text="@string/title_function" android:layout_marginTop="28dp" />
 
                         <LinearLayout style="@style/table_row">
                             <TextView style="@style/table_row_title" android:text="Component"
@@ -268,7 +267,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginRight="12dp"
                             android:orientation="vertical">
 
                         <TextView style="@style/table_title" android:text="@string/title_counter_device_info" />
@@ -315,7 +314,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="12dp"
                             android:orientation="vertical">
 
                         <TextView style="@style/table_title" android:text="@string/title_device_info" />
@@ -353,6 +352,127 @@
 
                     <TextView style="@style/table_title" android:text="@string/title_count_info" />
 
+                    <LinearLayout style="@style/table_row">
+                        <TextView
+                                android:id="@+id/tv_setting_count_trim"
+                                style="@style/table_row_title"
+                                android:layout_width="120dp"
+                                android:background="@color/colorBackgroundTop"
+                                android:text="@string/label_count_trim"
+                                android:textColor="@color/colorReadonly"
+                                android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Trim -->
+                    <LinearLayout style="@style/table_row" android:layout_marginTop="4dp">
+                        <EditText android:id="@+id/tv_trim_qty"
+                                  style="@style/table_row_data_editor1"
+                                  android:layout_width="60dp"
+                                  android:singleLine="true"
+                                  android:gravity="center"
+                                  android:inputType="number" />
+                        <TextView style="@style/table_row_title"
+                                  android:layout_width="wrap_content"
+                                  android:paddingLeft="16dp"
+                                  android:paddingRight="16dp"
+                                  android:text="@string/label_count_trim_qty"
+                                  android:layout_marginLeft="8dp" />
+                        <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_arrow_right16" />
+                        <TextView style="@style/table_row_data_selector"
+                                  android:id="@+id/tv_trim_pairs"
+                                  android:gravity="center"
+                                  android:text=""
+                                  android:layout_width="60dp"/>
+                        <TextView style="@style/table_row_title"
+                                  android:layout_width="wrap_content"
+                                  android:paddingLeft="16dp"
+                                  android:paddingRight="16dp"
+                                  android:text="@string/label_count_trim_pairs"
+                                  android:layout_marginLeft="8dp" />
+                    </LinearLayout>
+
+                    <!-- Stitch -->
+                    <LinearLayout style="@style/table_row" android:layout_marginTop="20dp">
+                        <TextView
+                                android:id="@+id/tv_setting_count_stitch"
+                                style="@style/table_row_title"
+                                android:layout_width="120dp"
+                                android:background="@color/colorBackgroundTop"
+                                android:text="@string/label_count_stitch"
+                                android:textColor="@color/colorReadonly"
+                                android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/table_row" android:layout_marginTop="4dp">
+                        <EditText android:id="@+id/tv_stitch_start"
+                                  style="@style/table_row_data_editor1"
+                                  android:layout_width="60dp"
+                                  android:gravity="center"
+                                  android:singleLine="true"
+                                  android:inputType="number" />
+                        <TextView android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:paddingLeft="6dp"
+                                  android:paddingRight="6dp"
+                                  android:text="~"
+                                  android:textSize="14sp"
+                                  android:textColor="@color/colorWhite"/>
+                        <EditText android:id="@+id/tv_stitch_end"
+                                  style="@style/table_row_data_editor1"
+                                  android:layout_width="60dp"
+                                  android:gravity="center"
+                                  android:singleLine="true"
+                                  android:inputType="number" />
+                        <TextView style="@style/table_row_title"
+                                  android:layout_width="wrap_content"
+                                  android:paddingLeft="16dp"
+                                  android:paddingRight="16dp"
+                                  android:text="@string/label_count_stitch_qty"
+                                  android:layout_marginLeft="8dp" />
+                        <TextView android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:paddingLeft="9dp"
+                                  android:paddingRight="9dp"
+                                  android:text="+"
+                                  android:textSize="14sp"
+                                  android:textColor="@color/colorWhite"/>
+                        <EditText android:id="@+id/tv_stitch_delay_time"
+                                  style="@style/table_row_data_editor1"
+                                  android:layout_width="60dp"
+                                  android:gravity="center"
+                                  android:singleLine="true" />
+                        <TextView style="@style/table_row_title"
+                                  android:layout_width="wrap_content"
+                                  android:paddingLeft="16dp"
+                                  android:paddingRight="16dp"
+                                  android:text="@string/label_count_stitch_delay_time"
+                                  android:layout_marginLeft="8dp" />
+                        <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_arrow_right16" />
+                        <TextView style="@style/table_row_data_selector"
+                                  android:id="@+id/tv_stitch_pairs"
+                                  android:gravity="center"
+                                  android:text=""
+                                  android:layout_width="60dp"/>
+                        <TextView style="@style/table_row_title"
+                                  android:layout_width="wrap_content"
+                                  android:paddingLeft="16dp"
+                                  android:paddingRight="16dp"
+                                  android:text="@string/label_count_trim_pairs"
+                                  android:layout_marginLeft="8dp" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <!--Target setting-->
@@ -364,87 +484,89 @@
                         android:orientation="vertical"
                         android:visibility="gone">
 
-                    <TextView style="@style/table_title" android:text="@string/title_target_type" />
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:orientation="horizontal">
 
-                    <LinearLayout style="@style/table_row">
+                        <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginRight="12dp"
+                                android:orientation="vertical">
+
+                            <TextView android:id="@+id/tv_setting_target_type_server"
+                                      style="@style/table_title"
+                                      android:text="@string/label_from_server"
+                                      android:textColor="@color/colorReadonly" />
+
+                            <Button
+                                    android:id="@+id/btn_server_accumulate"
+                                    style="@style/tab_btn_disable"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="2dp"
+                                    android:stateListAnimator="@null"
+                                    android:text="Accumulation by Start" />
+                            <Button
+                                    android:id="@+id/btn_server_hourly"
+                                    style="@style/tab_btn_disable"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="2dp"
+                                    android:stateListAnimator="@null"
+                                    android:text="Accumulation by Hourly" />
+                            <Button
+                                    android:id="@+id/btn_server_shifttotal"
+                                    style="@style/tab_btn_disable"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="2dp"
+                                    android:stateListAnimator="@null"
+                                    android:text="Total Target per Shift" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginLeft="12dp"
+                                android:orientation="vertical">
+
+                            <TextView android:id="@+id/tv_setting_target_type_manual"
+                                      style="@style/table_title"
+                                      android:text="@string/label_from_device" />
+
+                            <Button
+                                    android:id="@+id/btn_manual_accumulate"
+                                    style="@style/tab_btn_off"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="2dp"
+                                    android:stateListAnimator="@null"
+                                    android:text="Accumulation by Start" />
+                            <Button
+                                    android:id="@+id/btn_manual_hourly"
+                                    style="@style/tab_btn_off"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="2dp"
+                                    android:stateListAnimator="@null"
+                                    android:text="Accumulation by Hourly" />
+                            <Button
+                                    android:id="@+id/btn_manual_shifttotal"
+                                    style="@style/tab_btn_off"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="2dp"
+                                    android:stateListAnimator="@null"
+                                    android:text="Total Target per Shift" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/table_row" android:layout_marginTop="16dp">
                         <TextView
-                                android:id="@+id/tv_setting_target_type_server"
                                 style="@style/table_row_title"
-                                android:layout_width="120dp"
-                                android:background="@color/colorBackgroundTop"
-                                android:text="@string/label_from_server"
-                                android:textColor="@color/colorReadonly"
-                                android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout style="@style/tab_block" android:layout_marginTop="4dp">
-                        <Button
-                                android:id="@+id/btn_server_accumulate"
-                                style="@style/tab_btn_disable"
-                                android:layout_width="0dp"
-                                android:layout_height="36dp"
-                                android:layout_weight="1"
-                                android:stateListAnimator="@null"
-                                android:text="Accumulation by Start" />
-                        <Button
-                                android:id="@+id/btn_server_hourly"
-                                style="@style/tab_btn_disable"
-                                android:layout_width="0dp"
-                                android:layout_height="36dp"
-                                android:layout_weight="1"
-                                android:stateListAnimator="@null"
-                                android:text="Accumulation by Hourly" />
-                        <Button
-                                android:id="@+id/btn_server_shifttotal"
-                                style="@style/tab_btn_disable"
-                                android:layout_width="0dp"
-                                android:layout_height="36dp"
-                                android:layout_weight="1"
-                                android:stateListAnimator="@null"
-                                android:text="Total Target per Shift" />
-                    </LinearLayout>
-
-                    <LinearLayout style="@style/table_row">
-                        <TextView
-                                android:id="@+id/tv_setting_target_type_manual"
-                                style="@style/table_row_title"
-                                android:layout_width="120dp"
-                                android:background="@color/colorBackgroundTop"
-                                android:text="@string/label_from_device"
-                                android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout style="@style/tab_block" android:layout_marginTop="4dp">
-                        <Button
-                                android:id="@+id/btn_manual_accumulate"
-                                style="@style/tab_btn_off"
-                                android:layout_width="0dp"
-                                android:layout_height="36dp"
-                                android:layout_weight="1"
-                                android:stateListAnimator="@null"
-                                android:text="Accumulation by Start" />
-                        <Button
-                                android:id="@+id/btn_manual_hourly"
-                                style="@style/tab_btn_off"
-                                android:layout_width="0dp"
-                                android:layout_height="36dp"
-                                android:layout_weight="1"
-                                android:stateListAnimator="@null"
-                                android:text="Accumulation by Hourly" />
-                        <Button
-                                android:id="@+id/btn_manual_shifttotal"
-                                style="@style/tab_btn_off"
-                                android:layout_width="0dp"
-                                android:layout_height="36dp"
-                                android:layout_weight="1"
-                                android:stateListAnimator="@null"
-                                android:text="Total Target per Shift" />
-                    </LinearLayout>
-
-                    <LinearLayout style="@style/table_row" android:layout_marginTop="10dp">
-                        <TextView
-                                style="@style/table_row_title"
-                                android:layout_width="150dp"
+                                android:layout_width="180dp"
                                 android:background="@color/colorBackgroundTop"
                                 android:text="TARGET PER SHIFT"
                                 android:textStyle="bold" />
@@ -503,6 +625,31 @@
 
                     <TextView style="@style/table_title" android:text="@string/title_count_info" />
 
+                    <!-- Trim -->
+                    <LinearLayout style="@style/table_row" android:layout_marginTop="12dp">
+                        <TextView style="@style/table_row_title" android:text="@string/label_count_trim" />
+                        <TextView style="@style/table_row_data_readonly"
+                                  android:id="@+id/tv_test_trim"
+                                  android:layout_width="90dp"
+                                  android:gravity="center" />
+                    </LinearLayout>
+
+                    <!-- Stitch -->
+                    <LinearLayout style="@style/table_row" android:layout_marginTop="8dp">
+                        <TextView style="@style/table_row_title" android:text="@string/label_count_stitch" />
+                        <TextView style="@style/table_row_data_readonly"
+                                  android:id="@+id/tv_test_stitch"
+                                  android:layout_width="90dp"
+                                  android:gravity="center" />
+
+                        <Button
+                                android:id="@+id/btn_test_mode_refresh"
+                                style="@style/tab_btn_on"
+                                android:layout_marginLeft="30dp"
+                                android:stateListAnimator="@null"
+                                android:text="REFRESH" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </FrameLayout>
@@ -510,6 +657,7 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="end"

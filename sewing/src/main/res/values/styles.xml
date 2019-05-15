@@ -32,23 +32,23 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">15dp</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorWhite</item>
     </style>
     <style name="bottom_text_data">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorOrange</item>
     </style>
 
     <!-- Button default value -->
     <style name="btn_default">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_height">34dp</item>
         <item name="android:layout_margin">6dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/shape_default_rectangle_button</item>
@@ -77,13 +77,13 @@
         <item name="android:orientation">horizontal</item>
     </style>
     <style name="tab_btn">
-        <item name="android:layout_width">90dp</item>
-        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">36dp</item>
         <item name="android:layout_marginRight">6dp</item>
-        <item name="android:paddingLeft">6dp</item>
-        <item name="android:paddingRight">6dp</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@color/colorButtonDefault</item>
@@ -107,10 +107,10 @@
     <!-- Table start -->
     <style name="table_title">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">28dp</item>
+        <item name="android:layout_height">30dp</item>
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">#010103</item>
@@ -118,7 +118,7 @@
     <style name="table_title2">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">30dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorWhite</item>
@@ -126,7 +126,7 @@
     </style>
     <style name="table_row">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_height">36dp</item>
         <item name="android:layout_marginBottom">3dp</item>
         <item name="android:orientation">horizontal</item>
     </style>
@@ -135,7 +135,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginRight">3dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">#d0efff</item>
         <item name="android:background">@color/colorDefault</item>
     </style>
@@ -145,7 +145,7 @@
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
         <item name="android:gravity">start|center_vertical</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:background">@color/colorDefault</item>
     </style>
@@ -174,13 +174,13 @@
     </style>
 
     <style name="work_info_manual_text">
-        <item name="android:layout_width">70dp</item>
+        <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginRight">10dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:gravity">center</item>
         <item name="android:text"></item>
-        <item name="android:textSize">21sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:background">@color/colorReadonly</item>
     </style>
@@ -190,9 +190,9 @@
     <style name="work_info_manual_symbol">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginRight">10dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorWhite</item>
     </style>
@@ -201,7 +201,7 @@
     <!-- Grid start -->
     <style name="grid_header">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_height">28dp</item>
         <item name="android:gravity">center</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:background">#304053</item>
@@ -209,7 +209,7 @@
     <style name="grid_header_text">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/colorWhite2</item>
     </style>
     <!-- Grid end -->

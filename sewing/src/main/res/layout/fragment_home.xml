@@ -74,7 +74,7 @@
                             android:background="#db4030"
                             android:stateListAnimator="@null"
                             android:text="COUNT VIEW"
-                            android:textSize="20sp"
+                            android:textSize="22sp"
                             android:textColor="@color/colorWhite"
                             android:textStyle="bold"/>
 
@@ -84,11 +84,11 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:layout_marginLeft="4dp"
-                            android:background="#f8ad13"
+                            android:background="#E29612"
                             android:stateListAnimator="@null"
                             android:text="WORK INFO"
                             android:textColor="@color/colorWhite"
-                            android:textSize="20sp"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
                 </LinearLayout>
@@ -106,10 +106,10 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:layout_marginRight="4dp"
-                            android:background="#3f8cd6"
+                            android:background="#3581CA"
                             android:stateListAnimator="@null"
                             android:text="OPERATOR DETAIL"
-                            android:textSize="20sp"
+                            android:textSize="22sp"
                             android:textColor="@color/colorWhite"
                             android:textStyle="bold"/>
 
@@ -119,10 +119,10 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:layout_marginLeft="4dp"
-                            android:background="#61c536"
+                            android:background="#4AA221"
                             android:stateListAnimator="@null"
                             android:text="SETTING"
-                            android:textSize="20sp"
+                            android:textSize="22sp"
                             android:textColor="@color/colorWhite"
                             android:textStyle="bold"/>
                 </LinearLayout>

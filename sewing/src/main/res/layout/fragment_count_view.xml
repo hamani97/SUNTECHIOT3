@@ -32,8 +32,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:layout_marginTop="20dp"
-                        android:layout_marginLeft="100dp"
-                        android:layout_marginRight="80dp"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginRight="60dp"
                         android:orientation="vertical">
 
                     <LinearLayout
@@ -47,8 +47,8 @@
                                 android:layout_weight="1"
                                 android:gravity="start"
                                 android:text="@string/label_target"
-                                android:textSize="112sp"
-                                android:textColor="#fff"
+                                android:textSize="66sp"
+                                android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
                         <TextView
@@ -57,8 +57,8 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="end"
                                 android:text="0"
-                                android:textSize="112sp"
-                                android:textColor="#fff"
+                                android:textSize="66sp"
+                                android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
                     </LinearLayout>
@@ -74,8 +74,8 @@
                                 android:layout_weight="1"
                                 android:gravity="start"
                                 android:text="@string/label_actual"
-                                android:textSize="112sp"
-                                android:textColor="#fff"
+                                android:textSize="66sp"
+                                android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
                         <TextView
@@ -84,8 +84,8 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="end"
                                 android:text="0"
-                                android:textSize="112sp"
-                                android:textColor="#fff"
+                                android:textSize="66sp"
+                                android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
                     </LinearLayout>
@@ -96,68 +96,74 @@
                             android:orientation="horizontal">
 
                         <TextView
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:gravity="start"
                                 android:text="@string/label_rate"
-                                android:textSize="112sp"
-                                android:textColor="#fff"
+                                android:textSize="66sp"
+                                android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
-
-                        <TextView
-                                android:id="@+id/tv_count_view_ratio"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="end"
-                                android:text="0%"
-                                android:textSize="112sp"
-                                android:textColor="#fff"
-                                android:textStyle="bold"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
 
                         <TextView
                                 android:id="@+id/tv_current_time"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:text="2000-01-01"
-                                android:textSize="26sp"
-                                android:textColor="#fff" />
-
-                        <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:gravity="right">
+                                android:gravity="center_horizontal|bottom"
+                                android:text="2000-01-01"
+                                android:textSize="15sp"
+                                android:textColor="@color/colorWhite" />
 
-                            <!--<Button-->
-                            <!--android:id="@+id/btn_start"-->
-                            <!--style="@style/btn_orange"-->
-                            <!--android:layout_width="180dp"-->
-                            <!--android:stateListAnimator="@null"-->
-                            <!--android:text="START" />-->
-                            <Button
-                                    android:id="@+id/btn_init_actual"
-                                    style="@style/btn_default"
-                                    android:layout_width="180dp"
-                                    android:stateListAnimator="@null"
-                                    android:text="INIT ACTUAL" />
-                            <Button
-                                    android:id="@+id/btn_exit"
-                                    style="@style/btn_default"
-                                    android:layout_width="220dp"
-                                    android:stateListAnimator="@null"
-                                    android:text="MANAGER CALL" />
+                        <TextView
+                                android:id="@+id/tv_count_view_ratio"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:text="0%"
+                                android:textSize="66sp"
+                                android:textColor="@color/colorWhite"
+                                android:textStyle="bold"/>
 
-                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                        <Button
+                                android:id="@+id/btn_setting_server"
+                                style="@style/btn_default"
+                                android:layout_width="130dp"
+                                android:background="@color/colorButtonBlue"
+                                android:stateListAnimator="@null"
+                                android:text="REPAIR MODE" />
+
+                        <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:text="TRIM  :  3"
+                                android:textSize="16sp"
+                                android:textColor="@color/colorOrange" />
+
+                        <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:text="STITCH  :  0"
+                                android:textSize="16sp"
+                                android:textColor="@color/colorWhite" />
+
+                        <Button
+                                android:id="@+id/btn_init_actual"
+                                style="@style/btn_default"
+                                android:stateListAnimator="@null"
+                                android:text="EDIT" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -165,7 +171,7 @@
                 <!-- 차트 -->
                 <LinearLayout
                         android:id="@+id/ll_charts"
-                        android:layout_width="240dp"
+                        android:layout_width="160dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:background="#222222"
@@ -177,7 +183,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="WOS COUNT"
-                            android:textSize="30sp"
+                            android:textSize="20sp"
                             android:paddingTop="16dp"
                             android:paddingBottom="16dp"
                             android:textColor="@color/colorOrange"
@@ -187,19 +193,18 @@
                             android:id="@+id/ll_btn_wos_count"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="32dp"
+                            android:padding="16dp"
                             android:orientation="vertical">
 
                         <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="8dp">
+                                android:layout_height="wrap_content">
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="SIZE  "
                                     android:textColor="@color/colorWhite"
-                                    android:textSize="26sp" />
+                                    android:textSize="18sp" />
                             <TextView
                                     android:id="@+id/tv_count_view_csize"
                                     android:layout_width="wrap_content"
@@ -207,7 +212,7 @@
                                     android:text="0"
                                     android:textColor="@color/colorOrange"
                                     android:textStyle="bold"
-                                    android:textSize="26dp" />
+                                    android:textSize="18sp" />
                         </LinearLayout>
                         <LinearLayout
                                 android:layout_width="match_parent"
@@ -218,32 +223,32 @@
                                     android:layout_height="wrap_content"
                                     android:text="LAYER(S)  "
                                     android:textColor="@color/colorWhite"
-                                    android:textSize="26sp" />
+                                    android:textSize="18sp" />
                             <TextView
                                     android:id="@+id/tv_count_view_clayer"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="0"
                                     android:textColor="@color/colorOrange"
-                                    android:textSize="26dp" />
+                                    android:textSize="18sp" />
                         </LinearLayout>
                         <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingTop="32dp">
+                                android:paddingTop="20dp">
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="TARGET  "
                                     android:textColor="@color/colorWhite"
-                                    android:textSize="26sp" />
+                                    android:textSize="18sp" />
                             <TextView
                                     android:id="@+id/tv_count_view_ctarget"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="0"
                                     android:textColor="@color/colorOrange"
-                                    android:textSize="26dp" />
+                                    android:textSize="18sp" />
                         </LinearLayout>
                         <LinearLayout
                                 android:layout_width="match_parent"
@@ -254,28 +259,28 @@
                                     android:layout_height="wrap_content"
                                     android:text="ACTUAL  "
                                     android:textColor="@color/colorWhite"
-                                    android:textSize="26sp" />
+                                    android:textSize="18sp" />
                             <TextView
                                     android:id="@+id/tv_count_view_cactual"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="0"
                                     android:textColor="@color/colorOrange"
-                                    android:textSize="26dp" />
+                                    android:textSize="18sp" />
                         </LinearLayout>
 
                         <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:padding="16dp"
-                                android:layout_marginTop="32dp"
+                                android:padding="10dp"
+                                android:layout_marginTop="10dp"
                                 android:gravity="center_horizontal"
                                 android:orientation="vertical">
 
                             <com.dinuscxj.progressbar.CircleProgressBar
                                     android:id="@+id/line_progress1"
-                                    android:layout_width="130dp"
-                                    android:layout_height="130dp"
+                                    android:layout_width="90dp"
+                                    android:layout_height="90dp"
                                     android:layout_centerInParent="true"
                                     app:background_color="@color/colorWhite"
                                     app:progress_start_color="#ff0000"
@@ -293,7 +298,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerInParent="true"
                                     android:text="10%"
-                                    android:textSize="24sp"
+                                    android:textSize="20sp"
                                     android:textColor="#000"/>
 
                         </RelativeLayout>
@@ -360,7 +365,7 @@
                                 android:gravity="start"
                                 android:text="@string/label_target"
                                 android:textSize="90sp"
-                                android:textColor="#fff"
+                                android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
                         <TextView
@@ -370,7 +375,7 @@
                                 android:gravity="end"
                                 android:text="100"
                                 android:textSize="90sp"
-                                android:textColor="#fff"
+                                android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
                         <TextView
@@ -381,7 +386,7 @@
                                 android:layout_gravity="center"
                                 android:text="2000-01-01"
                                 android:textSize="26sp"
-                                android:textColor="#fff" />
+                                android:textColor="@color/colorWhite" />
 
                     </LinearLayout>
 
@@ -397,7 +402,7 @@
                                 android:gravity="start"
                                 android:text="@string/label_actual"
                                 android:textSize="90sp"
-                                android:textColor="#fff"
+                                android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
                         <TextView
@@ -407,7 +412,7 @@
                                 android:gravity="end"
                                 android:text="30"
                                 android:textSize="90sp"
-                                android:textColor="#fff"
+                                android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
                         <TextView
@@ -418,7 +423,7 @@
                                 android:layout_gravity="center"
                                 android:text="30%"
                                 android:textSize="90sp"
-                                android:textColor="#fff"
+                                android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
                     </LinearLayout>
@@ -437,7 +442,7 @@
                                 android:gravity="center"
                                 android:text="@string/list_item_wos"
                                 android:textSize="24sp"
-                                android:textColor="#fff"/>
+                                android:textColor="@color/colorWhite"/>
                         <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -445,7 +450,7 @@
                                 android:gravity="center"
                                 android:text="@string/list_item_model"
                                 android:textSize="24sp"
-                                android:textColor="#fff"/>
+                                android:textColor="@color/colorWhite"/>
                         <TextView
                                 android:id="@+id/tv_btn_size2"
                                 android:layout_width="0dp"
@@ -454,7 +459,7 @@
                                 android:gravity="center"
                                 android:text="@string/list_item_size"
                                 android:textSize="24sp"
-                                android:textColor="#fff"/>
+                                android:textColor="@color/colorWhite"/>
                         <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -462,7 +467,7 @@
                                 android:gravity="center"
                                 android:text="@string/list_item_target"
                                 android:textSize="24sp"
-                                android:textColor="#fff"/>
+                                android:textColor="@color/colorWhite"/>
                         <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -470,7 +475,7 @@
                                 android:gravity="center"
                                 android:text="@string/list_item_actual"
                                 android:textSize="24sp"
-                                android:textColor="#fff"/>
+                                android:textColor="@color/colorWhite"/>
                         <TextView
                                 android:id="@+id/tv_btn_balance2"
                                 android:layout_width="0dp"
@@ -479,7 +484,7 @@
                                 android:gravity="center"
                                 android:text="@string/list_item_balance"
                                 android:textSize="24sp"
-                                android:textColor="#fff"/>
+                                android:textColor="@color/colorWhite"/>
                     </LinearLayout>
 
                     <LinearLayout

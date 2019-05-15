@@ -25,16 +25,16 @@
 
     <color name="colorReadonly">#4d4d4d</color>
     <color name="colorReadonly2">#0079BA</color>
-    <color name="colorSelector">#8d4dab</color>
-    <color name="colorEditor1">#87c947</color>
+    <color name="colorSelector">#6A3B80</color>    <!--#8d4dab-->
+    <color name="colorEditor1">#418534</color>
     <color name="colorEditor2">#333E4D</color>
 
     <color name="colorButtonDefault">#2f3f51</color>
     <color name="colorButtonDefaultFocus">#333E4D</color>
     <color name="colorButtonGray">#535353</color>
     <color name="colorButtonGrayFocus">#727272</color>
-    <color name="colorButtonOrange">#FF9900</color>
-    <color name="colorButtonOrangeFocus">#eaae40</color>
+    <color name="colorButtonOrange">#E68900</color>
+    <color name="colorButtonOrangeFocus">#D39E35</color>
     <color name="colorButtonGreen">#87c947</color>
     <color name="colorButtonGreenFocus">#70A042</color>
     <color name="colorButtonBlue">#0079BA</color>
