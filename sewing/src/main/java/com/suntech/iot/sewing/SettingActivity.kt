@@ -156,18 +156,9 @@ class SettingActivity : BaseActivity() {
         else targetTypeChange(AppGlobal.instance.get_target_type())
 
         // Target setting button listener
-//        btn_server_accumulate.setOnClickListener { targetTypeChange("server_per_accumulate") }
-//        btn_server_hourly.setOnClickListener { targetTypeChange("server_per_hourly") }
-//        btn_server_shifttotal.setOnClickListener { targetTypeChange("server_per_day_total") }
-        btn_server_accumulate.setOnClickListener {
-            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
-        }
-        btn_server_hourly.setOnClickListener {
-            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
-        }
-        btn_server_shifttotal.setOnClickListener {
-            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
-        }
+        btn_server_accumulate.setOnClickListener { targetTypeChange("server_per_accumulate") }
+        btn_server_hourly.setOnClickListener { targetTypeChange("server_per_hourly") }
+        btn_server_shifttotal.setOnClickListener { targetTypeChange("server_per_day_total") }
         btn_manual_accumulate.setOnClickListener { targetTypeChange("device_per_accumulate") }
         btn_manual_hourly.setOnClickListener { targetTypeChange("device_per_hourly") }
         btn_manual_shifttotal.setOnClickListener { targetTypeChange("device_per_day_total") }
@@ -657,8 +648,8 @@ class SettingActivity : BaseActivity() {
             "device_per_day_total" -> btn_manual_shifttotal.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
         }
         when (_selected_target_type.substring(0, 6)) {
-            "server" -> tv_setting_target_type_server.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
-            "device" -> tv_setting_target_type_manual.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
+            "server" -> tv_setting_target_type_server.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
+            "device" -> tv_setting_target_type_manual.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
         }
         _selected_target_type = v
         when (_selected_target_type) {

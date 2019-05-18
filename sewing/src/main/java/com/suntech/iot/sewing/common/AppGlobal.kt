@@ -281,16 +281,26 @@ class AppGlobal private constructor() {
     fun set_target_type(value: String) { UtilLocalStorage.setString(instance._context!!, "target_type", value) }
     fun get_target_type() : String { return UtilLocalStorage.getString(instance._context!!, "target_type") }
 
+    fun set_last_shift_info(info: String) { UtilLocalStorage.setString(instance._context!!, "last_shift_info", info) }
+    fun get_last_shift_info() : String { return UtilLocalStorage.getString(instance._context!!, "last_shift_info") }
+
+    fun set_target_server_shift(shift_no: String, value: String) { UtilLocalStorage.setString(instance._context!!, "current_server_target_shift_" + shift_no, value) }
+    fun get_target_server_shift(shift_no: String) : String { return UtilLocalStorage.getString(instance._context!!, "current_server_target_shift_" + shift_no) }
+
     fun set_target_manual_shift(shift_no: String, value: String) { UtilLocalStorage.setString(instance._context!!, "current_target_shift_" + shift_no, value) }
     fun get_target_manual_shift(shift_no: String) : String { return UtilLocalStorage.getString(instance._context!!, "current_target_shift_" + shift_no) }
 
     fun get_current_shift_target_cnt() : String {
-        var total_target = "0"
+        var total_target = ""
         var target_type = get_target_type()
+        val shift_idx = get_current_shift_idx()
         if (target_type=="server_per_hourly" || target_type=="server_per_accumulate" || target_type=="server_per_day_total") {
-            // 서버에서 가져온 값이 있어야 함
+            when (shift_idx) {
+                "1" -> total_target = get_target_server_shift("1")
+                "2" -> total_target = get_target_server_shift("2")
+                "3" -> total_target = get_target_server_shift("3")
+            }
         } else if (target_type=="device_per_hourly" || target_type=="device_per_accumulate" || target_type=="device_per_day_total") {
-            val shift_idx = get_current_shift_idx()
             when (shift_idx) {
                 "1" -> total_target = get_target_manual_shift("1")
                 "2" -> total_target = get_target_manual_shift("2")

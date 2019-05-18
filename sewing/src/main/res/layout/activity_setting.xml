@@ -504,21 +504,21 @@
 
                             <Button
                                     android:id="@+id/btn_server_accumulate"
-                                    style="@style/tab_btn_disable"
+                                    style="@style/tab_btn_off"
                                     android:layout_width="match_parent"
                                     android:layout_margin="2dp"
                                     android:stateListAnimator="@null"
                                     android:text="Accumulation by Start" />
                             <Button
                                     android:id="@+id/btn_server_hourly"
-                                    style="@style/tab_btn_disable"
+                                    style="@style/tab_btn_off"
                                     android:layout_width="match_parent"
                                     android:layout_margin="2dp"
                                     android:stateListAnimator="@null"
                                     android:text="Accumulation by Hourly" />
                             <Button
                                     android:id="@+id/btn_server_shifttotal"
-                                    style="@style/tab_btn_disable"
+                                    style="@style/tab_btn_off"
                                     android:layout_width="match_parent"
                                     android:layout_margin="2dp"
                                     android:stateListAnimator="@null"

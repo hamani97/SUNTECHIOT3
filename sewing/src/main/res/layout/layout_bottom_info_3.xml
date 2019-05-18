@@ -6,70 +6,101 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:background="@color/colorBackground">
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:text="WORK INFO"
-                android:textSize="20sp"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold"/>
-
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-            <LinearLayout
-                    android:layout_width="match_parent"
+            <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                <TextView
-                        style="@style/bottom_text_title"
-                        android:text="WOS NO :  " />
-                <TextView
-                        android:id="@+id/tv_wosno"
-                        style="@style/bottom_text_data"
-                        android:text="-" />
+                    android:layout_marginLeft="30dp"
+                    android:text="WORK INFO"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"/>
 
-                <TextView
-                        style="@style/bottom_text_title"
-                        android:text="MODEL :  " />
-                <TextView
-                        android:id="@+id/tv_model"
-                        style="@style/bottom_text_data"
-                        android:text="-" />
-            </LinearLayout>
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:orientation="horizontal">
-                <TextView
-                        style="@style/bottom_text_title"
-                        android:text="COMPONENT :  " />
-                <TextView
-                        android:id="@+id/tv_component"
-                        style="@style/bottom_text_data"
-                        android:text="-" />
+            <TextView style="@style/bottom_text_title" android:text="TRIM :  " />
+            <TextView android:id="@+id/tv_factory" style="@style/bottom_text_data" android:text="4" />
 
-                <TextView
-                        style="@style/bottom_text_title"
-                        android:text="STYLE NO :  " />
-                <TextView
-                        android:id="@+id/tv_style_no"
-                        style="@style/bottom_text_data"
-                        android:text="-" />
+            <TextView style="@style/bottom_text_title" android:text="STITCH :  " />
+            <TextView android:id="@+id/tv_room" style="@style/bottom_text_data" android:text="0" />
 
-            </LinearLayout>
-
+            <TextView style="@style/bottom_text_title" android:text="DELAY TIME :  " />
+            <TextView android:id="@+id/tv_line" style="@style/bottom_text_data" android:text="0" />
         </LinearLayout>
-
     </LinearLayout>
+    <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:background="@color/colorBackground">-->
+
+        <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="30dp"-->
+                <!--android:layout_marginRight="30dp"-->
+                <!--android:text="WORK INFO"-->
+                <!--android:textSize="20sp"-->
+                <!--android:textColor="@color/colorWhite"-->
+                <!--android:textStyle="bold"/>-->
+
+        <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical">-->
+
+            <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal">-->
+                <!--<TextView-->
+                        <!--style="@style/bottom_text_title"-->
+                        <!--android:text="WOS NO :  " />-->
+                <!--<TextView-->
+                        <!--android:id="@+id/tv_wosno"-->
+                        <!--style="@style/bottom_text_data"-->
+                        <!--android:text="-" />-->
+
+                <!--<TextView-->
+                        <!--style="@style/bottom_text_title"-->
+                        <!--android:text="MODEL :  " />-->
+                <!--<TextView-->
+                        <!--android:id="@+id/tv_model"-->
+                        <!--style="@style/bottom_text_data"-->
+                        <!--android:text="-" />-->
+            <!--</LinearLayout>-->
+            <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="4dp"-->
+                    <!--android:orientation="horizontal">-->
+                <!--<TextView-->
+                        <!--style="@style/bottom_text_title"-->
+                        <!--android:text="COMPONENT :  " />-->
+                <!--<TextView-->
+                        <!--android:id="@+id/tv_component"-->
+                        <!--style="@style/bottom_text_data"-->
+                        <!--android:text="-" />-->
+
+                <!--<TextView-->
+                        <!--style="@style/bottom_text_title"-->
+                        <!--android:text="STYLE NO :  " />-->
+                <!--<TextView-->
+                        <!--android:id="@+id/tv_style_no"-->
+                        <!--style="@style/bottom_text_data"-->
+                        <!--android:text="-" />-->
+
+            <!--</LinearLayout>-->
+
+        <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
 </LinearLayout>

@@ -46,7 +46,7 @@ class HomeFragment : BaseFragment() {
             (activity as MainActivity).changeFragment(1)
         }
         btn_component_info.setOnClickListener {
-            (activity as MainActivity).countViewType = 2
+            (activity as MainActivity).countViewType = 1
             (activity as MainActivity).changeFragment(1)
         }
         btn_work_info.setOnClickListener {

@@ -22,10 +22,52 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
+            <!--Repair Mode-->
             <LinearLayout
+                    android:id="@+id/ll_repair_mode"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="60dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="REPAIR MODE"
+                            android:textSize="80sp"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold"/>
+                </LinearLayout>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+                    <Button
+                            android:id="@+id/btn_go_count_mode"
+                            style="@style/btn_default"
+                            android:layout_width="130dp"
+                            android:background="@color/colorButtonBlue"
+                            android:stateListAnimator="@null"
+                            android:text="COUNT MODE" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--Count Mode-->
+            <LinearLayout
+                    android:id="@+id/ll_count_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
 
                 <LinearLayout
                         android:layout_width="0dp"
@@ -132,7 +174,7 @@
                             android:orientation="horizontal">
 
                         <Button
-                                android:id="@+id/btn_setting_server"
+                                android:id="@+id/btn_go_repair_mode"
                                 style="@style/btn_default"
                                 android:layout_width="130dp"
                                 android:background="@color/colorButtonBlue"

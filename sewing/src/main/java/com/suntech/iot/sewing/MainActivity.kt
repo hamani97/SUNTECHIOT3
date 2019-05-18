@@ -1,8 +1,11 @@
 package com.suntech.iot.sewing
 
-import android.content.Intent
+import android.content.*
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.Handler
+import android.os.IBinder
+import android.os.Message
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
@@ -10,33 +13,58 @@ import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.util.Log
 import android.widget.Toast
+import com.google.gson.JsonElement
+import com.google.gson.JsonParser
 import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.base.BaseFragment
 import com.suntech.iot.sewing.common.AppGlobal
+import com.suntech.iot.sewing.common.Constants
 import com.suntech.iot.sewing.db.DBHelperForTarget
 import com.suntech.iot.sewing.popup.ActualCountEditActivity
 import com.suntech.iot.sewing.popup.PushActivity
+import com.suntech.iot.sewing.service.UsbService
 import com.suntech.iot.sewing.util.OEEUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_side_menu.*
 import kotlinx.android.synthetic.main.layout_top_menu.*
 import org.joda.time.DateTime
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
+import java.lang.ref.WeakReference
 import java.util.*
 
 class MainActivity : BaseActivity() {
 
-    var countViewType = 1       // Count view 화면값 1=Total count, 2=Component count
+    var countViewType = 1       // Count view 화면값 1=Total count, 2=Component count, 3=Repair mode
+    var countViewMode = 1       // Count mode 1=Count mode, 2=Repair mode
 
     val _target_db = DBHelperForTarget(this)    // 날짜의 Shift별 정보, Target 수량 정보 저장
 
     private var _doubleBackToExitPressedOnce = false
 
+    private val _broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val action = intent.action
+            if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
+                if (intent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false)){
+                    btn_wifi_state.isSelected = true
+                } else {
+                    btn_wifi_state.isSelected = false
+                }
+            }
+            if (action.equals(Constants.BR_ADD_COUNT)) {
+                handleData("{\"cmd\" : \"count\", \"value\" : 1}")
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         AppGlobal.instance.setContext(this)
+
+        mHandler = MyHandler(this)
 
         // button click event
         if (AppGlobal.instance.get_long_touch()) {
@@ -90,10 +118,146 @@ class MainActivity : BaseActivity() {
     public override fun onResume() {
         super.onResume()
 
+        val filter = IntentFilter()
+        filter.addAction(UsbService.ACTION_USB_PERMISSION_GRANTED)
+        filter.addAction(UsbService.ACTION_NO_USB)
+        filter.addAction(UsbService.ACTION_USB_DISCONNECTED)
+        filter.addAction(UsbService.ACTION_USB_NOT_SUPPORTED)
+        filter.addAction(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)
+        registerReceiver(mUsbReceiver, filter)
+
+        startService(UsbService::class.java, usbConnection, null) // Start UsbService(if it was not started before) and Bind it
+        registerReceiver(_broadcastReceiver, IntentFilter(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION))
+        registerReceiver(_broadcastReceiver, IntentFilter(Constants.BR_ADD_COUNT))
+
         if (AppGlobal.instance.isOnline(this)) btn_wifi_state.isSelected = true
         else btn_wifi_state.isSelected = false
 
         fetchRequiredData()
+    }
+
+    public override fun onPause() {
+        super.onPause()
+        unregisterReceiver(mUsbReceiver)
+        unbindService(usbConnection)
+        unregisterReceiver(_broadcastReceiver)
+    }
+
+    ////////// USB
+    private val mUsbReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            when (intent.action) {
+                UsbService.ACTION_USB_PERMISSION_GRANTED // USB PERMISSION GRANTED
+                -> Toast.makeText(context, "USB Ready", Toast.LENGTH_SHORT).show()
+                UsbService.ACTION_USB_PERMISSION_NOT_GRANTED // USB PERMISSION NOT GRANTED
+                -> Toast.makeText(context, "USB Permission not granted", Toast.LENGTH_SHORT).show()
+                UsbService.ACTION_NO_USB // NO USB CONNECTED
+                -> Toast.makeText(context, "No USB connected", Toast.LENGTH_SHORT).show()
+                UsbService.ACTION_USB_DISCONNECTED // USB DISCONNECTED
+                -> Toast.makeText(context, "USB disconnected", Toast.LENGTH_SHORT).show()
+                UsbService.ACTION_USB_NOT_SUPPORTED // USB NOT SUPPORTED
+                -> Toast.makeText(context, "USB device not supported", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    private var usbService: UsbService? = null
+    private var mHandler: MyHandler? = null
+
+    private val usbConnection = object : ServiceConnection {
+        override fun onServiceConnected(arg0: ComponentName, arg1: IBinder) {
+            usbService = (arg1 as UsbService.UsbBinder).service
+            usbService!!.setHandler(mHandler)
+        }
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            usbService = null
+        }
+    }
+    private fun startService(service: Class<*>, serviceConnection: ServiceConnection, extras: Bundle?) {
+        if (!UsbService.SERVICE_CONNECTED) {
+            val startService = Intent(this, service)
+            if (extras != null && !extras.isEmpty) {
+                val keys = extras.keySet()
+                for (key in keys) {
+                    val extra = extras.getString(key)
+                    startService.putExtra(key, extra)
+                }
+            }
+            startService(startService)
+        }
+        val bindingIntent = Intent(this, service)
+        bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE)
+    }
+    private class MyHandler(activity: MainActivity) : Handler() {
+        private val mActivity: WeakReference<MainActivity>
+        init {
+            mActivity = WeakReference(activity)
+        }
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                UsbService.MESSAGE_FROM_SERIAL_PORT -> {
+                    val data = msg.obj as String
+                    mActivity.get()?.handleData(data)
+                }
+                UsbService.CTS_CHANGE -> Toast.makeText(mActivity.get(), "CTS_CHANGE", Toast.LENGTH_LONG).show()
+                UsbService.DSR_CHANGE -> Toast.makeText(mActivity.get(), "DSR_CHANGE", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+    private var t_count = 0
+    private var s_count = 0
+
+    fun handleData (data:String) {
+//        Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
+        Log.e("USB Data", "usb = " + data)
+
+        val len = data.length - 1
+        for (i in 0..len) {
+            if (data[i] == 'T') t_count++
+            else if (data[i] == 'S') s_count++
+            else if (data[i] == 'c') t_count++
+            else if (data[i] == 'v') s_count++
+        }
+        Toast.makeText(this, "T="+t_count+", S="+s_count, Toast.LENGTH_SHORT).show()
+    }
+    private var recvBuffer = ""
+    fun handleData2 (data:String) {
+        if (data.indexOf("{") >= 0)  recvBuffer = ""
+
+        recvBuffer += data
+
+        val pos_end = recvBuffer.indexOf("}")
+        if (pos_end < 0) return
+
+        if (isJSONValid(recvBuffer)) {
+            val parser = JsonParser()
+            val element = parser.parse(recvBuffer)
+            val cmd = element.asJsonObject.get("cmd").asString
+            val value = element.asJsonObject.get("value")
+
+            Toast.makeText(this, element.toString(), Toast.LENGTH_SHORT).show()
+            Log.w("test", "usb = " + recvBuffer)
+
+            saveRowData(cmd, value)
+        } else {
+            Log.e("test", "usb parsing error! = " + recvBuffer)
+        }
+    }
+    private fun isJSONValid(test: String): Boolean {
+        try {
+            JSONObject(test)
+        } catch (ex: JSONException) {
+            try {
+                JSONArray(test)
+            } catch (ex1: JSONException) {
+                return false
+            }
+        }
+        return true
+    }
+
+
+    private fun saveRowData(cmd: String, value: JsonElement) {
+        if (AppGlobal.instance.get_sound_at_count()) AppGlobal.instance.playSound(this)
     }
 
     fun changeFragment(pos:Int) {
@@ -105,10 +269,65 @@ class MainActivity : BaseActivity() {
     // 서버에 작업시간, 다운타임 기본시간, 색삭값을 호출
     private fun fetchRequiredData() {
         if (AppGlobal.instance.get_server_ip().trim() != "") {
-            fetchWorkData()
-//            fetchDownTimeType()
+            fetchWorkData()         // 작업시간
+            fetchServerTarget()     // 목표수량
+            fetchDownTimeType()
             fetchColorData()
         }
+    }
+
+    /*
+     *  당일 작업 Shift 별 목표수량 가져오기
+     */
+    private fun fetchServerTarget() {
+        val today = DateTime().toString("yyyy-MM-dd")
+        val mac = AppGlobal.instance.getMACAddress()
+        val uri = "/getlist1.php"
+        var params = listOf("code" to "target",
+            "line_idx" to AppGlobal.instance.get_line_idx(),
+            "shift_idx" to  "1",
+            "date" to today,
+            "mac_addr" to mac
+        )
+        request(this, uri, false, params, { result ->
+            val code = result.getString("code")
+            if (code == "00") {
+                val daytargetsum = result.getString("daytargetsum")
+                AppGlobal.instance.set_target_server_shift("1", daytargetsum)
+            } else {
+                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+            }
+        })
+        params = listOf("code" to "target",
+            "line_idx" to AppGlobal.instance.get_line_idx(),
+            "shift_idx" to  "2",
+            "date" to today,
+            "mac_addr" to mac
+        )
+        request(this, uri, false, params, { result ->
+            val code = result.getString("code")
+            if (code == "00") {
+                val daytargetsum = result.getString("daytargetsum")
+                AppGlobal.instance.set_target_server_shift("2", daytargetsum)
+            } else {
+                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+            }
+        })
+        params = listOf("code" to "target",
+            "line_idx" to AppGlobal.instance.get_line_idx(),
+            "shift_idx" to  "3",
+            "date" to today,
+            "mac_addr" to mac
+        )
+        request(this, uri, false, params, { result ->
+            val code = result.getString("code")
+            if (code == "00") {
+                val daytargetsum = result.getString("daytargetsum")
+                AppGlobal.instance.set_target_server_shift("3", daytargetsum)
+            } else {
+                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     /*
@@ -306,17 +525,18 @@ class MainActivity : BaseActivity() {
         if (list.length() > 0) {
 
             // DB에 Shift 정보를 저장한다.
+            // Production report 때문에 그날의 정보를 모두 저장해야 함.
+            var target_type = AppGlobal.instance.get_target_type()
             for (i in 0..(list.length() - 1)) {
                 val item = list.getJSONObject(i)
+                var target = if (target_type=="server_per_hourly" || target_type=="server_per_accumulate" || target_type=="server_per_day_total")
+                    AppGlobal.instance.get_target_server_shift(item["shift_idx"].toString()) else AppGlobal.instance.get_target_manual_shift(item["shift_idx"].toString())
+                if (target == null || target == "") target = "0"
 
-                val target = AppGlobal.instance.get_target_manual_shift(item["shift_idx"].toString())
                 val row = _target_db.get(item["date"].toString(), item["shift_idx"].toString())
-
                 if (row == null) { // insert
-//                    Log.e("db info", "===> " + item["date"].toString() + " : " + item["shift_idx"].toString() + " : null")
                     _target_db.add(item["date"].toString(), item["shift_idx"].toString(), item["shift_name"].toString(), target, item["work_stime"].toString(), item["work_etime"].toString())
-                } else { // update
-//                    Log.e("db info", "===> " + item["date"].toString() + " : " + item["shift_idx"].toString() + " : " + row.toString())
+                } else {           // update
                     _target_db.update(row["idx"].toString(), item["shift_name"].toString(), target, item["work_stime"].toString(), item["work_etime"].toString())
                 }
             }
@@ -329,13 +549,17 @@ class MainActivity : BaseActivity() {
                 var shift_etime = OEEUtil.parseDateTime(item["work_etime"].toString()).millis
 
                 if (shift_stime <= now_millis && now_millis < shift_etime) {
-//                    tv_title.setText(item["shift_name"].toString() + "   " + item["available_stime"].toString() + " - " + item["available_etime"].toString())
+                    // 타이틀 변경
                     tv_title.setText(item["shift_name"].toString() + "   " +
                             OEEUtil.parseDateTime(item["work_stime"].toString()).toString("HH:mm") + " - " +
                             OEEUtil.parseDateTime(item["work_etime"].toString()).toString("HH:mm"))
 
-//                    AppGlobal.instance.set_current_shift_idx(item["shift_idx"].toString())
-//                    AppGlobal.instance.set_current_shift_name(item["shift_name"].toString())
+                    // 이전 Shift와 현재 Shift가 다르다면 Actual 초기화
+                    val shift_info = item["date"].toString() + item["shift_idx"].toString()
+                    if (shift_info != AppGlobal.instance.get_last_shift_info()) {
+                        AppGlobal.instance.set_current_shift_actual_cnt(0)      // 토탈 Actual 초기화
+                        AppGlobal.instance.set_last_shift_info(shift_info)      // 현재 Shift 정보 저장
+                    }
 
                     _current_shift_etime_millis = shift_etime
                     _next_shift_stime_millis = 0L
@@ -365,8 +589,7 @@ class MainActivity : BaseActivity() {
 
         tv_title.setText("No shift")
 
-//        AppGlobal.instance.set_current_shift_idx("-1")
-//        AppGlobal.instance.set_current_shift_name("No-shift")
+        AppGlobal.instance.set_current_shift_actual_cnt(0)      // 토탈 Actual 초기화
 
         _current_shift_etime_millis = 0L
         _next_shift_stime_millis = 0L
@@ -390,6 +613,30 @@ class MainActivity : BaseActivity() {
         this.sendBroadcast(br_intent)
 
         is_loop = false
+    }
+
+    /*
+     *  downtime check time
+     *  select_yn = 'Y' 것만 가져온다.
+     *  etc_yn = 'Y' 이면 second 값, 'N' 이면 name 값이 리턴된다. (1800)
+     */
+    private fun fetchDownTimeType() {
+        val uri = "/getlist1.php"
+        var params = listOf("code" to "check_time")
+
+        request(this, uri, false, params, { result ->
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if (code == "00") {
+                var value = result.getString("value")
+                AppGlobal.instance.set_downtime_sec(value)
+                val s = value.toInt()
+                if (s > 0) {
+                }
+            } else {
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     /*
@@ -445,6 +692,46 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    // 10초마다 현재 target을 서버에 저장
+    // 작업 시간이 아닐경우는 Pass
+    private fun updateCurrentWorkTarget() {
+        var item: JSONObject? = AppGlobal.instance.get_current_shift_time()
+        if (item != null) {
+            var _total_target = 0
+            var target_type = AppGlobal.instance.get_target_type()
+            if (target_type=="server_per_hourly" || target_type=="server_per_accumulate" || target_type=="server_per_day_total") {
+                when (item["shift_idx"]) {
+                    "1" -> _total_target = AppGlobal.instance.get_target_server_shift("1").toInt()
+                    "2" -> _total_target = AppGlobal.instance.get_target_server_shift("2").toInt()
+                    "3" -> _total_target = AppGlobal.instance.get_target_server_shift("3").toInt()
+                }
+            } else if (target_type=="device_per_hourly" || target_type=="device_per_accumulate" || target_type=="device_per_day_total") {
+                when (item["shift_idx"]) {
+                    "1" -> _total_target = AppGlobal.instance.get_target_manual_shift("1").toInt()
+                    "2" -> _total_target = AppGlobal.instance.get_target_manual_shift("2").toInt()
+                    "3" -> _total_target = AppGlobal.instance.get_target_manual_shift("3").toInt()
+                }
+            }
+            Log.e("updateCurrentWorkTarget", "target_type=" + target_type + ", _total_target=" + _total_target)
+            if (_total_target > 0) {
+                val uri = "/sendtarget.php"
+                var params = listOf(
+                    "mac_addr" to AppGlobal.instance.getMACAddress(),
+                    "date" to item["date"].toString(),
+                    "shift_idx" to  item["shift_idx"],     // AppGlobal.instance.get_current_shift_idx()
+                    "target_count" to _total_target)
+
+                request(this, uri, true,false, params, { result ->
+                    var code = result.getString("code")
+                    var msg = result.getString("msg")
+                    if(code != "00"){
+                        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+        }
+    }
+
     /////// 쓰레드
     private val _downtime_timer = Timer()
     private val _timer_task1 = Timer()          // 서버 접속 체크 Ping test. Shift의 Target 정보
@@ -467,7 +754,7 @@ class MainActivity : BaseActivity() {
             override fun run() {
                 runOnUiThread {
                     sendPing()
-//                    updateCurrentWorkTarget()
+                    updateCurrentWorkTarget()
                 }
             }
         }
