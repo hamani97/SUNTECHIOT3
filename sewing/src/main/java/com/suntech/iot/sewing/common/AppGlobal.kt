@@ -62,8 +62,8 @@ class AppGlobal private constructor() {
     fun set_sound_at_count(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_sound_count", state) }
     fun get_sound_at_count() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_sound_count") }
 
-    fun set_without_component(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_without_component", state) }
-    fun get_without_component() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_without_component") }
+    fun set_with_component(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_with_component", state) }
+    fun get_with_component() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_with_component") }
 
     fun set_screen_blink(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_screen_blink", state) }
     fun get_screen_blink() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_screen_blink") }

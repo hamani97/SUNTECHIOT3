@@ -13,7 +13,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/colorBackground"
-            android:visibility="visible">
+            android:visibility="gone">
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -171,6 +171,7 @@
                     <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
                             android:orientation="horizontal">
 
                         <Button
@@ -213,7 +214,7 @@
                 <!-- 차트 -->
                 <LinearLayout
                         android:id="@+id/ll_charts"
-                        android:layout_width="160dp"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:background="#222222"
@@ -226,8 +227,8 @@
                             android:gravity="center"
                             android:text="WOS COUNT"
                             android:textSize="20sp"
-                            android:paddingTop="16dp"
-                            android:paddingBottom="16dp"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:textColor="@color/colorOrange"
                             android:background="#383838" />
 
@@ -372,7 +373,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/colorBackground"
-            android:visibility="gone">
+            android:visibility="visible">
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -390,9 +391,9 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginLeft="100dp"
-                        android:layout_marginRight="100dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginRight="60dp"
                         android:orientation="vertical">
 
                     <LinearLayout
@@ -403,31 +404,33 @@
                         <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="4"
                                 android:gravity="start"
                                 android:text="@string/label_target"
-                                android:textSize="90sp"
+                                android:textSize="56sp"
                                 android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
                         <TextView
                                 android:id="@+id/tv_component_view_target"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="2"
                                 android:gravity="end"
                                 android:text="100"
-                                android:textSize="90sp"
+                                android:textSize="56sp"
                                 android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
                         <TextView
                                 android:id="@+id/tv_component_time"
-                                android:layout_width="300dp"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="3"
                                 android:gravity="end"
                                 android:layout_gravity="center"
                                 android:text="2000-01-01"
-                                android:textSize="26sp"
+                                android:textSize="16sp"
                                 android:textColor="@color/colorWhite" />
 
                     </LinearLayout>
@@ -440,31 +443,33 @@
                         <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="4"
                                 android:gravity="start"
                                 android:text="@string/label_actual"
-                                android:textSize="90sp"
+                                android:textSize="56sp"
                                 android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
                         <TextView
                                 android:id="@+id/tv_component_view_actual"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="2"
                                 android:gravity="end"
                                 android:text="30"
-                                android:textSize="90sp"
+                                android:textSize="56sp"
                                 android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
                         <TextView
                                 android:id="@+id/tv_component_view_ratio"
-                                android:layout_width="300dp"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="3"
                                 android:gravity="end"
                                 android:layout_gravity="center"
                                 android:text="30%"
-                                android:textSize="90sp"
+                                android:textSize="56sp"
                                 android:textColor="@color/colorWhite"
                                 android:textStyle="bold"/>
 
@@ -472,8 +477,8 @@
 
                     <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="24dp"
+                            android:layout_height="28dp"
+                            android:layout_marginTop="16dp"
                             android:gravity="center"
                             android:orientation="horizontal"
                             android:background="#304053">
@@ -483,7 +488,7 @@
                                 android:layout_weight="4"
                                 android:gravity="center"
                                 android:text="@string/list_item_wos"
-                                android:textSize="24sp"
+                                android:textSize="14sp"
                                 android:textColor="@color/colorWhite"/>
                         <TextView
                                 android:layout_width="0dp"
@@ -491,7 +496,7 @@
                                 android:layout_weight="7"
                                 android:gravity="center"
                                 android:text="@string/list_item_model"
-                                android:textSize="24sp"
+                                android:textSize="14sp"
                                 android:textColor="@color/colorWhite"/>
                         <TextView
                                 android:id="@+id/tv_btn_size2"
@@ -500,7 +505,7 @@
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:text="@string/list_item_size"
-                                android:textSize="24sp"
+                                android:textSize="14sp"
                                 android:textColor="@color/colorWhite"/>
                         <TextView
                                 android:layout_width="0dp"
@@ -508,7 +513,7 @@
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:text="@string/list_item_target"
-                                android:textSize="24sp"
+                                android:textSize="14sp"
                                 android:textColor="@color/colorWhite"/>
                         <TextView
                                 android:layout_width="0dp"
@@ -516,7 +521,7 @@
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:text="@string/list_item_actual"
-                                android:textSize="24sp"
+                                android:textSize="14sp"
                                 android:textColor="@color/colorWhite"/>
                         <TextView
                                 android:id="@+id/tv_btn_balance2"
@@ -525,7 +530,7 @@
                                 android:layout_weight="3"
                                 android:gravity="center"
                                 android:text="@string/list_item_balance"
-                                android:textSize="24sp"
+                                android:textSize="14sp"
                                 android:textColor="@color/colorWhite"/>
                     </LinearLayout>
 
@@ -533,7 +538,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:layout_marginBottom="20dp"
+                            android:layout_marginBottom="10dp"
                             android:orientation="horizontal"
                             android:background="#000">
                         <ListView
@@ -552,22 +557,22 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="100dp"
-                android:paddingBottom="20dp"
+                android:paddingRight="60dp"
+                android:paddingBottom="16dp"
                 android:gravity="end"
                 android:orientation="horizontal">
 
             <Button
                     android:id="@+id/btn_total_count_view"
                     style="@style/btn_green"
-                    android:layout_width="300dp"
+                    android:layout_width="200dp"
                     android:stateListAnimator="@null"
                     android:text="@string/button_total_count_view" />
 
             <Button
                     android:id="@+id/btn_select_component"
                     style="@style/btn_orange"
-                    android:layout_width="300dp"
+                    android:layout_width="200dp"
                     android:stateListAnimator="@null"
                     android:text="@string/button_select_component" />
 

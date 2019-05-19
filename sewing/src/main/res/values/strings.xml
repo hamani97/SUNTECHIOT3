@@ -2,6 +2,7 @@
     <string name="app_name">SUNTECH IoT-Sewing</string>
 
     <!-- 타이틀 -->
+    <string name="title_select_component">SELECT COMPONENT</string>
     <string name="title_setting">SETTING</string>
     <string name="title_available_info">AVAILABLE INFO</string>
     <string name="title_operator_info">OPERATOR INFO</string>
@@ -101,5 +102,6 @@
     <string name="msg_has_notselected">Nothing Selected</string>
     <string name="msg_data_not_found">Data not found</string>
     <string name="msg_has_not_server_info">Cannot find server</string>
+    <string name="msg_component_not_enabled">Component function is not enabled.</string>
 
 </resources>

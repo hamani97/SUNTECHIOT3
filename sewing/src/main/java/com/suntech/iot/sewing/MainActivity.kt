@@ -214,8 +214,8 @@ class MainActivity : BaseActivity() {
         for (i in 0..len) {
             if (data[i] == 'T') t_count++
             else if (data[i] == 'S') s_count++
-            else if (data[i] == 'c') t_count++
-            else if (data[i] == 'v') s_count++
+//            else if (data[i] == 'c') t_count++
+//            else if (data[i] == 'v') s_count++
         }
         Toast.makeText(this, "T="+t_count+", S="+s_count, Toast.LENGTH_SHORT).show()
     }
