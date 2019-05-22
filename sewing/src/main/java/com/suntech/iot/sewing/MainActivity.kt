@@ -19,6 +19,7 @@ import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.base.BaseFragment
 import com.suntech.iot.sewing.common.AppGlobal
 import com.suntech.iot.sewing.common.Constants
+import com.suntech.iot.sewing.db.DBHelperForComponent
 import com.suntech.iot.sewing.db.DBHelperForTarget
 import com.suntech.iot.sewing.popup.ActualCountEditActivity
 import com.suntech.iot.sewing.popup.PushActivity
@@ -203,61 +204,172 @@ class MainActivity : BaseActivity() {
             }
         }
     }
-    private var t_count = 0
-    private var s_count = 0
 
-    fun handleData (data:String) {
+
+    fun handleData (data: String) {
 //        Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
         Log.e("USB Data", "usb = " + data)
 
+        if (countViewMode == 2) return      // repair mode
+
+        var count = 0
+
         val len = data.length - 1
-        for (i in 0..len) {
-            if (data[i] == 'T') t_count++
-            else if (data[i] == 'S') s_count++
-//            else if (data[i] == 'c') t_count++
-//            else if (data[i] == 'v') s_count++
-        }
-        Toast.makeText(this, "T="+t_count+", S="+s_count, Toast.LENGTH_SHORT).show()
-    }
-    private var recvBuffer = ""
-    fun handleData2 (data:String) {
-        if (data.indexOf("{") >= 0)  recvBuffer = ""
 
-        recvBuffer += data
-
-        val pos_end = recvBuffer.indexOf("}")
-        if (pos_end < 0) return
-
-        if (isJSONValid(recvBuffer)) {
-            val parser = JsonParser()
-            val element = parser.parse(recvBuffer)
-            val cmd = element.asJsonObject.get("cmd").asString
-            val value = element.asJsonObject.get("value")
-
-            Toast.makeText(this, element.toString(), Toast.LENGTH_SHORT).show()
-            Log.w("test", "usb = " + recvBuffer)
-
-            saveRowData(cmd, value)
-        } else {
-            Log.e("test", "usb parsing error! = " + recvBuffer)
-        }
-    }
-    private fun isJSONValid(test: String): Boolean {
-        try {
-            JSONObject(test)
-        } catch (ex: JSONException) {
-            try {
-                JSONArray(test)
-            } catch (ex1: JSONException) {
-                return false
+        if (AppGlobal.instance.get_count_type() == "trim") {
+            for (i in 0..len) {
+                if (data[i] == 'T') count++         //  || data[i] == 'c'
             }
+            saveRowData("T", count)
+        } else {
+            for (i in 0..len) {
+                if (data[i] == 'S') count++
+            }
+            saveRowData("S", count)
         }
-        return true
     }
 
+//    private var recvBuffer = ""
+//    fun handleData2 (data:String) {
+//        if (data.indexOf("{") >= 0)  recvBuffer = ""
+//
+//        recvBuffer += data
+//
+//        val pos_end = recvBuffer.indexOf("}")
+//        if (pos_end < 0) return
+//
+//        if (isJSONValid(recvBuffer)) {
+//            val parser = JsonParser()
+//            val element = parser.parse(recvBuffer)
+//            val cmd = element.asJsonObject.get("cmd").asString
+//            val value = element.asJsonObject.get("value")
+//
+//            Toast.makeText(this, element.toString(), Toast.LENGTH_SHORT).show()
+//            Log.w("test", "usb = " + recvBuffer)
+//
+//            saveRowData(cmd, value)
+//        } else {
+//            Log.e("test", "usb parsing error! = " + recvBuffer)
+//        }
+//    }
+//    private fun isJSONValid(test: String): Boolean {
+//        try {
+//            JSONObject(test)
+//        } catch (ex: JSONException) {
+//            try {
+//                JSONArray(test)
+//            } catch (ex1: JSONException) {
+//                return false
+//            }
+//        }
+//        return true
+//    }
 
-    private fun saveRowData(cmd: String, value: JsonElement) {
+    private fun saveRowData(cmd: String, count: Int) {
+        Toast.makeText(this, cmd + "=" + count.toString(), Toast.LENGTH_SHORT).show()
+
         if (AppGlobal.instance.get_sound_at_count()) AppGlobal.instance.playSound(this)
+
+        // 작업 시간인지 확인
+        val cur_shift: JSONObject ?= AppGlobal.instance.get_current_shift_time()
+        if (cur_shift == null) {
+            Toast.makeText(this, getString(R.string.msg_not_start_work), Toast.LENGTH_SHORT).show()
+            return
+        }
+        // Operator 선택 확인
+        if (AppGlobal.instance.get_worker_no() == "" || AppGlobal.instance.get_worker_name() == "") {
+            Toast.makeText(this, getString(R.string.msg_no_operator), Toast.LENGTH_SHORT).show(); return
+        }
+
+        if (cmd == "T") {
+            var db = DBHelperForComponent(this)
+
+            val shift_idx = cur_shift["shift_idx"]      // 현재 작업중인 Shift
+            var inc_count = count
+
+            // 콤포넌트 선택되어야만 실행되는 경우
+            if (AppGlobal.instance.get_with_component()) {
+                // 선택한 Component 제품이 있는지 확인
+                val work_idx = AppGlobal.instance.get_work_idx()
+                if (work_idx == "") {
+                    Toast.makeText(this, getString(R.string.msg_select_component), Toast.LENGTH_SHORT).show(); return
+                }
+                // Pairs 선택 확인
+                val layer_value = AppGlobal.instance.get_compo_pairs()
+                if (layer_value == "") {
+                    Toast.makeText(this, getString(R.string.msg_layer_not_selected), Toast.LENGTH_SHORT).show(); return
+                }
+                // component total count
+                val row = db.get(work_idx)
+                if (row != null) {
+                    val actual = (row!!["actual"].toString().toInt() + inc_count)
+                    db.updateWorkActual(work_idx, actual)
+                }
+            }
+            // total count
+            var cnt = AppGlobal.instance.get_current_shift_actual_cnt() + inc_count
+            AppGlobal.instance.set_current_shift_actual_cnt(cnt)
+
+//            _last_count_received_time = DateTime()      // downtime 시간 초기화
+
+//            sendCountData(value.toString(), inc_count)  // 서버에 카운트 정보 전송
+
+//            _stitch_db.add(work_idx, value.toString())
+
+//            //val now = DateTime()
+//            val now = cur_shift["date"]
+//            val date = now.toString()
+//            val houly = DateTime().toString("HH")
+//
+//            val rep = _report_db.get(date, houly, shift_idx.toString())
+//            if (rep == null) {
+//                _report_db.add(date, houly, shift_idx.toString(), inc_count)
+//            } else {
+//                val idx = rep!!["idx"].toString()
+//                val actual = rep!!["actual"].toString().toInt() + inc_count
+//                _report_db.updateActual(idx, actual)
+//            }
+        }
+    }
+
+    fun startComponent(wosno:String, styleno:String, model:String, size:String, target:String, actual:String) {
+
+        var db = DBHelperForComponent(this)
+
+        val work_info = AppGlobal.instance.get_current_shift_time()
+        val shift_idx = work_info?.getString("shift_idx") ?: ""
+        val shift_name = work_info?.getString("shift_name") ?: ""
+
+        val row = db.get(wosno, size)
+
+        if (row == null) {
+            db.add(wosno, shift_idx, shift_name, styleno, model, size, target.toInt(), 0, 0)
+            val row2 = db.get(wosno, size)
+            if (row2 == null) {
+                Log.e("work_idx", "none")
+                AppGlobal.instance.set_work_idx("")
+            } else {
+                AppGlobal.instance.set_work_idx(row2["work_idx"].toString())
+                Log.e("work_idx", row2["work_idx"].toString())
+            }
+        } else {
+            AppGlobal.instance.set_work_idx(row["work_idx"].toString())
+            Log.e("work_idx", row["work_idx"].toString())
+        }
+        val br_intent = Intent("need.refresh")
+        this.sendBroadcast(br_intent)
+
+        // 작업시작할때 현재 쉬프트의 날짜를 기록해놓음
+        val current = AppGlobal.instance.get_current_work_time()
+        val shift = current.getJSONObject(0)
+        var shift_stime = OEEUtil.parseDateTime(shift["work_stime"].toString())
+        AppGlobal.instance.set_current_work_day(shift_stime.toString("yyyy-MM-dd"))
+
+        // downtime sec 초기화
+        // 새로 선택한 상품이 있으므로 이 값을 초기화 한다. 기존에 없던 부분
+//        _last_count_received_time = DateTime()
+
+        // 현재 shift의 첫생산인데 지각인경우 downtime 처리
     }
 
     fun changeFragment(pos:Int) {
@@ -714,12 +826,12 @@ class MainActivity : BaseActivity() {
             }
             Log.e("updateCurrentWorkTarget", "target_type=" + target_type + ", _total_target=" + _total_target)
             if (_total_target > 0) {
-                val uri = "/sendtarget.php"
+                val uri = "/targetdata.php"
                 var params = listOf(
                     "mac_addr" to AppGlobal.instance.getMACAddress(),
-                    "date" to item["date"].toString(),
-                    "shift_idx" to  item["shift_idx"],     // AppGlobal.instance.get_current_shift_idx()
-                    "target_count" to _total_target)
+                    "didx" to "1001",
+                    "target" to _total_target,
+                    "shift_idx" to  item["shift_idx"])     // AppGlobal.instance.get_current_shift_idx()
 
                 request(this, uri, true,false, params, { result ->
                     var code = result.getString("code")

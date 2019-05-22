@@ -134,7 +134,7 @@
                             android:id="@+id/tv_btn_balance"
                             style="@style/grid_header_text"
                             android:layout_width="0dp"
-                            android:layout_weight="2"
+                            android:layout_weight="2.5"
                             android:text="@string/list_item_balance" />
                 </LinearLayout>
 

@@ -41,6 +41,7 @@ class HomeFragment : BaseFragment() {
     override fun initViews() {
         tv_app_version.text = "v " + activity.packageManager.getPackageInfo(activity.packageName, 0).versionName
 
+        // Click event
         btn_count_view.setOnClickListener {
             (activity as MainActivity).countViewType = 1
             (activity as MainActivity).changeFragment(1)

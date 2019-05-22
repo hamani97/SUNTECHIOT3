@@ -25,13 +25,13 @@
                     android:textStyle="bold"/>
 
             <TextView style="@style/bottom_text_title" android:text="TRIM :  " />
-            <TextView android:id="@+id/tv_factory" style="@style/bottom_text_data" android:text="4" />
+            <TextView android:id="@+id/tv_trim_qty_bottom" style="@style/bottom_text_data" android:text="4" />
 
             <TextView style="@style/bottom_text_title" android:text="STITCH :  " />
-            <TextView android:id="@+id/tv_room" style="@style/bottom_text_data" android:text="0" />
+            <TextView android:id="@+id/tv_stitch_qty_bottom" style="@style/bottom_text_data" android:text="0" />
 
             <TextView style="@style/bottom_text_title" android:text="DELAY TIME :  " />
-            <TextView android:id="@+id/tv_line" style="@style/bottom_text_data" android:text="0" />
+            <TextView android:id="@+id/tv_stitch_delay_time_bottom" style="@style/bottom_text_data" android:text="0" />
         </LinearLayout>
     </LinearLayout>
     <!--<LinearLayout-->
