@@ -33,7 +33,7 @@
                     android:layout_height="50dp"
                     android:gravity="center"
                     android:text=""
-                    android:textSize="18sp"
+                    android:textSize="23sp"
                     android:textColor="@color/colorOrange"
                     android:textStyle="bold"
                     android:background="@color/transparent"

@@ -13,7 +13,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/colorBackground"
-            android:visibility="gone">
+            android:visibility="visible">
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -373,7 +373,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/colorBackground"
-            android:visibility="visible">
+            android:visibility="gone">
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -485,7 +485,7 @@
                         <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="4"
+                                android:layout_weight="5"
                                 android:gravity="center"
                                 android:text="@string/list_item_wos"
                                 android:textSize="14sp"
@@ -527,7 +527,7 @@
                                 android:id="@+id/tv_btn_balance2"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="3"
+                                android:layout_weight="2"
                                 android:gravity="center"
                                 android:text="@string/list_item_balance"
                                 android:textSize="14sp"

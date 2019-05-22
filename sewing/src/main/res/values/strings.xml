@@ -14,6 +14,7 @@
     <string name="title_blink_effect">SCREEN BLINK EFFECT</string>
     <string name="title_function">FUNCTION</string>
     <string name="title_count_info">COUNT INFO</string>
+    <string name="title_component_layer_count">COMPONENT LAYER COUNT</string>
     <string name="title_target_type">TARGET TYPE</string>
     <string name="title_push_info">PUSH INFO</string>
 
@@ -61,6 +62,17 @@
     <string name="list_item_target">TARGET</string>
     <string name="list_item_actual">ACTUAL</string>
     <string name="list_item_balance">BALANCE</string>
+
+    <!-- COMPONENT 화면 -->
+    <string name="label_wos">WOS</string>
+    <string name="label_component">COMPONENT</string>
+    <string name="label_size">SIZE</string>
+    <string name="label_layer">LAYER</string>
+    <string name="label_layers">LAYER(S)</string>
+    <string name="label_model2">MODEL</string>
+    <string name="label_style">STYLE</string>
+    <!--<string name="label_from_server2">FROM SERVER</string>-->
+    <!--<string name="label_from_device2">FROM DEVICE</string>-->
 
     <!-- 액츄얼카운트화면 -->
     <string name="title_actual_count_edit">ACTUAL Q\'ty EDIT</string>

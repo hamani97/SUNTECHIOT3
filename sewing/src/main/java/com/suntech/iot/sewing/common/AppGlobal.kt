@@ -261,8 +261,8 @@ class AppGlobal private constructor() {
     fun get_count_type() : String { return UtilLocalStorage.getString(instance._context!!, "count_type") }
 
     // Layer정보 = pair 수
-//    fun set_layer_pairs(layer_no: String, pair: String) { UtilLocalStorage.setString(instance._context!!, "current_layer_" + layer_no, pair) }
-//    fun get_layer_pairs(layer_no: String) : String { return UtilLocalStorage.getString(instance._context!!, "current_layer_" + layer_no) }
+    fun set_layer_pairs(layer_no: String, pair: String) { UtilLocalStorage.setString(instance._context!!, "current_layer_" + layer_no, pair) }
+    fun get_layer_pairs(layer_no: String) : String { return UtilLocalStorage.getString(instance._context!!, "current_layer_" + layer_no) }
     fun set_trim_qty(value: String) { UtilLocalStorage.setString(instance._context!!, "current_trim_qty", value) }
     fun get_trim_qty() : String { return UtilLocalStorage.getString(instance._context!!, "current_trim_qty") }
     fun set_trim_pairs(pair: String) { UtilLocalStorage.setString(instance._context!!, "current_trim_pair", pair) }
