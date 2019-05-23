@@ -82,10 +82,10 @@ class ProductionReportActivity : BaseActivity() {
     private fun outputBlank() {
         _list.removeAll(_list)
 
-        val time_row3 = hashMapOf("type" to "NODATA", "name" to "", "target" to "0", "actual" to "", "accumulate" to "", "rate" to "")
+        val time_row3 = hashMapOf("type" to "NODATA", "name" to "", "target" to "0", "trim_count" to "", "trim_sum" to "", "rate" to "")
 
-        val time_row = hashMapOf("type" to "HEAD", "name" to "SHIFT 1", "target" to "Target : 0", "actual" to "", "accumulate" to "", "rate" to "")
-        val time_row2 = hashMapOf("type" to "HEAD", "name" to "SHIFT 2", "target" to "Target : 0", "actual" to "","accumulate" to "", "rate" to "")
+        val time_row = hashMapOf("type" to "HEAD", "name" to "SHIFT 1", "target" to "Target : 0", "trim_count" to "", "trim_sum" to "", "rate" to "")
+        val time_row2 = hashMapOf("type" to "HEAD", "name" to "SHIFT 2", "target" to "Target : 0", "trim_count" to "","trim_sum" to "", "rate" to "")
 
         _list.add(time_row)
         _list.add(time_row3)
@@ -128,7 +128,9 @@ class ProductionReportActivity : BaseActivity() {
                     "type" to "HEAD",
                     "name" to item.get("shift_name").toString(),
                     "target" to "Target : " + target_txt,
-                    "actual" to "", "accumulate" to "", "rate" to ""
+                    "trim_count" to "",
+                    "trim_sum" to "",
+                    "rate" to ""
                 )
                 _list.add(time_row)
 
@@ -141,8 +143,10 @@ class ProductionReportActivity : BaseActivity() {
                 var work_time_dt = OEEUtil.parseDateTime(work_stime)    // 2019-04-05 06:01:00
 
                 val target = item.get("target").toString().toInt()
-                var actual = 0
-                var accumulate = 0
+                var trim_count = 0
+                var trim_sum = 0
+                var stitch_count = 0
+                var stitch_sum = 0
 
                 var blank_yn = false        // 아직 작업 시간이 안된 시간은 빈칸으로 표시하기 위함.
 
@@ -156,20 +160,24 @@ class ProductionReportActivity : BaseActivity() {
 
                     val row = _report_db.get(current_dt, stime, shift_idx)
 
-                    actual = if (row != null && row["actual"]!= null) row["actual"].toString().toInt() else 0
+                    trim_count = if (row != null && row["actual"]!= null) row["actual"].toString().toInt() else 0
+                    stitch_count = if (row != null && row["stitch"]!= null) row["stitch"].toString().toInt() else 0
 
 //                    if (actual == 0) continue
 
-                    accumulate += actual
-                    val rate = if (target != 0) (accumulate.toFloat() / target.toFloat() * 100).toInt().toString() + "%" else ""
+                    trim_sum += trim_count
+                    stitch_sum += stitch_count
+                    val rate = if (target != 0) ((trim_sum+stitch_sum).toFloat() / target.toFloat() * 100).toInt().toString() + "%" else ""
 
                     // 아직 해당 시간이 안됐으면 공백으로 표시
                     val time_row = hashMapOf(
                         "type" to "DATA",
                         "name" to stime + " - " + etime,
                         "target" to target_txt,
-                        "actual" to if (blank_yn) "" else actual.toString(),
-                        "accumulate" to if (blank_yn) "" else accumulate.toString(),
+                        "trim_count" to if (blank_yn) "" else trim_count.toString(),
+                        "trim_sum" to if (blank_yn) "" else trim_sum.toString(),
+                        "stitch_count" to if (blank_yn) "" else stitch_count.toString(),
+                        "stitch_sum" to if (blank_yn) "" else stitch_sum.toString(),
                         "rate" to if (blank_yn) "" else rate
                     )
 
@@ -289,8 +297,10 @@ class ProductionReportActivity : BaseActivity() {
                 vh.ll_report_nodata.visibility = View.GONE
 
                 vh.tv_report_item_time.text = _list[position]["name"]
-                vh.tv_report_item_target.text = _list[position]["actual"]
-                vh.tv_report_item_product.text = _list[position]["accumulate"]
+                vh.tv_report_trim_count.text = _list[position]["trim_count"]
+                vh.tv_report_trim_sum.text = _list[position]["trim_sum"]
+                vh.tv_report_stitch_count.text = _list[position]["stitch_count"]
+                vh.tv_report_stitch_sum.text = _list[position]["stitch_sum"]
                 vh.tv_report_item_rate.text = _list[position]["rate"]
 
             } else {
@@ -309,8 +319,10 @@ class ProductionReportActivity : BaseActivity() {
             val tv_shift_name: TextView
             val tv_shift_target: TextView
             val tv_report_item_time: TextView
-            val tv_report_item_target: TextView
-            val tv_report_item_product: TextView
+            val tv_report_trim_count: TextView
+            val tv_report_trim_sum: TextView
+            val tv_report_stitch_count: TextView
+            val tv_report_stitch_sum: TextView
             val tv_report_item_rate: TextView
 
             init {
@@ -320,8 +332,10 @@ class ProductionReportActivity : BaseActivity() {
                 this.tv_shift_name = row?.findViewById<TextView>(R.id.tv_shift_name) as TextView
                 this.tv_shift_target = row?.findViewById<TextView>(R.id.tv_shift_target) as TextView
                 this.tv_report_item_time = row?.findViewById<TextView>(R.id.tv_report_item_time) as TextView
-                this.tv_report_item_target = row?.findViewById<TextView>(R.id.tv_report_item_target) as TextView
-                this.tv_report_item_product = row?.findViewById<TextView>(R.id.tv_report_item_product) as TextView
+                this.tv_report_trim_count = row?.findViewById<TextView>(R.id.tv_report_trim_count) as TextView
+                this.tv_report_trim_sum = row?.findViewById<TextView>(R.id.tv_report_trim_sum) as TextView
+                this.tv_report_stitch_count = row?.findViewById<TextView>(R.id.tv_report_stitch_count) as TextView
+                this.tv_report_stitch_sum = row?.findViewById<TextView>(R.id.tv_report_stitch_sum) as TextView
                 this.tv_report_item_rate = row?.findViewById<TextView>(R.id.tv_report_item_rate) as TextView
             }
         }

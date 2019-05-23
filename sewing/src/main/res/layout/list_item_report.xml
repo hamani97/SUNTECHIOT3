@@ -73,7 +73,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="ACTUAL"
+                        android:text="TRIM"
                         android:textSize="18sp"
                         android:textColor="@color/colorWhite"
                         android:textStyle="bold"/>
@@ -86,7 +86,33 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="+ ACTUAL"
+                        android:text="TRIM(+)"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold"/>
+                <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorWhite2"/>
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="STITCH"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold"/>
+                <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorWhite2"/>
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="STITCH(+)"
                         android:textSize="18sp"
                         android:textColor="@color/colorWhite"
                         android:textStyle="bold"/>
@@ -145,7 +171,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/colorWhite2"/>
             <TextView
-                    android:id="@+id/tv_report_item_target"
+                    android:id="@+id/tv_report_trim_count"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -159,7 +185,35 @@
                     android:layout_height="match_parent"
                     android:background="@color/colorWhite2"/>
             <TextView
-                    android:id="@+id/tv_report_item_product"
+                    android:id="@+id/tv_report_trim_sum"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"/>
+            <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite2"/>
+            <TextView
+                    android:id="@+id/tv_report_stitch_count"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"/>
+            <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite2"/>
+            <TextView
+                    android:id="@+id/tv_report_stitch_sum"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

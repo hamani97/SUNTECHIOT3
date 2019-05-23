@@ -20,6 +20,7 @@ import com.suntech.iot.sewing.base.BaseFragment
 import com.suntech.iot.sewing.common.AppGlobal
 import com.suntech.iot.sewing.common.Constants
 import com.suntech.iot.sewing.db.DBHelperForComponent
+import com.suntech.iot.sewing.db.DBHelperForReport
 import com.suntech.iot.sewing.db.DBHelperForTarget
 import com.suntech.iot.sewing.popup.ActualCountEditActivity
 import com.suntech.iot.sewing.popup.PushActivity
@@ -41,6 +42,7 @@ class MainActivity : BaseActivity() {
     var countViewMode = 1       // Count mode 1=Count mode, 2=Repair mode
 
     val _target_db = DBHelperForTarget(this)    // 날짜의 Shift별 정보, Target 수량 정보 저장
+    val _report_db = DBHelperForReport(this)    // 날짜의 Shift별 한시간 간격의 Actual 수량 저장
 
     private var _doubleBackToExitPressedOnce = false
 
@@ -55,7 +57,7 @@ class MainActivity : BaseActivity() {
                 }
             }
             if (action.equals(Constants.BR_ADD_COUNT)) {
-                handleData("{\"cmd\" : \"count\", \"value\" : 1}")
+                handleData("{\"cmd\" : \"T\", \"value\" : 1}")
             }
         }
     }
@@ -206,72 +208,67 @@ class MainActivity : BaseActivity() {
     }
 
 
-    fun handleData (data: String) {
-//        Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
-        Log.e("USB Data", "usb = " + data)
+//    fun handleData (data: String) {
+////        Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
+//        Log.e("USB Data", "usb = " + data)
+//        if (countViewMode == 2) return      // repair mode
+//        var count = 0
+//        val len = data.length - 1
+//        if (AppGlobal.instance.get_count_type() == "trim") {
+//            for (i in 0..len) {
+//                if (data[i] == 'T') count++         //  || data[i] == 'c'
+//            }
+//            saveRowData("T", count)
+//        } else {
+//            for (i in 0..len) {
+//                if (data[i] == 'S') count++
+//            }
+//            saveRowData("S", count)
+//        }
+//    }
 
-        if (countViewMode == 2) return      // repair mode
+    private var recvBuffer = ""
+    fun handleData(data:String) {
+        if (data.indexOf("{") >= 0)  recvBuffer = ""
 
-        var count = 0
+        recvBuffer += data
 
-        val len = data.length - 1
+        val pos_end = recvBuffer.indexOf("}")
+        if (pos_end < 0) return
 
-        if (AppGlobal.instance.get_count_type() == "trim") {
-            for (i in 0..len) {
-                if (data[i] == 'T') count++         //  || data[i] == 'c'
-            }
-            saveRowData("T", count)
+        if (isJSONValid(recvBuffer)) {
+            val parser = JsonParser()
+            val element = parser.parse(recvBuffer)
+            val cmd = element.asJsonObject.get("cmd").asString
+            val value = element.asJsonObject.get("value")
+
+            Toast.makeText(this, element.toString(), Toast.LENGTH_SHORT).show()
+            Log.e("test", "usb = " + recvBuffer)
+
+            saveRowData(cmd, value)
         } else {
-            for (i in 0..len) {
-                if (data[i] == 'S') count++
-            }
-            saveRowData("S", count)
+            Log.e("test", "usb parsing error! = " + recvBuffer)
         }
     }
+    private fun isJSONValid(test: String): Boolean {
+        try {
+            JSONObject(test)
+        } catch (ex: JSONException) {
+            try {
+                JSONArray(test)
+            } catch (ex1: JSONException) {
+                return false
+            }
+        }
+        return true
+    }
 
-//    private var recvBuffer = ""
-//    fun handleData2 (data:String) {
-//        if (data.indexOf("{") >= 0)  recvBuffer = ""
-//
-//        recvBuffer += data
-//
-//        val pos_end = recvBuffer.indexOf("}")
-//        if (pos_end < 0) return
-//
-//        if (isJSONValid(recvBuffer)) {
-//            val parser = JsonParser()
-//            val element = parser.parse(recvBuffer)
-//            val cmd = element.asJsonObject.get("cmd").asString
-//            val value = element.asJsonObject.get("value")
-//
-//            Toast.makeText(this, element.toString(), Toast.LENGTH_SHORT).show()
-//            Log.w("test", "usb = " + recvBuffer)
-//
-//            saveRowData(cmd, value)
-//        } else {
-//            Log.e("test", "usb parsing error! = " + recvBuffer)
-//        }
-//    }
-//    private fun isJSONValid(test: String): Boolean {
-//        try {
-//            JSONObject(test)
-//        } catch (ex: JSONException) {
-//            try {
-//                JSONArray(test)
-//            } catch (ex1: JSONException) {
-//                return false
-//            }
-//        }
-//        return true
-//    }
-
-    private fun saveRowData(cmd: String, count: Int) {
-        Toast.makeText(this, cmd + "=" + count.toString(), Toast.LENGTH_SHORT).show()
-
+    private fun saveRowData(cmd: String, value: JsonElement) {
         if (AppGlobal.instance.get_sound_at_count()) AppGlobal.instance.playSound(this)
 
         // 작업 시간인지 확인
         val cur_shift: JSONObject ?= AppGlobal.instance.get_current_shift_time()
+
         if (cur_shift == null) {
             Toast.makeText(this, getString(R.string.msg_not_start_work), Toast.LENGTH_SHORT).show()
             return
@@ -281,11 +278,11 @@ class MainActivity : BaseActivity() {
             Toast.makeText(this, getString(R.string.msg_no_operator), Toast.LENGTH_SHORT).show(); return
         }
 
-        if (cmd == "T") {
-            var db = DBHelperForComponent(this)
+        val shift_idx = cur_shift["shift_idx"]      // 현재 작업중인 Shift
+        var inc_count = value.toString().toInt()
 
-            val shift_idx = cur_shift["shift_idx"]      // 현재 작업중인 Shift
-            var inc_count = count
+        if (cmd == "T" || cmd == "count") {
+            var db = DBHelperForComponent(this)
 
             // 콤포넌트 선택되어야만 실행되는 경우
             if (AppGlobal.instance.get_with_component()) {
@@ -306,29 +303,32 @@ class MainActivity : BaseActivity() {
                     db.updateWorkActual(work_idx, actual)
                 }
             }
+
             // total count
             var cnt = AppGlobal.instance.get_current_shift_actual_cnt() + inc_count
             AppGlobal.instance.set_current_shift_actual_cnt(cnt)
 
 //            _last_count_received_time = DateTime()      // downtime 시간 초기화
 
-//            sendCountData(value.toString(), inc_count)  // 서버에 카운트 정보 전송
+            sendCountData(value.toString(), inc_count)  // 서버에 카운트 정보 전송
 
 //            _stitch_db.add(work_idx, value.toString())
 
-//            //val now = DateTime()
-//            val now = cur_shift["date"]
-//            val date = now.toString()
-//            val houly = DateTime().toString("HH")
-//
-//            val rep = _report_db.get(date, houly, shift_idx.toString())
-//            if (rep == null) {
-//                _report_db.add(date, houly, shift_idx.toString(), inc_count)
-//            } else {
-//                val idx = rep!!["idx"].toString()
-//                val actual = rep!!["actual"].toString().toInt() + inc_count
-//                _report_db.updateActual(idx, actual)
-//            }
+            //val now = DateTime()
+            val now = cur_shift["date"]
+            val date = now.toString()
+            val houly = DateTime().toString("HH")
+
+            val rep = _report_db.get(date, houly, shift_idx.toString())
+            if (rep == null) {
+                _report_db.add(date, houly, shift_idx.toString(), inc_count, 0)
+            } else {
+                val idx = rep!!["idx"].toString()
+                val actual = rep!!["actual"].toString().toInt() + inc_count
+                _report_db.updateActual(idx, actual)
+            }
+        } else if (cmd == "S") {
+            Toast.makeText(this, "This mode is not yet supported.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -370,6 +370,47 @@ class MainActivity : BaseActivity() {
 //        _last_count_received_time = DateTime()
 
         // 현재 shift의 첫생산인데 지각인경우 downtime 처리
+    }
+
+    private fun sendCountData(count:String, inc_count:Int) {
+        if (AppGlobal.instance.get_server_ip()=="") return
+
+        val work_idx = AppGlobal.instance.get_work_idx()
+        if (work_idx == "") return
+
+        var shift_idx = AppGlobal.instance.get_current_shift_idx()
+        if (shift_idx == "") shift_idx = "0"
+
+        var db = DBHelperForComponent(this)
+        val row = db.get(work_idx)
+        val actual = row!!["actual"].toString().toInt()
+//        val seq = row!!["seq"].toString().toInt()
+        val seq = "1"
+
+        val uri = "/senddata1.php"
+        var params = listOf(
+            "mac_addr" to AppGlobal.instance.getMACAddress(),
+            "didx" to "0",
+            "count" to inc_count.toString(),
+            "total_count" to actual,
+            "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
+            "factory_idx" to AppGlobal.instance.get_room_idx(),
+            "line_idx" to AppGlobal.instance.get_line_idx(),
+            "shift_idx" to  shift_idx,
+            "seq" to seq,
+            "wos" to AppGlobal.instance.get_compo_wos(),
+            "comp" to AppGlobal.instance.get_compo_component_idx(),
+            "size" to AppGlobal.instance.get_compo_size(),
+            "max_rpm" to "",
+            "avr_rpm" to "")
+//Log.e("params", params.toString())
+        request(this, uri, true,false, params, { result ->
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if(code != "00") {
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     fun changeFragment(pos:Int) {

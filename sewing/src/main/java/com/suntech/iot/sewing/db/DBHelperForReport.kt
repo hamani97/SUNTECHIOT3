@@ -46,7 +46,8 @@ class DBHelperForReport
                     "date text, " +
                     "houly text, " +
                     "shift_idx text, " +
-                    "actual int default 0, " +
+                    "actual int default 0, " +      // trim count
+                    "stitch int default 0, " +      // stitch count
                     "dt DATE default CURRENT_TIMESTAMP)"
 
             db.execSQL(sql)
@@ -62,15 +63,15 @@ class DBHelperForReport
     operator fun get(idx: String): ContentValues? {
         val db = _openHelper.readableDatabase ?: return null
         val row = ContentValues()
-        val sql = "select date, houly, shift_idx, actual, dt " +
-                "from report where _id = ?"
+        val sql = "select date, houly, shift_idx, actual, stitch, dt from report where _id = ?"
         val cur = db.rawQuery(sql, arrayOf(idx))
         if (cur.moveToNext()) {
             row.put("date", cur.getString(0))
             row.put("houly", cur.getString(1))
             row.put("shift_idx", cur.getString(2))
             row.put("actual", cur.getInt(3))
-            row.put("dt", cur.getString(4))
+            row.put("stitch", cur.getInt(4))
+            row.put("dt", cur.getString(5))
         }
         cur.close()
         db.close()
@@ -80,12 +81,12 @@ class DBHelperForReport
     operator fun get(date: String, houly:String, shift_idx: String): ContentValues? {
         val db = _openHelper.readableDatabase ?: return null
         val row = ContentValues()
-        val sql = "select _id, houly, actual " +
-                "from report where date = ? and houly = ? and shift_idx = ?"
+        val sql = "select _id, houly, actual, stitch from report where date = ? and houly = ? and shift_idx = ?"
         val cur = db.rawQuery(sql, arrayOf(date, houly, shift_idx))
         if (cur.moveToNext()) {
             row.put("idx", cur.getString(0))
             row.put("actual", cur.getInt(2))
+            row.put("stitch", cur.getInt(3))
             cur.close()
             db.close()
             return row
@@ -100,7 +101,7 @@ class DBHelperForReport
         var arr = ArrayList<HashMap<String, String>>()
         val db = _openHelper.readableDatabase ?: return null
 
-        val sql = "select _id, date, houly, shift_idx, actual, dt from report order by dt desc"
+        val sql = "select _id, date, houly, shift_idx, actual, stitch, dt from report order by dt desc"
         val cur = db.rawQuery(sql, arrayOf())
         while (cur.moveToNext()) {
             val row = HashMap<String, String>()
@@ -109,7 +110,8 @@ class DBHelperForReport
             row.put("houly", cur.getString(2))
             row.put("shift_idx", cur.getString(3))
             row.put("actual", "" + cur.getInt(4))
-            row.put("dt", cur.getString(5))
+            row.put("stitch", "" + cur.getInt(5))
+            row.put("dt", cur.getString(6))
             arr.add(row)
         }
         cur.close()
@@ -121,14 +123,15 @@ class DBHelperForReport
         var arr = ArrayList<HashMap<String, String>>()
         val db = _openHelper.readableDatabase ?: return null
 
-        val sql = "select _id, houly, actual, dt from report where date = ? and shift_idx = ? order by houly asc "
+        val sql = "select _id, houly, actual, stitch, dt from report where date = ? and shift_idx = ? order by houly asc "
         val cur = db.rawQuery(sql, arrayOf(date, shift_idx))
         while (cur.moveToNext()) {
             val row = HashMap<String, String>()
             row.put("idx", cur.getString(0))
             row.put("houly", cur.getString(1))
             row.put("actual", "" + cur.getInt(2))
-            row.put("dt", cur.getString(3))
+            row.put("stitch", "" + cur.getInt(3))
+            row.put("dt", cur.getString(4))
             arr.add(row)
         }
         cur.close()
@@ -141,13 +144,14 @@ class DBHelperForReport
      * @param priority The priority value for the new row
      * @return The unique id of the newly added row
      */
-    fun add(date:String, houly:String, shift_idx:String, actual:Int): Long {
+    fun add(date:String, houly:String, shift_idx:String, actual:Int, stitch:Int): Long {
         val db = _openHelper.writableDatabase ?: return 0
         val row = ContentValues()
         row.put("date", date)
         row.put("houly", houly)
         row.put("shift_idx", shift_idx)
         row.put("actual", actual)
+        row.put("stitch", stitch)
         row.put("dt", DateTime().toString("yyyy-MM-dd HH:mm:ss"))
         val id = db.insert("report", null, row)
         db.close()
@@ -158,6 +162,13 @@ class DBHelperForReport
         val db = _openHelper.writableDatabase ?: return
         val row = ContentValues()
         row.put("actual", actual)
+        db.update("report", row, "_id = ?", arrayOf(_idx))
+        db.close()
+    }
+    fun updateStitch(_idx: String, stitch:Int) {
+        val db = _openHelper.writableDatabase ?: return
+        val row = ContentValues()
+        row.put("stitch", stitch)
         db.update("report", row, "_id = ?", arrayOf(_idx))
         db.close()
     }
