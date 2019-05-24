@@ -3,4 +3,5 @@
     <usb-accessory manufacturer="Google, Inc." model="DemoKit" version="1.0" />
     <!--<usb-device vendor-id="2321" product-id="8584" />-->
     <usb-device vendor-id="1027" product-id="24577" />
+    <usb-device vendor-id="0403" product-id="6001" />
 </resources>

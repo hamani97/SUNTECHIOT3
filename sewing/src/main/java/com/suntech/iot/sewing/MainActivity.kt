@@ -45,6 +45,7 @@ class MainActivity : BaseActivity() {
     val _report_db = DBHelperForReport(this)    // 날짜의 Shift별 한시간 간격의 Actual 수량 저장
 
     private var _doubleBackToExitPressedOnce = false
+    private var _last_count_received_time = DateTime()
 
     private val _broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -57,7 +58,7 @@ class MainActivity : BaseActivity() {
                 }
             }
             if (action.equals(Constants.BR_ADD_COUNT)) {
-                handleData("{\"cmd\" : \"T\", \"value\" : 1}")
+                handleData("{\"cmd\" : \"count\", \"value\" : 1}")
             }
         }
     }
@@ -247,6 +248,7 @@ class MainActivity : BaseActivity() {
 
             saveRowData(cmd, value)
         } else {
+            Toast.makeText(this, "usb parsing error! = " + recvBuffer, Toast.LENGTH_SHORT).show()
             Log.e("test", "usb parsing error! = " + recvBuffer)
         }
     }
@@ -275,13 +277,18 @@ class MainActivity : BaseActivity() {
         }
         // Operator 선택 확인
         if (AppGlobal.instance.get_worker_no() == "" || AppGlobal.instance.get_worker_name() == "") {
-            Toast.makeText(this, getString(R.string.msg_no_operator), Toast.LENGTH_SHORT).show(); return
+            Toast.makeText(this, getString(R.string.msg_no_operator), Toast.LENGTH_SHORT).show()
+            return
         }
 
         val shift_idx = cur_shift["shift_idx"]      // 현재 작업중인 Shift
         var inc_count = value.toString().toInt()
 
         if (cmd == "T" || cmd == "count") {
+            // total count
+            val cnt = AppGlobal.instance.get_current_shift_actual_cnt() + inc_count
+            AppGlobal.instance.set_current_shift_actual_cnt(cnt)
+
             var db = DBHelperForComponent(this)
 
             // 콤포넌트 선택되어야만 실행되는 경우
@@ -296,21 +303,28 @@ class MainActivity : BaseActivity() {
                 if (layer_value == "") {
                     Toast.makeText(this, getString(R.string.msg_layer_not_selected), Toast.LENGTH_SHORT).show(); return
                 }
+
                 // component total count
                 val row = db.get(work_idx)
                 if (row != null) {
                     val actual = (row!!["actual"].toString().toInt() + inc_count)
                     db.updateWorkActual(work_idx, actual)
+
+                    Toast.makeText(this, "Test-1: Component selected.", Toast.LENGTH_SHORT).show()
+
+                    sendCountData(value.toString(), inc_count, actual)  // 서버에 카운트 정보 전송
+                } else {
+                    Toast.makeText(this, "Test-2: Component not found.", Toast.LENGTH_SHORT).show()
+
+                    sendCountData(value.toString(), inc_count, inc_count)  // 서버에 카운트 정보 전송
                 }
+            } else {
+                Toast.makeText(this, "Test-3: Component not selected.", Toast.LENGTH_SHORT).show()
+
+                sendCountData(value.toString(), inc_count, cnt)  // 서버에 카운트 정보 전송
             }
 
-            // total count
-            var cnt = AppGlobal.instance.get_current_shift_actual_cnt() + inc_count
-            AppGlobal.instance.set_current_shift_actual_cnt(cnt)
-
-//            _last_count_received_time = DateTime()      // downtime 시간 초기화
-
-            sendCountData(value.toString(), inc_count)  // 서버에 카운트 정보 전송
+            _last_count_received_time = DateTime()      // downtime 시간 초기화
 
 //            _stitch_db.add(work_idx, value.toString())
 
@@ -330,6 +344,47 @@ class MainActivity : BaseActivity() {
         } else if (cmd == "S") {
             Toast.makeText(this, "This mode is not yet supported.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun sendCountData(count:String, inc_count:Int, sum_count:Int) {
+        if (AppGlobal.instance.get_server_ip()=="") return
+
+//        val work_idx = AppGlobal.instance.get_work_idx()
+//        if (work_idx == "") return
+
+        var shift_idx = AppGlobal.instance.get_current_shift_idx()
+        if (shift_idx == "") shift_idx = "0"
+
+//        var db = DBHelperForComponent(this)
+//        val row = db.get(work_idx)
+//        val actual = row!!["actual"].toString().toInt()
+//        val seq = row!!["seq"].toString().toInt()
+        val seq = "1"
+
+        val uri = "/senddata1.php"
+        var params = listOf(
+            "mac_addr" to AppGlobal.instance.getMACAddress(),
+            "didx" to "1001",
+            "count" to inc_count.toString(),
+            "total_count" to sum_count,
+            "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
+            "factory_idx" to AppGlobal.instance.get_room_idx(),
+            "line_idx" to AppGlobal.instance.get_line_idx(),
+            "shift_idx" to  shift_idx,
+            "seq" to seq,
+            "wos" to AppGlobal.instance.get_compo_wos(),
+            "comp" to AppGlobal.instance.get_compo_component_idx(),
+            "size" to AppGlobal.instance.get_compo_size(),
+            "max_rpm" to "",
+            "avr_rpm" to "")
+//Log.e("params", params.toString())
+        request(this, uri, true,false, params, { result ->
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if(code != "00") {
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     fun startComponent(wosno:String, styleno:String, model:String, size:String, target:String, actual:String) {
@@ -367,50 +422,9 @@ class MainActivity : BaseActivity() {
 
         // downtime sec 초기화
         // 새로 선택한 상품이 있으므로 이 값을 초기화 한다. 기존에 없던 부분
-//        _last_count_received_time = DateTime()
+        _last_count_received_time = DateTime()
 
         // 현재 shift의 첫생산인데 지각인경우 downtime 처리
-    }
-
-    private fun sendCountData(count:String, inc_count:Int) {
-        if (AppGlobal.instance.get_server_ip()=="") return
-
-        val work_idx = AppGlobal.instance.get_work_idx()
-        if (work_idx == "") return
-
-        var shift_idx = AppGlobal.instance.get_current_shift_idx()
-        if (shift_idx == "") shift_idx = "0"
-
-        var db = DBHelperForComponent(this)
-        val row = db.get(work_idx)
-        val actual = row!!["actual"].toString().toInt()
-//        val seq = row!!["seq"].toString().toInt()
-        val seq = "1"
-
-        val uri = "/senddata1.php"
-        var params = listOf(
-            "mac_addr" to AppGlobal.instance.getMACAddress(),
-            "didx" to "0",
-            "count" to inc_count.toString(),
-            "total_count" to actual,
-            "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
-            "factory_idx" to AppGlobal.instance.get_room_idx(),
-            "line_idx" to AppGlobal.instance.get_line_idx(),
-            "shift_idx" to  shift_idx,
-            "seq" to seq,
-            "wos" to AppGlobal.instance.get_compo_wos(),
-            "comp" to AppGlobal.instance.get_compo_component_idx(),
-            "size" to AppGlobal.instance.get_compo_size(),
-            "max_rpm" to "",
-            "avr_rpm" to "")
-//Log.e("params", params.toString())
-        request(this, uri, true,false, params, { result ->
-            var code = result.getString("code")
-            var msg = result.getString("msg")
-            if(code != "00") {
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     fun changeFragment(pos:Int) {
