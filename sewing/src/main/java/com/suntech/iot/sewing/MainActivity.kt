@@ -359,6 +359,7 @@ class MainActivity : BaseActivity() {
 //        val row = db.get(work_idx)
 //        val actual = row!!["actual"].toString().toInt()
 //        val seq = row!!["seq"].toString().toInt()
+
         val seq = "1"
 
         val uri = "/senddata1.php"
