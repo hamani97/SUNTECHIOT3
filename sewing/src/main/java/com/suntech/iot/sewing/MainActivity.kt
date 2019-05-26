@@ -246,7 +246,9 @@ class MainActivity : BaseActivity() {
             Toast.makeText(this, element.toString(), Toast.LENGTH_SHORT).show()
             Log.e("test", "usb = " + recvBuffer)
 
-            saveRowData(cmd, value)
+            // repair mode 가 아닐때만 실행
+            if (countViewMode != 2) saveRowData(cmd, value)
+
         } else {
             Toast.makeText(this, "usb parsing error! = " + recvBuffer, Toast.LENGTH_SHORT).show()
             Log.e("test", "usb parsing error! = " + recvBuffer)
@@ -265,12 +267,14 @@ class MainActivity : BaseActivity() {
         return true
     }
 
+    var trim_qty = 0
+    var trim_pairs = 0
+
     private fun saveRowData(cmd: String, value: JsonElement) {
         if (AppGlobal.instance.get_sound_at_count()) AppGlobal.instance.playSound(this)
 
         // 작업 시간인지 확인
         val cur_shift: JSONObject ?= AppGlobal.instance.get_current_shift_time()
-
         if (cur_shift == null) {
             Toast.makeText(this, getString(R.string.msg_not_start_work), Toast.LENGTH_SHORT).show()
             return
@@ -280,47 +284,66 @@ class MainActivity : BaseActivity() {
             Toast.makeText(this, getString(R.string.msg_no_operator), Toast.LENGTH_SHORT).show()
             return
         }
+        // 콤포넌트 선택되어야만 실행되는 경우
+        val work_idx = AppGlobal.instance.get_work_idx()
+
+        if (AppGlobal.instance.get_with_component()) {
+            // 선택한 Component 제품이 있는지 확인
+            if (work_idx == "") {
+                Toast.makeText(this, getString(R.string.msg_select_component), Toast.LENGTH_SHORT).show(); return
+            }
+            // Pairs 선택 확인
+            if (AppGlobal.instance.get_compo_pairs() == "") {
+                Toast.makeText(this, getString(R.string.msg_layer_not_selected), Toast.LENGTH_SHORT).show(); return
+            }
+        }
 
         val shift_idx = cur_shift["shift_idx"]      // 현재 작업중인 Shift
         var inc_count = value.toString().toInt()
 
         if (cmd == "T" || cmd == "count") {
+            val qty = AppGlobal.instance.get_trim_qty()
+            val pairs = AppGlobal.instance.get_trim_pairs()
+            var pairs_int = 1
+            when (pairs) {
+                "1/2" -> pairs_int = 2
+                "1/4" -> pairs_int = 4
+                "1/8" -> pairs_int = 8
+            }
+
+            trim_pairs += inc_count
+
+            while (trim_pairs >= pairs_int) {
+                trim_qty++
+                trim_pairs -= pairs_int
+            }
+
+            inc_count = 0
+
+            while (trim_qty >= qty.toInt()) {
+                trim_qty -= qty.toInt()
+                inc_count++
+            }
+//Log.e("count", "qty=" + trim_qty+", pairs="+trim_pairs)
+            if (inc_count <= 0) return
+
             // total count
             val cnt = AppGlobal.instance.get_current_shift_actual_cnt() + inc_count
             AppGlobal.instance.set_current_shift_actual_cnt(cnt)
 
-            var db = DBHelperForComponent(this)
-
-            // 콤포넌트 선택되어야만 실행되는 경우
+            // 콤포넌트 선택인 경우
             if (AppGlobal.instance.get_with_component()) {
-                // 선택한 Component 제품이 있는지 확인
-                val work_idx = AppGlobal.instance.get_work_idx()
-                if (work_idx == "") {
-                    Toast.makeText(this, getString(R.string.msg_select_component), Toast.LENGTH_SHORT).show(); return
-                }
-                // Pairs 선택 확인
-                val layer_value = AppGlobal.instance.get_compo_pairs()
-                if (layer_value == "") {
-                    Toast.makeText(this, getString(R.string.msg_layer_not_selected), Toast.LENGTH_SHORT).show(); return
-                }
-
                 // component total count
+                val db = DBHelperForComponent(this)
                 val row = db.get(work_idx)
                 if (row != null) {
                     val actual = (row!!["actual"].toString().toInt() + inc_count)
                     db.updateWorkActual(work_idx, actual)
-
-                    Toast.makeText(this, "Test-1: Component selected.", Toast.LENGTH_SHORT).show()
-
                     sendCountData(value.toString(), inc_count, actual)  // 서버에 카운트 정보 전송
                 } else {
-                    Toast.makeText(this, "Test-2: Component not found.", Toast.LENGTH_SHORT).show()
-
                     sendCountData(value.toString(), inc_count, inc_count)  // 서버에 카운트 정보 전송
                 }
             } else {
-                Toast.makeText(this, "Test-3: Component not selected.", Toast.LENGTH_SHORT).show()
-
                 sendCountData(value.toString(), inc_count, cnt)  // 서버에 카운트 정보 전송
             }
 
@@ -328,6 +351,7 @@ class MainActivity : BaseActivity() {
 
 //            _stitch_db.add(work_idx, value.toString())
 
+            // Production Report를 위한 DB저장
             //val now = DateTime()
             val now = cur_shift["date"]
             val date = now.toString()
@@ -828,6 +852,40 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    private fun fetchOEEGraph() {
+        if (AppGlobal.instance.get_server_ip().trim() == "") return
+        var work_date = DateTime().toString("HH:mm:ss")
+        var item: JSONObject? = AppGlobal.instance.get_current_shift_time()
+        if (item != null) {
+            work_date = item["date"].toString()
+        }
+        val uri = "/getoee.php"
+        var params = listOf(
+                "mac_addr" to AppGlobal.instance.getMACAddress(),
+                "shift_idx" to AppGlobal.instance.get_current_shift_idx(),
+                "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
+                "factory_idx" to AppGlobal.instance.get_room_idx(),
+                "line_idx" to AppGlobal.instance.get_line_idx(),
+                "work_date" to work_date)
+//Log.e("oeegraph", "mac_addr="+AppGlobal.instance.getMACAddress()+", shift_idx="+AppGlobal.instance.get_current_shift_idx()+"," +
+//        " factory_parent_idx="+AppGlobal.instance.get_factory_idx()+", factory_idx="+AppGlobal.instance.get_room_idx()+", line_idx="+AppGlobal.instance.get_line_idx()+
+//        ", work_date="+work_date)
+        request(this, uri, false, params, { result ->
+            var code = result.getString("code")
+            if (code == "00") {
+                var availability = result.getString("availability")
+                var performance = result.getString("performance")
+                var quality = result.getString("quality")
+//Log.e("oeegraph", "avail="+availability+", performance="+performance+", quality="+quality)
+                AppGlobal.instance.set_availability(availability)
+                AppGlobal.instance.set_performance(performance)
+                AppGlobal.instance.set_quality(quality)
+            } else {
+                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun sendPing() {
         tv_ms.text = "-" + " ms"
         if (AppGlobal.instance.get_server_ip() == "") return
@@ -902,8 +960,9 @@ class MainActivity : BaseActivity() {
 
     /////// 쓰레드
     private val _downtime_timer = Timer()
-    private val _timer_task1 = Timer()          // 서버 접속 체크 Ping test. Shift의 Target 정보
-    private val _timer_task2 = Timer()          // 작업시간, 다운타입, 칼라 Data 가져오기 (workdata, designdata, downtimetype, color)
+    private val _timer_task1 = Timer()          // 10초마다. 서버 접속 체크 Ping test. Shift의 Target 정보
+    private val _timer_task2 = Timer()          // 10분마다. 작업시간, 다운타입, 칼라 Data 가져오기 (workdata, designdata, downtimetype, color)
+    private val _timer_task3 = Timer()          // 30초마다. 그래프 그리기 위한 태스크
 
     private fun start_timer() {
 
@@ -937,11 +996,22 @@ class MainActivity : BaseActivity() {
             }
         }
         _timer_task2.schedule(task2, 600000, 600000)
+
+        // 30초마다
+        val task3 = object : TimerTask() {
+            override fun run() {
+                runOnUiThread {
+                    fetchOEEGraph()
+                }
+            }
+        }
+        _timer_task3.schedule(task3, 3000, 30000)
     }
-    private fun cancel_timer () {
+    private fun cancel_timer() {
 //        _downtime_timer.cancel()
         _timer_task1.cancel()
         _timer_task2.cancel()
+        _timer_task3.cancel()
     }
 
     private class TabAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {

@@ -64,7 +64,7 @@
                                     style="@style/table_row_data_selector"
                                     android:gravity="center" android:layout_width="80dp" android:layout_marginRight="8dp" />
                             <TextView
-                                    style="@style/table_row_title" android:layout_width="90dp" android:text="@string/label_layers" />
+                                    style="@style/table_row_title" android:layout_width="90dp" android:text="@string/label_pairs" />
                             <TextView android:id="@+id/tv_compo_layer" style="@style/table_row_data_selector" android:gravity="center" />
                         </LinearLayout>
                     </LinearLayout>

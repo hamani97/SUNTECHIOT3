@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_count_view.*
 import kotlinx.android.synthetic.main.layout_bottom_info_3.*
 import kotlinx.android.synthetic.main.layout_top_menu.*
 import org.joda.time.DateTime
+import kotlin.math.ceil
 
 class CountViewFragment : BaseFragment() {
 
@@ -70,28 +71,56 @@ class CountViewFragment : BaseFragment() {
             ll_total_count.visibility = View.VISIBLE
             ll_component_count.visibility = View.GONE
 
-            // 선택된 제품 하이라이트 (TRIM or STITCH)
+            // 선택된 제품 표시 (TRIM or STITCH)
             if (AppGlobal.instance.get_count_type() == "trim") {
-                tv_trim_qty.text = "TRIM  :  " + AppGlobal.instance.get_trim_qty()
-                tv_trim_qty.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
-                tv_stitch_qty.text = "STITCH  :  0"
-                tv_stitch_qty.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
+                tv_kind_name.text = "TRIM  :  "
+                tv_kind_qty.text = "" + (activity as MainActivity).trim_qty
+                tv_kind_pairs.text = "" + (activity as MainActivity).trim_pairs
+
+//                tv_trim_qty.text = "TRIM  :  " + AppGlobal.instance.get_trim_qty()
+//                tv_trim_qty.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
+//                tv_stitch_qty.text = "STITCH  :  0"
+//                tv_stitch_qty.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
 
                 // bottom view
                 tv_trim_qty_bottom.text = AppGlobal.instance.get_trim_qty()
+                tv_trim_pairs_bottom.text = AppGlobal.instance.get_trim_pairs()
+
+                tv_trim_qty_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
+                tv_trim_pairs_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
+
                 tv_stitch_qty_bottom.text = "0"
                 tv_stitch_delay_time_bottom.text = "0"
+                tv_stitch_pairs_bottom.text = "0"
+
+                tv_stitch_qty_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
+                tv_stitch_delay_time_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
+                tv_stitch_pairs_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
 
             } else if (AppGlobal.instance.get_count_type() == "stitch") {
-                tv_stitch_qty.text = "STITCH  :  " + AppGlobal.instance.get_stitch_qty_start() + "~" + AppGlobal.instance.get_stitch_qty_end()
-                tv_stitch_qty.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
-                tv_trim_qty.text = "TRIM  :  0"
-                tv_trim_qty.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
+                tv_kind_name.text = "STITCH  :  "
+                tv_kind_qty.text = "0"
+                tv_kind_pairs.text = "0"
+
+//                tv_stitch_qty.text = "STITCH  :  " + AppGlobal.instance.get_stitch_qty_start() + "~" + AppGlobal.instance.get_stitch_qty_end()
+//                tv_stitch_qty.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
+//                tv_trim_qty.text = "TRIM  :  0"
+//                tv_trim_qty.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
 
                 // bottom view
                 tv_stitch_qty_bottom.text = AppGlobal.instance.get_stitch_qty_start() + " ~ " + AppGlobal.instance.get_stitch_qty_end()
                 tv_stitch_delay_time_bottom.text = AppGlobal.instance.get_stitch_delay_time()
+                tv_stitch_pairs_bottom.text = AppGlobal.instance.get_stitch_pairs()
+
+                tv_stitch_qty_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
+                tv_stitch_delay_time_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
+                tv_stitch_pairs_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
+
                 tv_trim_qty_bottom.text = "0"
+                tv_trim_pairs_bottom.text= "0"
+
+                tv_trim_qty_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
+                tv_trim_pairs_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
             }
 
         } else {
@@ -307,6 +336,11 @@ class CountViewFragment : BaseFragment() {
             } else {
                 ll_charts.visibility = View.GONE
                 ll_server_charts.visibility = View.VISIBLE
+                drawChartView2()
+            }
+            if (AppGlobal.instance.get_count_type() == "trim") {
+                tv_kind_qty.text = "" + (activity as MainActivity).trim_qty
+                tv_kind_pairs.text = "" + (activity as MainActivity).trim_pairs
             }
         }
 
@@ -346,6 +380,7 @@ class CountViewFragment : BaseFragment() {
             tv_count_view_ratio.setTextColor(Color.parseColor("#" + color_code))
         }
 
+        // Component 사용안함이면 시간만 표시하고 리턴한다.
         if (AppGlobal.instance.get_with_component() == false) {
             tv_current_time.text = DateTime.now().toString("yyyy-MM-dd HH:mm:ss")
             return
@@ -400,6 +435,7 @@ class CountViewFragment : BaseFragment() {
                     line_progress1.progressEndColor = Color.parseColor("#" + color_code)
                 }
             }
+
         } else if ((activity as MainActivity).countViewType == 2) {
             tv_component_time.text = DateTime.now().toString("yyyy-MM-dd HH:mm:ss")
 
@@ -464,6 +500,44 @@ class CountViewFragment : BaseFragment() {
                     }
                 }
             }
+        }
+    }
+
+    // 값에 변화가 생길때만 화면을 리프레쉬 하기 위한 변수
+    var _availability = ""
+    var _performance = ""
+    var _quality = ""
+
+    private fun drawChartView2() {
+        var availability = AppGlobal.instance.get_availability()
+        var performance = AppGlobal.instance.get_performance()
+        var quality = AppGlobal.instance.get_quality()
+
+        if (availability=="") availability = "0"
+        if (performance=="") performance = "0"
+        if (quality=="") quality = "0"
+
+        // 값에 변화가 있을때만 갱신
+        if (_availability != availability || _performance != performance || _quality != quality) {
+            _availability = availability
+            _performance = performance
+            _quality = quality
+
+            Log.e("drawChartView2", "oee graph redraw")
+
+            var oee = availability.toFloat() * performance.toFloat() * quality.toFloat() / 10000.0f
+            var oee2 = String.format("%.1f", oee)
+            oee2 = oee2.replace(",", ".")//??
+
+            tv_oee_rate.text = oee2 + "%"
+            tv_availability_rate.text = availability + "%"
+            tv_performance_rate.text = performance + "%"
+            tv_quality_rate.text = quality + "%"
+
+            oee_progress.progress = oee.toInt()
+            availability_progress.progress = ceil(availability.toFloat()).toInt()
+            performance_progress.progress = ceil(performance.toFloat()).toInt()
+            quality_progress.progress = ceil(quality.toFloat()).toInt()
         }
     }
 
