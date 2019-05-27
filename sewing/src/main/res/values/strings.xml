@@ -30,6 +30,7 @@
     <string name="label_mc_serial">MC SERIAL</string>
     <string name="label_server_ip">SERVER IP</string>
     <string name="label_server_port">PORT</string>
+    <string name="label_wos_name">WOS name to display</string>
     <string name="label_from_server">TARGET TYPE FROM SERVER</string>
     <string name="label_from_device">TARGET TYPE FROM DEVICE</string>
     <string name="label_count_trim">TRIM</string>

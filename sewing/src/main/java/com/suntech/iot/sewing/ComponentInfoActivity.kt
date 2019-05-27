@@ -116,6 +116,10 @@ class ComponentInfoActivity : BaseActivity() {
             tv_compo_actual.text = _list_for_wos[i]["actual"]!!
         }
 
+        // WOS name
+        tv_wos_name.text = AppGlobal.instance.get_wos_name()
+        tv_wos_name2.text = AppGlobal.instance.get_wos_name()
+
         tv_compo_wos.text = AppGlobal.instance.get_compo_wos()
         tv_compo_model.text = AppGlobal.instance.get_compo_model()
         tv_compo_style.text = AppGlobal.instance.get_compo_style()

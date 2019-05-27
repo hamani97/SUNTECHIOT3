@@ -14,6 +14,7 @@ import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.common.AppGlobal
 import com.suntech.iot.sewing.db.DBHelperForComponent
 import kotlinx.android.synthetic.main.activity_actual_count_edit.*
+import kotlinx.android.synthetic.main.list_item_product_title.*
 import kotlinx.android.synthetic.main.list_item_product_total.*
 
 class ActualCountEditActivity : BaseActivity() {
@@ -34,6 +35,8 @@ class ActualCountEditActivity : BaseActivity() {
     }
 
     private fun initView() {
+        tv_prod_wos_name.text = AppGlobal.instance.get_wos_name()
+
         btn_confirm.setOnClickListener {
             finish(true, 1, "ok", null)
         }

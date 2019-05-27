@@ -126,6 +126,9 @@ class CountViewFragment : BaseFragment() {
         } else {
             ll_total_count.visibility = View.GONE
             ll_component_count.visibility = View.VISIBLE
+
+            tv_count_wos_name.text = AppGlobal.instance.get_wos_name()      // 표 안의 WOS name
+
             fetchFilterWos()    // 기존 선택된 WOS 가 있으면 로드해서 화면에 표시한다.
         }
 
@@ -248,6 +251,7 @@ class CountViewFragment : BaseFragment() {
 //        tv_component.text = AppGlobal.instance.get_compo_component()
 //        tv_style_no.text = AppGlobal.instance.get_compo_style()
 
+        // 우측 쪽창
         tv_count_view_csize.text = AppGlobal.instance.get_compo_size()
         tv_count_view_clayer.text = AppGlobal.instance.get_compo_layer()
         tv_count_view_ctarget.text = "" + AppGlobal.instance.get_compo_target()

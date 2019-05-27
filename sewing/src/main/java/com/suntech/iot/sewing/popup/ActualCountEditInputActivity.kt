@@ -21,6 +21,8 @@ class ActualCountEditInputActivity : BaseActivity() {
     }
 
     private fun initView() {
+        tv_prod_edit_wos_name.text = AppGlobal.instance.get_wos_name()
+
         val work_idx = intent.getStringExtra("work_idx")
         val actual = intent.getStringExtra("actual")
 

@@ -187,8 +187,8 @@
                                 android:orientation="horizontal">
                             <TextView
                                     android:id="@+id/blink_color_f8ad13"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
+                                    android:layout_width="42dp"
+                                    android:layout_height="42dp"
                                     android:layout_marginRight="8dp"
                                     android:gravity="center"
                                     android:text=""
@@ -198,8 +198,8 @@
                                     android:background="@color/colorOrange"/>
                             <TextView
                                     android:id="@+id/blink_color_ff0000"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
+                                    android:layout_width="42dp"
+                                    android:layout_height="42dp"
                                     android:layout_marginRight="8dp"
                                     android:gravity="center"
                                     android:text=""
@@ -209,8 +209,8 @@
                                     android:background="@color/colorRed"/>
                             <TextView
                                     android:id="@+id/blink_color_0079BA"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
+                                    android:layout_width="42dp"
+                                    android:layout_height="42dp"
                                     android:layout_marginRight="8dp"
                                     android:gravity="center"
                                     android:text=""
@@ -220,8 +220,8 @@
                                     android:background="@color/colorReadonly2"/>
                             <TextView
                                     android:id="@+id/blink_color_888888"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
+                                    android:layout_width="42dp"
+                                    android:layout_height="42dp"
                                     android:gravity="center"
                                     android:text=""
                                     android:textSize="20sp"
@@ -230,7 +230,7 @@
                                     android:background="@color/colorGray"/>
                         </LinearLayout>
 
-                        <TextView style="@style/table_title" android:text="@string/title_function" android:layout_marginTop="28dp" />
+                        <TextView style="@style/table_title" android:text="@string/title_function" android:layout_marginTop="20dp" />
 
                         <LinearLayout style="@style/table_row">
                             <TextView style="@style/table_row_title" android:text="Component"
@@ -248,6 +248,11 @@
                                         android:checked="false"/>
                             </LinearLayout>
 
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/table_row">
+                            <TextView style="@style/table_row_title" android:layout_width="160dp" android:text="@string/label_wos_name" />
+                            <EditText style="@style/table_row_data_editor1" android:id="@+id/et_setting_wos_name" />
                         </LinearLayout>
 
                     </LinearLayout>

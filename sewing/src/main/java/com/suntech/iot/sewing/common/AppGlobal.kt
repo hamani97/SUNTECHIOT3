@@ -65,6 +65,12 @@ class AppGlobal private constructor() {
     fun set_with_component(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_with_component", state) }
     fun get_with_component() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_with_component") }
 
+    fun set_wos_name(name: String) { UtilLocalStorage.setString(instance._context!!, "current_wos_name", name) }
+    fun get_wos_name() : String {
+        val name = UtilLocalStorage.getString(instance._context!!, "current_wos_name")
+        return if (name != "") name else "WOS"
+    }
+
     fun set_screen_blink(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_screen_blink", state) }
     fun get_screen_blink() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_screen_blink") }
     fun set_remain_number(value: Int) { UtilLocalStorage.setInt(instance._context!!, "current_remain_number", value) }
