@@ -35,9 +35,9 @@
     <string name="label_from_device">TARGET TYPE FROM DEVICE</string>
     <string name="label_count_trim">TRIM</string>
     <string name="label_count_stitch">STITCH</string>
-    <string name="label_count_trim_qty">Trim Q\'ty</string>
+    <string name="label_count_trim_qty">Piece(s)</string>
     <string name="label_count_trim_pairs">Pair(s)</string>
-    <string name="label_count_stitch_qty">Stitch Q\'ty</string>
+    <string name="label_count_stitch_qty">Piece(s)</string>
     <string name="label_count_stitch_delay_time">Delay Time(sec)</string>
 
     <!-- 홈화면 -->
