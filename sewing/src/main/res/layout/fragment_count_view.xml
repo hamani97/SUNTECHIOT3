@@ -211,7 +211,7 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:layout_gravity="center"
-                                    android:text="        PAIRS(S)  :  "
+                                    android:text="        PAIR(S)  :  "
                                     android:textSize="16sp"
                                     android:textColor="@color/colorWhite" />
                             <TextView
