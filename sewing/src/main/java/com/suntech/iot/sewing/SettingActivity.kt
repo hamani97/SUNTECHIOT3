@@ -23,8 +23,8 @@ class SettingActivity : BaseActivity() {
     private var _selected_target_type: String = "device"
     private var _selected_blink_color: String = AppGlobal.instance.get_blink_color()
 
-    private var _selected_trim_pair: String = ""
-    private var _selected_stitch_pair: String = ""
+//    private var _selected_trim_pair: String = ""
+//    private var _selected_stitch_pair: String = ""
 
     private var _selected_factory_idx: String = ""
     private var _selected_room_idx: String = ""
@@ -125,6 +125,11 @@ class SettingActivity : BaseActivity() {
         tv_stitch_delay_time.setText(AppGlobal.instance.get_stitch_delay_time())
         tv_stitch_pairs.text = AppGlobal.instance.get_stitch_pairs()
 
+        tv_stitch_start2.setText(AppGlobal.instance.get_stitch_qty_start2())
+        tv_stitch_end2.setText(AppGlobal.instance.get_stitch_qty_end2())
+        tv_trim_qty2.setText(AppGlobal.instance.get_trim_qty2())
+        tv_trim_stitch_pairs.setText(AppGlobal.instance.get_trim_stitch_pairs())
+
 
         // count setting
 //        _selected_layer_0 = AppGlobal.instance.get_layer_pairs("0")     // 1 layer = 0.5 pair
@@ -151,6 +156,7 @@ class SettingActivity : BaseActivity() {
 
         tv_trim_pairs.setOnClickListener { selectTrimPair() }
         tv_stitch_pairs.setOnClickListener { selectStitchPair() }
+        tv_trim_stitch_pairs.setOnClickListener { selectTrimStitchPair() }
 
         // target setting
         if (AppGlobal.instance.get_target_type() == "") targetTypeChange("device_per_accumulate")
@@ -325,6 +331,11 @@ class SettingActivity : BaseActivity() {
         AppGlobal.instance.set_stitch_qty_end(tv_stitch_end.text.toString())
         AppGlobal.instance.set_stitch_delay_time(tv_stitch_delay_time.text.toString())
         AppGlobal.instance.set_stitch_pairs(tv_stitch_pairs.text.toString())
+
+        AppGlobal.instance.set_stitch_qty_start2(tv_stitch_start2.text.toString())
+        AppGlobal.instance.set_stitch_qty_end2(tv_stitch_end2.text.toString())
+        AppGlobal.instance.set_trim_qty2(tv_trim_qty2.text.toString())
+        AppGlobal.instance.set_trim_stitch_pairs(tv_trim_stitch_pairs.text.toString())
 //        AppGlobal.instance.set_layer_pairs("0", _selected_layer_0)
 //        AppGlobal.instance.set_layer_pairs("1", _selected_layer_1)
 //        AppGlobal.instance.set_layer_pairs("2", _selected_layer_2)
@@ -386,7 +397,7 @@ class SettingActivity : BaseActivity() {
         startActivity(intent, { r, c, m, d ->
             if (r) {
                 tv_trim_pairs.text = arr[c]
-                _selected_trim_pair = arr[c]
+//                _selected_trim_pair = arr[c]
             }
         })
     }
@@ -403,7 +414,23 @@ class SettingActivity : BaseActivity() {
         startActivity(intent, { r, c, m, d ->
             if (r) {
                 tv_stitch_pairs.text = arr[c]
-                _selected_stitch_pair = arr[c]
+//                _selected_stitch_pair = arr[c]
+            }
+        })
+    }
+
+    private fun selectTrimStitchPair() {
+        var arr: ArrayList<String> = arrayListOf<String>()
+        arr.add("1/8")
+        arr.add("1/4")
+        arr.add("1/2")
+        arr.add("1")
+
+        val intent = Intent(this, PopupSelectList::class.java)
+        intent.putStringArrayListExtra("list", arr)
+        startActivity(intent, { r, c, m, d ->
+            if (r) {
+                tv_trim_stitch_pairs.text = arr[c]
             }
         })
     }

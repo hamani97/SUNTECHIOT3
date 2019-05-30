@@ -289,6 +289,15 @@ class AppGlobal private constructor() {
     fun set_stitch_pairs(pair: String) { UtilLocalStorage.setString(instance._context!!, "current_stitch_pair", pair) }
     fun get_stitch_pairs() : String { return UtilLocalStorage.getString(instance._context!!, "current_stitch_pair") }
 
+    fun set_stitch_qty_start2(value: String) { UtilLocalStorage.setString(instance._context!!, "current_stitch_start2", value) }
+    fun get_stitch_qty_start2() : String { return UtilLocalStorage.getString(instance._context!!, "current_stitch_start2") }
+    fun set_stitch_qty_end2(value: String) { UtilLocalStorage.setString(instance._context!!, "current_stitch_end2", value) }
+    fun get_stitch_qty_end2() : String { return UtilLocalStorage.getString(instance._context!!, "current_stitch_end2") }
+    fun set_trim_qty2(value: String) { UtilLocalStorage.setString(instance._context!!, "current_trim_qty2", value) }
+    fun get_trim_qty2() : String { return UtilLocalStorage.getString(instance._context!!, "current_trim_qty2") }
+    fun set_trim_stitch_pairs(pair: String) { UtilLocalStorage.setString(instance._context!!, "current_trim_stitch_pair", pair) }
+    fun get_trim_stitch_pairs() : String { return UtilLocalStorage.getString(instance._context!!, "current_trim_stitch_pair") }
+
     // server, manual 방식
     fun set_target_type(value: String) { UtilLocalStorage.setString(instance._context!!, "target_type", value) }
     fun get_target_type() : String { return UtilLocalStorage.getString(instance._context!!, "target_type") }

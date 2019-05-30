@@ -369,7 +369,7 @@
                     </LinearLayout>
 
                     <!-- Trim -->
-                    <LinearLayout style="@style/table_row" android:layout_marginTop="4dp">
+                    <LinearLayout style="@style/table_row" android:layout_marginTop="4dp" android:layout_height="28dp">
                         <EditText android:id="@+id/tv_trim_qty"
                                   style="@style/table_row_data_editor1"
                                   android:layout_width="60dp"
@@ -403,7 +403,7 @@
                     </LinearLayout>
 
                     <!-- Stitch -->
-                    <LinearLayout style="@style/table_row" android:layout_marginTop="20dp">
+                    <LinearLayout style="@style/table_row" android:layout_marginTop="10dp" android:layout_height="28dp">
                         <TextView
                                 android:id="@+id/tv_setting_count_stitch"
                                 style="@style/table_row_title"
@@ -467,6 +467,83 @@
                                 android:src="@drawable/ic_arrow_right16" />
                         <TextView style="@style/table_row_data_selector"
                                   android:id="@+id/tv_stitch_pairs"
+                                  android:gravity="center"
+                                  android:text=""
+                                  android:layout_width="60dp"/>
+                        <TextView style="@style/table_row_title"
+                                  android:layout_width="wrap_content"
+                                  android:paddingLeft="16dp"
+                                  android:paddingRight="16dp"
+                                  android:text="@string/label_count_trim_pairs"
+                                  android:layout_marginLeft="8dp" />
+                    </LinearLayout>
+
+                    <!-- Trim & Stitch -->
+                    <LinearLayout style="@style/table_row" android:layout_marginTop="10dp" android:layout_height="28dp">
+                        <TextView
+                                android:id="@+id/tv_setting_count_trim_stitch"
+                                style="@style/table_row_title"
+                                android:layout_width="190dp"
+                                android:background="@color/colorBackgroundTop"
+                                android:text="@string/label_count_trim_and_stitch"
+                                android:textColor="@color/colorReadonly"
+                                android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/table_row" android:layout_marginTop="4dp">
+                        <EditText android:id="@+id/tv_stitch_start2"
+                                  style="@style/table_row_data_editor1"
+                                  android:layout_width="60dp"
+                                  android:gravity="center"
+                                  android:singleLine="true"
+                                  android:inputType="number" />
+                        <TextView android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:paddingLeft="6dp"
+                                  android:paddingRight="6dp"
+                                  android:text="~"
+                                  android:textSize="14sp"
+                                  android:textColor="@color/colorWhite"/>
+                        <EditText android:id="@+id/tv_stitch_end2"
+                                  style="@style/table_row_data_editor1"
+                                  android:layout_width="60dp"
+                                  android:gravity="center"
+                                  android:singleLine="true"
+                                  android:inputType="number" />
+                        <TextView style="@style/table_row_title"
+                                  android:layout_width="wrap_content"
+                                  android:paddingLeft="16dp"
+                                  android:paddingRight="16dp"
+                                  android:text="@string/label_count_stitch_qty"
+                                  android:layout_marginLeft="8dp" />
+                        <TextView android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:paddingLeft="9dp"
+                                  android:paddingRight="9dp"
+                                  android:text="+"
+                                  android:textSize="14sp"
+                                  android:textColor="@color/colorWhite" />
+                        <EditText android:id="@+id/tv_trim_qty2"
+                                  style="@style/table_row_data_editor1"
+                                  android:layout_width="60dp"
+                                  android:gravity="center"
+                                  android:singleLine="true"
+                                  android:inputType="number" />
+                        <TextView style="@style/table_row_title"
+                                  android:layout_width="wrap_content"
+                                  android:paddingLeft="16dp"
+                                  android:paddingRight="16dp"
+                                  android:text="@string/label_count_trim_qty"
+                                  android:layout_marginLeft="8dp" />
+                        <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_arrow_right16" />
+                        <TextView style="@style/table_row_data_selector"
+                                  android:id="@+id/tv_trim_stitch_pairs"
                                   android:gravity="center"
                                   android:text=""
                                   android:layout_width="60dp"/>
