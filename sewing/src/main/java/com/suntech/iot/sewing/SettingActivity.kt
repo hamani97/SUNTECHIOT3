@@ -230,7 +230,7 @@ class SettingActivity : BaseActivity() {
         if (AppGlobal.instance._server_state) btn_server_state.isSelected = true
         else btn_server_state.isSelected = false
 
-        if (et_setting_server_ip.text.toString() == "") et_setting_server_ip.setText("49.247.203.100")     // 10.10.10.90
+        if (et_setting_server_ip.text.toString() == "") et_setting_server_ip.setText("49.247.205.235")     // 10.10.10.90
         if (et_setting_port.text.toString() == "") et_setting_port.setText("80")
     }
 
