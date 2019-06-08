@@ -99,8 +99,8 @@ class CountViewFragment : BaseFragment() {
 
             } else if (AppGlobal.instance.get_count_type() == "stitch") {
                 tv_kind_name.text = "STITCH  :  "
-                tv_kind_qty.text = "0"
-                tv_kind_pairs.text = "0"
+                tv_kind_qty.text = "" + (activity as MainActivity).stitch_qty
+                tv_kind_pairs.text = "" + (activity as MainActivity).stitch_pairs
 
 //                tv_stitch_qty.text = "STITCH  :  " + AppGlobal.instance.get_stitch_qty_start() + "~" + AppGlobal.instance.get_stitch_qty_end()
 //                tv_stitch_qty.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
@@ -343,8 +343,25 @@ class CountViewFragment : BaseFragment() {
                 drawChartView2()
             }
             if (AppGlobal.instance.get_count_type() == "trim") {
+                val pairs = AppGlobal.instance.get_trim_pairs()
+                var pairs_str = ""
+                when (pairs) {
+                    "1/2" -> pairs_str = "/2"
+                    "1/4" -> pairs_str = "/4"
+                    "1/8" -> pairs_str = "/8"
+                }
                 tv_kind_qty.text = "" + (activity as MainActivity).trim_qty
-                tv_kind_pairs.text = "" + (activity as MainActivity).trim_pairs
+                tv_kind_pairs.text = "" + (activity as MainActivity).trim_pairs + pairs_str
+            } else if (AppGlobal.instance.get_count_type() == "stitch") {
+                val pairs = AppGlobal.instance.get_stitch_pairs()
+                var pairs_str = ""
+                when (pairs) {
+                    "1/2" -> pairs_str = "/2"
+                    "1/4" -> pairs_str = "/4"
+                    "1/8" -> pairs_str = "/8"
+                }
+                tv_kind_qty.text = "" + (activity as MainActivity).stitch_qty
+                tv_kind_pairs.text = "" + (activity as MainActivity).stitch_pairs + pairs_str
             }
         }
 
@@ -538,10 +555,41 @@ class CountViewFragment : BaseFragment() {
             tv_performance_rate.text = performance + "%"
             tv_quality_rate.text = quality + "%"
 
-            oee_progress.progress = oee.toInt()
-            availability_progress.progress = ceil(availability.toFloat()).toInt()
-            performance_progress.progress = ceil(performance.toFloat()).toInt()
-            quality_progress.progress = ceil(quality.toFloat()).toInt()
+            val oee_int = oee.toInt()
+            val availability_int = ceil(availability.toFloat()).toInt()
+            val performance_int = ceil(performance.toFloat()).toInt()
+            val quality_int = ceil(quality.toFloat()).toInt()
+
+            oee_progress.progress = oee_int
+            availability_progress.progress = availability_int
+            performance_progress.progress = performance_int
+            quality_progress.progress = quality_int
+
+            var oee_color_code = "ff0000"
+            var availability_color_code = "ff0000"
+            var performance_color_code = "ff0000"
+            var quality_color_code = "ff0000"
+
+            for (i in 0..(_list.size - 1)) {
+                val snumber = _list[i]["snumber"]?.toInt() ?: 0
+                val enumber = _list[i]["enumber"]?.toInt() ?: 0
+                if (snumber <= oee_int && enumber >= oee_int) oee_color_code = _list[i]["color_code"].toString()
+                if (snumber <= availability_int && enumber >= availability_int) availability_color_code = _list[i]["color_code"].toString()
+                if (snumber <= performance_int && enumber >= performance_int) performance_color_code = _list[i]["color_code"].toString()
+                if (snumber <= quality_int && enumber >= quality_int) quality_color_code = _list[i]["color_code"].toString()
+            }
+
+            oee_progress.progressStartColor = Color.parseColor("#" + oee_color_code)
+            oee_progress.progressEndColor = Color.parseColor("#" + oee_color_code)
+
+            availability_progress.progressStartColor = Color.parseColor("#" + availability_color_code)
+            availability_progress.progressEndColor = Color.parseColor("#" + availability_color_code)
+
+            performance_progress.progressStartColor = Color.parseColor("#" + performance_color_code)
+            performance_progress.progressEndColor = Color.parseColor("#" + performance_color_code)
+
+            quality_progress.progressStartColor = Color.parseColor("#" + quality_color_code)
+            quality_progress.progressEndColor = Color.parseColor("#" + quality_color_code)
         }
     }
 
