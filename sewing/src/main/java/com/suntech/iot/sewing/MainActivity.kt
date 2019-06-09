@@ -20,9 +20,11 @@ import com.suntech.iot.sewing.base.BaseFragment
 import com.suntech.iot.sewing.common.AppGlobal
 import com.suntech.iot.sewing.common.Constants
 import com.suntech.iot.sewing.db.DBHelperForComponent
+import com.suntech.iot.sewing.db.DBHelperForDownTime
 import com.suntech.iot.sewing.db.DBHelperForReport
 import com.suntech.iot.sewing.db.DBHelperForTarget
 import com.suntech.iot.sewing.popup.ActualCountEditActivity
+import com.suntech.iot.sewing.popup.ActualTotalCountEditActivity
 import com.suntech.iot.sewing.popup.PushActivity
 import com.suntech.iot.sewing.service.UsbService
 import com.suntech.iot.sewing.util.OEEUtil
@@ -74,13 +76,25 @@ class MainActivity : BaseActivity() {
         if (AppGlobal.instance.get_long_touch()) {
             btn_home.setOnLongClickListener { changeFragment(0); true }
             btn_push_to_app.setOnLongClickListener { startActivity(Intent(this, PushActivity::class.java)); true }
-            btn_actual_count_edit.setOnLongClickListener { startActivity(Intent(this, ActualCountEditActivity::class.java)); true }
-            btn_production_report.setOnLongClickListener { startActivity(Intent(this, ProductionReportActivity::class.java)); true }
+            btn_actual_count_edit.setOnLongClickListener {
+                if (AppGlobal.instance.get_with_component()) {
+                    startActivity(Intent(this, ActualCountEditActivity::class.java)); true
+                } else {
+                    startActivity(Intent(this, ActualTotalCountEditActivity::class.java)); true
+                }
+            }
+            btn_production_report.setOnLongClickListener { startActivity(Intent(this, ProductionReportTotalActivity::class.java)); true }
         } else {
             btn_home.setOnClickListener { changeFragment(0) }
             btn_push_to_app.setOnClickListener { startActivity(Intent(this, PushActivity::class.java)) }
-            btn_actual_count_edit.setOnClickListener { startActivity(Intent(this, ActualCountEditActivity::class.java)) }
-            btn_production_report.setOnClickListener { startActivity(Intent(this, ProductionReportActivity::class.java)) }
+            btn_actual_count_edit.setOnClickListener {
+                if (AppGlobal.instance.get_with_component()) {
+                    startActivity(Intent(this, ActualCountEditActivity::class.java))
+                } else {
+                    startActivity(Intent(this, ActualTotalCountEditActivity::class.java))
+                }
+            }
+            btn_production_report.setOnClickListener { startActivity(Intent(this, ProductionReportTotalActivity::class.java)) }
         }
 
         // fragment & swipe
@@ -294,11 +308,13 @@ class MainActivity : BaseActivity() {
         if (AppGlobal.instance.get_with_component()) {
             // 선택한 Component 제품이 있는지 확인
             if (work_idx == "") {
-                Toast.makeText(this, getString(R.string.msg_select_component), Toast.LENGTH_SHORT).show(); return
+                Toast.makeText(this, getString(R.string.msg_select_component), Toast.LENGTH_SHORT).show()
+                return
             }
             // Pairs 선택 확인
             if (AppGlobal.instance.get_compo_pairs() == "") {
-                Toast.makeText(this, getString(R.string.msg_layer_not_selected), Toast.LENGTH_SHORT).show(); return
+                Toast.makeText(this, getString(R.string.msg_layer_not_selected), Toast.LENGTH_SHORT).show()
+                return
             }
         }
 
@@ -306,7 +322,10 @@ class MainActivity : BaseActivity() {
         var inc_count = value.toString().toInt()
 
         if (cmd == "T" || cmd == "count") {
-            val qty = AppGlobal.instance.get_trim_qty()
+
+            if (AppGlobal.instance.get_count_type() != "trim") return
+
+            val qty = AppGlobal.instance.get_trim_qty().toInt()
             val pairs = AppGlobal.instance.get_trim_pairs()
             var pairs_int = 1
             when (pairs) {
@@ -315,63 +334,51 @@ class MainActivity : BaseActivity() {
                 "1/8" -> pairs_int = 8
             }
 
-            trim_pairs += inc_count
+            trim_qty += inc_count
 
-            while (trim_pairs >= pairs_int) {
-                trim_qty++
-                trim_pairs -= pairs_int
+            while (trim_qty >= qty) {
+                trim_qty -= qty
+                trim_pairs++
             }
-
             inc_count = 0
 
-            while (trim_qty >= qty.toInt()) {
-                trim_qty -= qty.toInt()
+            while (trim_pairs >= pairs_int) {
+                trim_pairs -= pairs_int
                 inc_count++
             }
-//Log.e("count", "qty=" + trim_qty+", pairs="+trim_pairs)
-            if (inc_count <= 0) return
 
-            // total count
-//            val cnt = AppGlobal.instance.get_current_shift_actual_cnt() + inc_count
-//            AppGlobal.instance.set_current_shift_actual_cnt(cnt)
-//
-//            // 콤포넌트 선택인 경우
-//            if (AppGlobal.instance.get_with_component()) {
-//                // component total count
-//                val db = DBHelperForComponent(this)
-//                val row = db.get(work_idx)
-//                if (row != null) {
-//                    val actual = (row!!["actual"].toString().toInt() + inc_count)
-//                    db.updateWorkActual(work_idx, actual)
-//                    sendCountData(value.toString(), inc_count, actual)  // 서버에 카운트 정보 전송
-//                } else {
-//                    sendCountData(value.toString(), inc_count, inc_count)  // 서버에 카운트 정보 전송
-//                }
-//            } else {
-//                sendCountData(value.toString(), inc_count, cnt)  // 서버에 카운트 정보 전송
+//            val qty = AppGlobal.instance.get_trim_qty()
+//            val pairs = AppGlobal.instance.get_trim_pairs()
+//            var pairs_int = 1
+//            when (pairs) {
+//                "1/2" -> pairs_int = 2
+//                "1/4" -> pairs_int = 4
+//                "1/8" -> pairs_int = 8
 //            }
 //
-//            _last_count_received_time = DateTime()      // downtime 시간 초기화
+//            trim_pairs += inc_count
 //
-////            _stitch_db.add(work_idx, value.toString())
-//
-//            // Production Report를 위한 DB저장
-//            //val now = DateTime()
-//            val now = cur_shift["date"]
-//            val date = now.toString()
-//            val houly = DateTime().toString("HH")
-//
-//            val rep = _report_db.get(date, houly, shift_idx.toString())
-//            if (rep == null) {
-//                _report_db.add(date, houly, shift_idx.toString(), inc_count, 0)
-//            } else {
-//                val idx = rep!!["idx"].toString()
-//                val actual = rep!!["actual"].toString().toInt() + inc_count
-//                _report_db.updateActual(idx, actual)
+//            while (trim_pairs >= pairs_int) {
+//                trim_qty++
+//                trim_pairs -= pairs_int
 //            }
+//
+//            inc_count = 0
+//
+//            while (trim_qty >= qty.toInt()) {
+//                trim_qty -= qty.toInt()
+//                inc_count++
+//            }
+            //Log.e("count", "qty=" + trim_qty+", pairs="+trim_pairs)
+
         } else if (cmd == "S") {
-//            Toast.makeText(this, "This mode is not yet supported.", Toast.LENGTH_SHORT).show()
+
+            if (AppGlobal.instance.get_count_type() != "stitch") return
+
             val delay_time = AppGlobal.instance.get_stitch_delay_time()
+
+            val now = DateTime().millis
+            if (last_time == 0L) last_time = now
 
             // Delay time 계산
             val delay_float: Float = delay_time.toFloat()
@@ -381,9 +388,6 @@ class MainActivity : BaseActivity() {
                 Toast.makeText(this, "There is a delay time problem.", Toast.LENGTH_SHORT).show()
                 return
             }
-
-            val now = DateTime().millis
-            if (last_time == 0L) last_time = now
 
             val qty_start = AppGlobal.instance.get_stitch_qty_start().toInt()
 //            val qty_end = AppGlobal.instance.get_stitch_qty_end()
@@ -397,8 +401,8 @@ class MainActivity : BaseActivity() {
                 stitch_qty += inc_count
             } else {
                 // 설정한 딜레이 타임이 넘어갔으면 초기화를 한다.
-                val sub = now - last_time
-                if (sub > delay_long) {
+                if (now - last_time > delay_long) {
+                    real_count = true
                     stitch_qty = inc_count
                 } else {
                     stitch_qty += inc_count
@@ -426,12 +430,12 @@ class MainActivity : BaseActivity() {
                 }
             }
 
-            Log.e("==> Stitch count", "last_time=" + last_time + ", now time=" + now + " =========> sesonds = " + (now - last_time))
+            Log.e("==> Stitch count", "last_time=" + last_time + ", now time=" + now + " =========> seconds = " + (now - last_time))
 
             last_time = now
-
-            if (inc_count <= 0) return
         }
+
+        if (inc_count <= 0) return
 
         // total count
         val cnt = AppGlobal.instance.get_current_shift_actual_cnt() + inc_count
@@ -1062,9 +1066,57 @@ Log.e("debug", "line_idx="+AppGlobal.instance.get_line_idx()+"&date="+today+"&ma
         }
     }
 
+    fun endTodayWork() {
+        AppGlobal.instance.set_work_idx("")
+        AppGlobal.instance.set_worker_no("")
+        AppGlobal.instance.set_worker_name("")
+        AppGlobal.instance.set_compo_size("")
+        AppGlobal.instance.set_compo_target(0)
+
+        AppGlobal.instance.set_current_shift_actual_cnt(0)
+
+        var db2 = DBHelperForDownTime(this)
+        db2.delete()
+
+        var db4 = DBHelperForComponent(this)
+        db4.delete()
+
+        Toast.makeText(this, getString(R.string.msg_exit_automatically), Toast.LENGTH_SHORT).show()
+    }
+
+    /*
+     *  Shift 전환을 위한 실시간 검사. 매초마다 실행됨
+     *  현재 작업중인 Shift 가 있으면 종료되는 시간을 검사해서 종료 시간이 되었다면 다음 쉬프트를 계산한다. (_current_shift_etime_millis)
+     *  현재 작업중인 Shift 가 없으면 일하는 시간이 아니므로 다음 시작 시간을 검사하고, 시작 시간이라면 Shift의 종료시간을 계산한다. (_next_shift_stime_millis)
+     */
+    fun checkCurrentShiftEndTime() {
+        // 현재 Shift 끝남
+        if (_current_shift_etime_millis != 0L) {
+            if (_current_shift_etime_millis <= DateTime().millis) {
+                Log.e("checkCurrentShiftEnd", "end time . finish shift work =============================> need reload")
+                AppGlobal.instance.set_current_shift_actual_cnt(0)      // 토탈 Actual 초기화
+                // 마지막 작업이 끝났으면 완전 초기화
+                if (_last_working == true) {
+                    endTodayWork()
+                    _last_working = false
+                }
+                compute_work_shift()
+            }
+
+        } else {
+            // 다음 Shift 시작됨
+            if (_next_shift_stime_millis != 0L) {
+                if (_next_shift_stime_millis <= DateTime().millis) {
+                    Log.e("checkCurrentShiftEnd", "start time . start shift work =============================> need reload")
+                    compute_work_shift()
+                }
+            }
+        }
+    }
+
     /////// 쓰레드
     private val _downtime_timer = Timer()
-    private val _timer_task1 = Timer()          // 10초마다. 서버 접속 체크 Ping test. Shift의 Target 정보
+//    private val _timer_task1 = Timer()          // 10초마다. 서버 접속 체크 Ping test. Shift의 Target 정보
     private val _timer_task2 = Timer()          // 10분마다. 작업시간, 다운타입, 칼라 Data 가져오기 (workdata, designdata, downtimetype, color)
     private val _timer_task3 = Timer()          // 30초마다. 그래프 그리기 위한 태스크
     private val _timer_task4 = Timer()          // 30분마다. 서버로 타겟값 전송
@@ -1072,25 +1124,25 @@ Log.e("debug", "line_idx="+AppGlobal.instance.get_line_idx()+"&date="+today+"&ma
     private fun start_timer() {
 
         // 매초
-//        val downtime_task = object : TimerTask() {
-//            override fun run() {
-//                runOnUiThread {
-//                    checkCurrentShiftEndTime()
-//                }
-//            }
-//        }
-//        _downtime_timer.schedule(downtime_task, 500, 1000)
-
-        // 10초마다
-        val task1 = object : TimerTask() {
+        val downtime_task = object : TimerTask() {
             override fun run() {
                 runOnUiThread {
-                    sendPing()
-//                    updateCurrentWorkTarget() // 30분으로 이동
+                    checkCurrentShiftEndTime()
                 }
             }
         }
-        _timer_task1.schedule(task1, 2000, 10000)
+        _downtime_timer.schedule(downtime_task, 500, 1000)
+
+//        // 10초마다
+//        val task1 = object : TimerTask() {
+//            override fun run() {
+//                runOnUiThread {
+////                    sendPing()    // 30초로 이동
+////                    updateCurrentWorkTarget() // 30분으로 이동
+//                }
+//            }
+//        }
+//        _timer_task1.schedule(task1, 2000, 10000)
 
         // 10분마다
         val task2 = object : TimerTask() {
@@ -1106,6 +1158,7 @@ Log.e("debug", "line_idx="+AppGlobal.instance.get_line_idx()+"&date="+today+"&ma
         val task3 = object : TimerTask() {
             override fun run() {
                 runOnUiThread {
+                    sendPing()
                     fetchOEEGraph()
                 }
             }
@@ -1123,8 +1176,8 @@ Log.e("debug", "line_idx="+AppGlobal.instance.get_line_idx()+"&date="+today+"&ma
         _timer_task4.schedule(task4, 600000, 1800000)
     }
     private fun cancel_timer() {
-//        _downtime_timer.cancel()
-        _timer_task1.cancel()
+        _downtime_timer.cancel()
+//        _timer_task1.cancel()
         _timer_task2.cancel()
         _timer_task3.cancel()
         _timer_task4.cancel()

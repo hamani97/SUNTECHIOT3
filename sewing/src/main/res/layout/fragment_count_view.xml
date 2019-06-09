@@ -536,7 +536,7 @@
                                 app:background_color="@color/colorReadonly2"
                                 app:progress_start_color="#ff0000"
                                 app:progress_end_color="#ff0000"
-                                app:progress_background_color="@color/colorReadonly2"
+                                app:progress_background_color="@color/colorWhite"
                                 app:progress_text_color="@color/colorBlack"
                                 app:draw_progress_text="false"
                                 app:progress_text_size="24dp"

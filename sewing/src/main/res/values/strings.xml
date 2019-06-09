@@ -123,4 +123,6 @@
     <string name="msg_has_not_server_info">Cannot find server</string>
     <string name="msg_component_not_enabled">Component function is not enabled.</string>
 
+    <string name="msg_exit_automatically">Workday ends automatically</string>
+
 </resources>

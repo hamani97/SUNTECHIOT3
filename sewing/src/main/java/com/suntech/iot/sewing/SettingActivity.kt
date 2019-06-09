@@ -153,6 +153,7 @@ class SettingActivity : BaseActivity() {
 
         tv_setting_count_trim.setOnClickListener { countTypeChange("trim") }
         tv_setting_count_stitch.setOnClickListener { countTypeChange("stitch") }
+        tv_setting_count_trim_stitch.setOnClickListener { Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show() }
 
         tv_trim_pairs.setOnClickListener { selectTrimPair() }
         tv_stitch_pairs.setOnClickListener { selectStitchPair() }

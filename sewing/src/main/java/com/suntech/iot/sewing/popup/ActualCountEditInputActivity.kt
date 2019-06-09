@@ -7,8 +7,6 @@ import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.common.AppGlobal
 import com.suntech.iot.sewing.db.DBHelperForComponent
 import kotlinx.android.synthetic.main.activity_actual_count_edit_input.*
-import kotlinx.android.synthetic.main.activity_push.btn_cancel
-import kotlinx.android.synthetic.main.activity_push.btn_confirm
 
 class ActualCountEditInputActivity : BaseActivity() {
 
