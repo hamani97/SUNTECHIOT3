@@ -183,7 +183,6 @@ class SettingActivity : BaseActivity() {
         btn_setting_device.setOnClickListener { tabChange(2) }
         btn_setting_count.setOnClickListener { tabChange(3) }
         btn_setting_target.setOnClickListener { tabChange(4) }
-        btn_setting_test.setOnClickListener { tabChange(5) }
 
         // System setting button listener
         tv_setting_factory.setOnClickListener { fetchDataForFactory() }
@@ -198,11 +197,6 @@ class SettingActivity : BaseActivity() {
 //        tv_layer_3.setOnClickListener { fetchPairData("3") }
 //        tv_layer_4.setOnClickListener { fetchPairData("4") }
 //        tv_layer_5.setOnClickListener { fetchPairData("5") }
-
-        // test mode
-        btn_test_mode_refresh.setOnClickListener {
-            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show()
-        }
 
         // check server button
         btn_setting_check_server.setOnClickListener {
@@ -619,11 +613,6 @@ class SettingActivity : BaseActivity() {
                 btn_setting_target.setBackgroundResource(R.color.colorButtonDefault)
                 layout_setting_target.visibility = View.GONE
             }
-            5 -> {
-                btn_setting_test.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
-                btn_setting_test.setBackgroundResource(R.color.colorButtonDefault)
-                layout_setting_test.visibility = View.GONE
-            }
         }
         tab_pos = v
         when (tab_pos) {
@@ -646,11 +635,6 @@ class SettingActivity : BaseActivity() {
                 btn_setting_target.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
                 btn_setting_target.setBackgroundResource(R.color.colorButtonBlue)
                 layout_setting_target.visibility = View.VISIBLE
-            }
-            5 -> {
-                btn_setting_test.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
-                btn_setting_test.setBackgroundResource(R.color.colorButtonBlue)
-                layout_setting_test.visibility = View.VISIBLE
             }
         }
     }
