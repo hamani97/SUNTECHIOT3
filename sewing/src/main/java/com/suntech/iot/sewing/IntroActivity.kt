@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.widget.Toast
 import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.common.AppGlobal
 import org.joda.time.DateTime
@@ -51,7 +50,7 @@ class IntroActivity : BaseActivity() {
             var code = result.getString("code")
             var msg = result.getString("msg")
             if(code != "00"){
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                ToastOut(this, msg)
             }
             moveToNext()
         }, {

@@ -72,11 +72,10 @@ class PushActivity : BaseActivity() {
         request(this, uri, true, params, { result ->
 
             var code = result.getString("code")
-            var msg = result.getString("msg")
             if(code == "00"){
                 finish(true, 1, "ok", null)
-            }else{
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -106,7 +105,7 @@ class PushActivity : BaseActivity() {
                 }
                 list_adapter?.notifyDataSetChanged()
 
-            }else{
+            } else {
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
             }
         })

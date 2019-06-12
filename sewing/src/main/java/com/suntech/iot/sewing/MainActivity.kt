@@ -1,5 +1,6 @@
 package com.suntech.iot.sewing
 
+import android.app.ProgressDialog.show
 import android.content.*
 import android.net.wifi.WifiManager
 import android.os.Bundle
@@ -29,6 +30,7 @@ import com.suntech.iot.sewing.popup.PushActivity
 import com.suntech.iot.sewing.service.UsbService
 import com.suntech.iot.sewing.util.OEEUtil
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_count_view.*
 import kotlinx.android.synthetic.main.layout_side_menu.*
 import kotlinx.android.synthetic.main.layout_top_menu.*
 import org.joda.time.DateTime
@@ -41,7 +43,8 @@ import java.util.*
 class MainActivity : BaseActivity() {
 
     var countViewType = 1       // Count view 화면값 1=Total count, 2=Component count, 3=Repair mode
-    var countViewMode = 1       // Count mode 1=Count mode, 2=Repair mode
+    var countViewMode = 1       // Count mode 화면값 1=Count mode, 2=Repair mode
+    var repairModeType = 1      // Repair mode 화면값 1=Repair mode, 2=Test mode
 
     val _target_db = DBHelperForTarget(this)    // 날짜의 Shift별 정보, Target 수량 정보 저장
     val _report_db = DBHelperForReport(this)    // 날짜의 Shift별 한시간 간격의 Actual 수량 저장
@@ -129,6 +132,7 @@ class MainActivity : BaseActivity() {
             return
         }
         this._doubleBackToExitPressedOnce = true
+
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
         Handler().postDelayed({ _doubleBackToExitPressedOnce = false }, 2000)
     }
@@ -166,15 +170,15 @@ class MainActivity : BaseActivity() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
                 UsbService.ACTION_USB_PERMISSION_GRANTED // USB PERMISSION GRANTED
-                -> Toast.makeText(context, "USB Ready", Toast.LENGTH_SHORT).show()
+                -> ToastOut(context, "USB Ready")
                 UsbService.ACTION_USB_PERMISSION_NOT_GRANTED // USB PERMISSION NOT GRANTED
-                -> Toast.makeText(context, "USB Permission not granted", Toast.LENGTH_SHORT).show()
+                -> ToastOut(context, "USB Permission not granted")
                 UsbService.ACTION_NO_USB // NO USB CONNECTED
-                -> Toast.makeText(context, "No USB connected", Toast.LENGTH_SHORT).show()
+                -> ToastOut(context, "No USB connected")
                 UsbService.ACTION_USB_DISCONNECTED // USB DISCONNECTED
-                -> Toast.makeText(context, "USB disconnected", Toast.LENGTH_SHORT).show()
+                -> ToastOut(context, "USB disconnected")
                 UsbService.ACTION_USB_NOT_SUPPORTED // USB NOT SUPPORTED
-                -> Toast.makeText(context, "USB device not supported", Toast.LENGTH_SHORT).show()
+                -> ToastOut(context, "USB device not supported")
             }
         }
     }
@@ -224,7 +228,6 @@ class MainActivity : BaseActivity() {
 
 
 //    fun handleData (data: String) {
-////        Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
 //        Log.e("USB Data", "usb = " + data)
 //        if (countViewMode == 2) return      // repair mode
 //        var count = 0
@@ -257,14 +260,18 @@ class MainActivity : BaseActivity() {
             val cmd = element.asJsonObject.get("cmd").asString
             val value = element.asJsonObject.get("value")
 
-            Toast.makeText(this, element.toString(), Toast.LENGTH_SHORT).show()
+            ToastOut(this, element.toString())
             Log.e("test", "usb = " + recvBuffer)
 
             // repair mode 가 아닐때만 실행
-            if (countViewMode != 2) saveRowData(cmd, value)
+            if (countViewMode != 2) {
+                saveRowData(cmd, value)
+            } else {
+                if (repairModeType == 2) testRowData(cmd, value)
+            }
 
         } else {
-            Toast.makeText(this, "usb parsing error! = " + recvBuffer, Toast.LENGTH_SHORT).show()
+            ToastOut(this, "usb parsing error! = " + recvBuffer)
             Log.e("test", "usb parsing error! = " + recvBuffer)
         }
     }
@@ -279,6 +286,18 @@ class MainActivity : BaseActivity() {
             }
         }
         return true
+    }
+
+    private fun testRowData(cmd: String, value: JsonElement) {
+        if (AppGlobal.instance.get_sound_at_count()) AppGlobal.instance.playSound(this)
+
+        var inc_count = value.toString().toInt()
+
+        if (cmd == "T" || cmd == "count") {
+            tv_test_trim.text = value.toString()
+        } else if (cmd == "S") {
+            tv_test_stitch.text = value.toString()
+        }
     }
 
     var trim_qty = 0
@@ -1008,7 +1027,6 @@ Log.e("debug", "line_idx="+AppGlobal.instance.get_line_idx()+"&date="+today+"&ma
             val millis = currentTimeMillisEnd - currentTimeMillisStart
 
             var code = result.getString("code")
-            var msg = result.getString("msg")
             if (code == "00") {
                 btn_server_state.isSelected = true
                 AppGlobal.instance._server_state = true
@@ -1018,7 +1036,7 @@ Log.e("debug", "line_idx="+AppGlobal.instance.get_line_idx()+"&date="+today+"&ma
                 br_intent.putExtra("state", "Y")
                 this.sendBroadcast(br_intent)
             } else {
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                ToastOut(this, result.getString("msg"))
             }
         }, {
             btn_server_state.isSelected = false
@@ -1083,7 +1101,7 @@ Log.e("debug", "line_idx="+AppGlobal.instance.get_line_idx()+"&date="+today+"&ma
         var db4 = DBHelperForComponent(this)
         db4.delete()
 
-        Toast.makeText(this, getString(R.string.msg_exit_automatically), Toast.LENGTH_SHORT).show()
+        ToastOut(this, R.string.msg_exit_automatically)
     }
 
     /*

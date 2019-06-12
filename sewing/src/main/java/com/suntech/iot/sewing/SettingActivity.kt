@@ -93,6 +93,7 @@ class SettingActivity : BaseActivity() {
         et_setting_wos_name.setText(AppGlobal.instance.get_wos_name())
 
         sw_long_touch.isChecked = AppGlobal.instance.get_long_touch()
+        sw_message_enable.isChecked = AppGlobal.instance.get_message_enable()
         sw_sound_at_count.isChecked = AppGlobal.instance.get_sound_at_count()
         sw_without_component.isChecked = AppGlobal.instance.get_with_component()
         sw_screen_blink_effect.isChecked = AppGlobal.instance.get_screen_blink()
@@ -183,6 +184,7 @@ class SettingActivity : BaseActivity() {
         btn_setting_device.setOnClickListener { tabChange(2) }
         btn_setting_count.setOnClickListener { tabChange(3) }
         btn_setting_target.setOnClickListener { tabChange(4) }
+        btn_setting_option.setOnClickListener { tabChange(5) }
 
         // System setting button listener
         tv_setting_factory.setOnClickListener { fetchDataForFactory() }
@@ -200,7 +202,7 @@ class SettingActivity : BaseActivity() {
 
         // check server button
         btn_setting_check_server.setOnClickListener {
-            checkServer(true)
+            checkServer()
             var new_ip = et_setting_server_ip.text.toString()
             var old_ip = AppGlobal.instance.get_server_ip()
             if (!new_ip.equals(old_ip)) {
@@ -229,7 +231,7 @@ class SettingActivity : BaseActivity() {
         if (et_setting_port.text.toString() == "") et_setting_port.setText("80")
     }
 
-    private fun checkServer(show_toast:Boolean = false) {
+    private fun checkServer() {
         val url = "http://"+ et_setting_server_ip.text.toString()
         val port = et_setting_port.text.toString()
         val uri = "/ping.php"
@@ -237,7 +239,7 @@ class SettingActivity : BaseActivity() {
 
         request(this, url, port, uri, false, false,false, params, { result ->
             var code = result.getString("code")
-            if (show_toast) Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
             if (code == "00") {
                 btn_server_state.isSelected = true
             } else {
@@ -245,7 +247,7 @@ class SettingActivity : BaseActivity() {
             }
         }, {
             btn_server_state.isSelected = false
-            if (show_toast) Toast.makeText(this, getString(R.string.msg_connection_fail), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.msg_connection_fail), Toast.LENGTH_SHORT).show()
         })
     }
 
@@ -308,6 +310,7 @@ class SettingActivity : BaseActivity() {
         AppGlobal.instance.set_server_ip(et_setting_server_ip.text.toString())
         AppGlobal.instance.set_server_port(et_setting_port.text.toString())
         AppGlobal.instance.set_long_touch(sw_long_touch.isChecked)
+        AppGlobal.instance.set_message_enable(sw_message_enable.isChecked)
         AppGlobal.instance.set_sound_at_count(sw_sound_at_count.isChecked)
         AppGlobal.instance.set_with_component(sw_without_component.isChecked)
 
@@ -360,10 +363,12 @@ class SettingActivity : BaseActivity() {
         )
         request(this, uri, false, params, { result ->
             var code = result.getString("code")
-            Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
             if(code == "00") {
+                ToastOut(this, result.getString("msg"))
                 sendAppStartTime()      // 앱 시작을 알림. 결과에 상관없이 종료
                 finish()
+            } else {
+                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -613,6 +618,11 @@ class SettingActivity : BaseActivity() {
                 btn_setting_target.setBackgroundResource(R.color.colorButtonDefault)
                 layout_setting_target.visibility = View.GONE
             }
+            5 -> {
+                btn_setting_option.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+                btn_setting_option.setBackgroundResource(R.color.colorButtonDefault)
+                layout_setting_option.visibility = View.GONE
+            }
         }
         tab_pos = v
         when (tab_pos) {
@@ -635,6 +645,11 @@ class SettingActivity : BaseActivity() {
                 btn_setting_target.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
                 btn_setting_target.setBackgroundResource(R.color.colorButtonBlue)
                 layout_setting_target.visibility = View.VISIBLE
+            }
+            5 -> {
+                btn_setting_option.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
+                btn_setting_option.setBackgroundResource(R.color.colorButtonBlue)
+                layout_setting_option.visibility = View.VISIBLE
             }
         }
     }

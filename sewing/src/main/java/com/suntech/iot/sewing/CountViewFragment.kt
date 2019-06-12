@@ -26,8 +26,6 @@ import kotlin.math.ceil
 
 class CountViewFragment : BaseFragment() {
 
-    private var repairModeType = 1       // 1=Repair mode, 2=Test mode
-
     private var is_loop: Boolean = false
 
     private var _list: ArrayList<HashMap<String, String>> = arrayListOf()
@@ -138,8 +136,10 @@ class CountViewFragment : BaseFragment() {
         val no = AppGlobal.instance.get_worker_no()
         val name = AppGlobal.instance.get_worker_name()
         if (no == "" || name == "") {
-            Toast.makeText(activity, getString(R.string.msg_no_operator), Toast.LENGTH_SHORT).show()
+            if (AppGlobal.instance.get_message_enable()) {
+                Toast.makeText(activity, getString(R.string.msg_no_operator), Toast.LENGTH_SHORT).show()
 //            (activity as MainActivity).changeFragment(0)
+            }
         }
         computeCycleTime()
     }
@@ -186,26 +186,27 @@ class CountViewFragment : BaseFragment() {
             ll_count_mode.visibility = View.GONE
             ll_repair_mode.visibility = View.VISIBLE
 
-            repairModeType = 1  // Repair mode 로 세팅
+            (activity as MainActivity).repairModeType = 1  // Repair mode 로 세팅
             tv_repair_title.text = "REPAIR MODE"
             ll_test_layout.visibility = View.INVISIBLE
             btn_go_test_mode.text = "TEST MODE"
         }
         btn_go_test_mode.setOnClickListener {
-            if (repairModeType == 1) {
-                repairModeType = 2  // Test mode 로 세팅
+            if ((activity as MainActivity).repairModeType == 1) {
+                (activity as MainActivity).repairModeType = 2  // Test mode 로 세팅
                 tv_repair_title.text = "TEST MODE"
                 ll_test_layout.visibility = View.VISIBLE
                 btn_go_test_mode.text = "CLOSE TEST"
             } else {
-                repairModeType = 1  // Repair mode 로 세팅
+                (activity as MainActivity).repairModeType = 1  // Repair mode 로 세팅
                 tv_repair_title.text = "REPAIR MODE"
                 ll_test_layout.visibility = View.INVISIBLE
                 btn_go_test_mode.text = "TEST MODE"
             }
         }
         btn_test_mode_refresh.setOnClickListener {
-            Toast.makeText(activity, "Not yet supported.", Toast.LENGTH_SHORT).show()
+            tv_test_trim.text = ""
+            tv_test_stitch.text = ""
         }
         btn_go_count_mode.setOnClickListener {
             (activity as MainActivity).countViewMode = 1
@@ -762,7 +763,9 @@ class CountViewFragment : BaseFragment() {
                 outputWosList()
 
             } else {
-                Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+                if (AppGlobal.instance.get_message_enable()) {
+                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+                }
             }
         })
     }

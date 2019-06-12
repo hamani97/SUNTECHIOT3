@@ -79,8 +79,6 @@ class ActualTotalCountEditActivity : BaseActivity() {
 
         request(this, uri, true,false, params, { result ->
             var code = result.getString("code")
-            Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
-
             if (code == "00") {
                 // Total count 의 Actual 값 갱신
                 AppGlobal.instance.set_current_shift_actual_cnt(new_actual)
@@ -88,7 +86,11 @@ class ActualTotalCountEditActivity : BaseActivity() {
                 // Report DB 값 수정
                 ReportDBUpdate(inc_count)
 
+                ToastOut(this, result.getString("msg"))
+
                 finish(true, 0, "ok", null)
+            } else {
+                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
             }
         })
     }

@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.common.AppGlobal
 import com.suntech.iot.sewing.db.DBHelperForReport
@@ -231,7 +230,7 @@ class ProductionReportActivity : BaseActivity() {
                 btn_server_state.isSelected = true
                 AppGlobal.instance._server_state = true
             } else {
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                ToastOut(this, msg)
             }
         }, {
             btn_server_state.isSelected = false
