@@ -205,8 +205,10 @@ class CountViewFragment : BaseFragment() {
             }
         }
         btn_test_mode_refresh.setOnClickListener {
-            tv_test_trim.text = ""
-            tv_test_stitch.text = ""
+            (activity as MainActivity).test_trim_qty = 0
+            (activity as MainActivity).test_stitch_qty = 0
+            tv_test_trim.text = "0"
+            tv_test_stitch.text = "0"
         }
         btn_go_count_mode.setOnClickListener {
             (activity as MainActivity).countViewMode = 1

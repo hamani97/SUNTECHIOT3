@@ -1,6 +1,5 @@
 package com.suntech.iot.sewing
 
-import android.app.ProgressDialog.show
 import android.content.*
 import android.net.wifi.WifiManager
 import android.os.Bundle
@@ -288,15 +287,20 @@ class MainActivity : BaseActivity() {
         return true
     }
 
+    var test_trim_qty = 0
+    var test_stitch_qty = 0
+
     private fun testRowData(cmd: String, value: JsonElement) {
         if (AppGlobal.instance.get_sound_at_count()) AppGlobal.instance.playSound(this)
 
         var inc_count = value.toString().toInt()
 
         if (cmd == "T" || cmd == "count") {
-            tv_test_trim.text = value.toString()
+            test_trim_qty += value.toString().toInt()
+            tv_test_trim.text = "" + test_trim_qty
         } else if (cmd == "S") {
-            tv_test_stitch.text = value.toString()
+            test_stitch_qty += value.toString().toInt()
+            tv_test_stitch.text = "" + test_stitch_qty
         }
     }
 
