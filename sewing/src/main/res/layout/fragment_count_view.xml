@@ -61,6 +61,7 @@
                         <TextView style="@style/table_row_data_readonly"
                                   android:id="@+id/tv_test_trim"
                                   android:layout_width="70dp"
+                                  android:text="0"
                                   android:gravity="center" />
                     </LinearLayout>
 
@@ -70,6 +71,7 @@
                         <TextView style="@style/table_row_data_readonly"
                                   android:id="@+id/tv_test_stitch"
                                   android:layout_width="70dp"
+                                  android:text="0"
                                   android:gravity="center" />
                         <Button
                                 android:id="@+id/btn_test_mode_refresh"

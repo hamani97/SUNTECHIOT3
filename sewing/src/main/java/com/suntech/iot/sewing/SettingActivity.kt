@@ -154,7 +154,7 @@ class SettingActivity : BaseActivity() {
 
         tv_setting_count_trim.setOnClickListener { countTypeChange("trim") }
         tv_setting_count_stitch.setOnClickListener { countTypeChange("stitch") }
-        tv_setting_count_trim_stitch.setOnClickListener { Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show() }
+        tv_setting_count_trim_stitch.setOnClickListener { countTypeChange("t_s") }
 
         tv_trim_pairs.setOnClickListener { selectTrimPair() }
         tv_stitch_pairs.setOnClickListener { selectStitchPair() }
@@ -280,6 +280,17 @@ class SettingActivity : BaseActivity() {
                 tv_stitch_delay_time.text.toString().trim()=="" || tv_stitch_pairs.text.toString()=="") {
                 tabChange(3)
                 Toast.makeText(this, getString(R.string.msg_require_stitch_info), Toast.LENGTH_SHORT).show()
+                return
+            }
+        } else if (_selected_count_type == "t_s") {
+            if (tv_stitch_start2.text.toString().trim()=="" || tv_stitch_end2.text.toString().trim()=="") {
+                tabChange(3)
+                Toast.makeText(this, getString(R.string.msg_require_stitch_info), Toast.LENGTH_SHORT).show()
+                return
+            }
+            if (tv_trim_qty2.text.toString().trim()=="" || tv_trim_stitch_pairs.text.toString()=="") {
+                tabChange(3)
+                Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
                 return
             }
         }
@@ -659,11 +670,13 @@ class SettingActivity : BaseActivity() {
         when (_selected_count_type) {
             "trim" -> tv_setting_count_trim.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
             "stitch" -> tv_setting_count_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
+            "t_s" -> tv_setting_count_trim_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
         }
         _selected_count_type = v
         when (_selected_count_type) {
             "trim" -> tv_setting_count_trim.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
             "stitch" -> tv_setting_count_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+            "t_s" -> tv_setting_count_trim_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
         }
     }
 

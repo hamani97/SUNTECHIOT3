@@ -18,6 +18,8 @@ import android.widget.Toast
 import com.suntech.iot.sewing.base.BaseFragment
 import com.suntech.iot.sewing.common.AppGlobal
 import com.suntech.iot.sewing.db.DBHelperForComponent
+import com.suntech.iot.sewing.popup.StitchCountEditActivity
+import com.suntech.iot.sewing.popup.TrimCountEditActivity
 import kotlinx.android.synthetic.main.fragment_count_view.*
 import kotlinx.android.synthetic.main.layout_bottom_info_3.*
 import kotlinx.android.synthetic.main.layout_top_menu.*
@@ -214,6 +216,45 @@ class CountViewFragment : BaseFragment() {
             (activity as MainActivity).countViewMode = 1
             ll_count_mode.visibility = View.VISIBLE
             ll_repair_mode.visibility = View.GONE
+        }
+        btn_init_actual.setOnClickListener {
+            if (AppGlobal.instance.get_count_type() == "trim") {
+                val intent = Intent(activity, TrimCountEditActivity::class.java)
+                intent.putExtra("trim", "" + (activity as MainActivity).trim_qty)
+                intent.putExtra("pairs", "" + (activity as MainActivity).trim_pairs)
+                (activity as MainActivity).startActivity(intent, { r, c, m, d ->
+                    if (r) {
+                        val trim = d?.get("trim")
+                        val pairs = d?.get("pairs")
+                        if (trim != null && trim != "") {
+                            (activity as MainActivity).trim_qty = trim.toInt()
+                            tv_kind_qty.text = trim.toString()
+                        }
+                        if (pairs != null && pairs != "") {
+                            (activity as MainActivity).trim_pairs = pairs.toInt()
+                            tv_kind_pairs.text = pairs.toString()
+                        }
+                    }
+                })
+            } else if (AppGlobal.instance.get_count_type() == "stitch") {
+                val intent = Intent(activity, StitchCountEditActivity::class.java)
+                intent.putExtra("stitch", "" + (activity as MainActivity).stitch_qty)
+                intent.putExtra("pairs", "" + (activity as MainActivity).stitch_pairs)
+                (activity as MainActivity).startActivity(intent, { r, c, m, d ->
+                    if (r) {
+                        val stitch = d?.get("stitch")
+                        val pairs = d?.get("pairs")
+                        if (stitch != null && stitch != "") {
+                            (activity as MainActivity).stitch_qty = stitch.toInt()
+                            tv_kind_qty.text = stitch.toString()
+                        }
+                        if (pairs != null && pairs != "") {
+                            (activity as MainActivity).stitch_pairs = pairs.toInt()
+                            tv_kind_pairs.text = pairs.toString()
+                        }
+                    }
+                })
+            }
         }
         tv_btn_wos_count.setOnClickListener {
             (activity as MainActivity).countViewType = 2

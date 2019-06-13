@@ -292,9 +292,7 @@ class MainActivity : BaseActivity() {
 
     private fun testRowData(cmd: String, value: JsonElement) {
         if (AppGlobal.instance.get_sound_at_count()) AppGlobal.instance.playSound(this)
-
-        var inc_count = value.toString().toInt()
-
+//        var inc_count = value.toString().toInt()
         if (cmd == "T" || cmd == "count") {
             test_trim_qty += value.toString().toInt()
             tv_test_trim.text = "" + test_trim_qty
