@@ -20,6 +20,7 @@ import com.suntech.iot.sewing.common.AppGlobal
 import com.suntech.iot.sewing.db.DBHelperForComponent
 import com.suntech.iot.sewing.popup.StitchCountEditActivity
 import com.suntech.iot.sewing.popup.TrimCountEditActivity
+import com.suntech.iot.sewing.popup.TrimStitchCountEditActivity
 import kotlinx.android.synthetic.main.fragment_count_view.*
 import kotlinx.android.synthetic.main.layout_bottom_info_3.*
 import kotlinx.android.synthetic.main.layout_top_menu.*
@@ -75,14 +76,11 @@ class CountViewFragment : BaseFragment() {
 
             // 선택된 제품 표시 (TRIM or STITCH)
             if (AppGlobal.instance.get_count_type() == "trim") {
+                ll_t_s_block.visibility = View.GONE
+
                 tv_kind_name.text = "TRIM  :  "
                 tv_kind_qty.text = "" + (activity as MainActivity).trim_qty
                 tv_kind_pairs.text = "" + (activity as MainActivity).trim_pairs
-
-//                tv_trim_qty.text = "TRIM  :  " + AppGlobal.instance.get_trim_qty()
-//                tv_trim_qty.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
-//                tv_stitch_qty.text = "STITCH  :  0"
-//                tv_stitch_qty.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
 
                 // bottom view
                 tv_trim_qty_bottom.text = AppGlobal.instance.get_trim_qty()
@@ -100,6 +98,8 @@ class CountViewFragment : BaseFragment() {
                 tv_stitch_pairs_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
 
             } else if (AppGlobal.instance.get_count_type() == "stitch") {
+                ll_t_s_block.visibility = View.GONE
+
                 tv_kind_name.text = "STITCH  :  "
                 tv_kind_qty.text = "" + (activity as MainActivity).stitch_qty
                 tv_kind_pairs.text = "" + (activity as MainActivity).stitch_pairs
@@ -123,6 +123,30 @@ class CountViewFragment : BaseFragment() {
 
                 tv_trim_qty_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
                 tv_trim_pairs_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
+
+            } else if (AppGlobal.instance.get_count_type() == "t_s") {
+                ll_t_s_block.visibility = View.VISIBLE
+
+                tv_kind_name.text = "T  :  "
+                tv_kind_qty.text = "" + (activity as MainActivity).trim_qty
+                tv_stitch_qty.text = "" + (activity as MainActivity).stitch_qty
+
+                tv_kind_pairs.text = "" + (activity as MainActivity).t_s_pairs
+
+                // bottom view
+                tv_trim_qty_bottom.text = AppGlobal.instance.get_trim_qty2()
+                tv_trim_pairs_bottom.text = AppGlobal.instance.get_trim_stitch_pairs()
+
+                tv_stitch_qty_bottom.text = AppGlobal.instance.get_stitch_qty_start2() + " ~ " + AppGlobal.instance.get_stitch_qty_end2()
+                tv_stitch_delay_time_bottom.text = "-"
+                tv_stitch_pairs_bottom.text = AppGlobal.instance.get_trim_stitch_pairs()
+
+                tv_trim_qty_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
+                tv_trim_pairs_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
+
+                tv_stitch_qty_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
+                tv_stitch_delay_time_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite))
+                tv_stitch_pairs_bottom.setTextColor(ContextCompat.getColor(activity, R.color.colorOrange))
             }
 
         } else {
@@ -250,6 +274,30 @@ class CountViewFragment : BaseFragment() {
                         }
                         if (pairs != null && pairs != "") {
                             (activity as MainActivity).stitch_pairs = pairs.toInt()
+                            tv_kind_pairs.text = pairs.toString()
+                        }
+                    }
+                })
+            } else if (AppGlobal.instance.get_count_type() == "t_s") {
+                val intent = Intent(activity, TrimStitchCountEditActivity::class.java)
+                intent.putExtra("trim", "" + (activity as MainActivity).trim_qty)
+                intent.putExtra("stitch", "" + (activity as MainActivity).stitch_qty)
+                intent.putExtra("pairs", "" + (activity as MainActivity).t_s_pairs)
+                (activity as MainActivity).startActivity(intent, { r, c, m, d ->
+                    if (r) {
+                        val trim = d?.get("trim")
+                        val stitch = d?.get("stitch")
+                        val pairs = d?.get("pairs")
+                        if (trim != null && trim != "") {
+                            (activity as MainActivity).trim_qty = trim.toInt()
+                            tv_kind_qty.text = trim.toString()
+                        }
+                        if (stitch != null && stitch != "") {
+                            (activity as MainActivity).stitch_qty = stitch.toInt()
+                            tv_stitch_qty.text = stitch.toString()
+                        }
+                        if (pairs != null && pairs != "") {
+                            (activity as MainActivity).t_s_pairs = pairs.toInt()
                             tv_kind_pairs.text = pairs.toString()
                         }
                     }
@@ -429,6 +477,17 @@ class CountViewFragment : BaseFragment() {
                 }
                 tv_kind_qty.text = "" + (activity as MainActivity).stitch_qty
                 tv_kind_pairs.text = "" + (activity as MainActivity).stitch_pairs + pairs_str
+            } else if (AppGlobal.instance.get_count_type() == "t_s") {
+                val pairs = AppGlobal.instance.get_trim_stitch_pairs()
+                var pairs_str = ""
+                when (pairs) {
+                    "1/2" -> pairs_str = "/2"
+                    "1/4" -> pairs_str = "/4"
+                    "1/8" -> pairs_str = "/8"
+                }
+                tv_kind_qty.text = "" + (activity as MainActivity).trim_qty
+                tv_stitch_qty.text = "" + (activity as MainActivity).stitch_qty
+                tv_kind_pairs.text = "" + (activity as MainActivity).t_s_pairs + pairs_str
             }
         }
 

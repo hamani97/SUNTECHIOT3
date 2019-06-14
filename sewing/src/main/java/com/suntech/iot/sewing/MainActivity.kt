@@ -309,6 +309,8 @@ class MainActivity : BaseActivity() {
     var stitch_pairs = 0
     var last_time = 0L           // 마지막으로 신호가 들어온 시간 (stitch 로 설정된 경우만 해당)
 
+    var t_s_pairs = 0
+
     private fun saveRowData(cmd: String, value: JsonElement) {
         if (AppGlobal.instance.get_sound_at_count()) AppGlobal.instance.playSound(this)
 
@@ -343,117 +345,125 @@ class MainActivity : BaseActivity() {
         var inc_count = value.toString().toInt()
 
         if (cmd == "T" || cmd == "count") {
+            if (AppGlobal.instance.get_count_type() == "trim") {
+                val qty = AppGlobal.instance.get_trim_qty().toInt()
+                val pairs = AppGlobal.instance.get_trim_pairs()
+                var pairs_int = 1
+                when (pairs) {
+                    "1/2" -> pairs_int = 2
+                    "1/4" -> pairs_int = 4
+                    "1/8" -> pairs_int = 8
+                }
+                trim_qty += inc_count
 
-            if (AppGlobal.instance.get_count_type() != "trim") return
+                while (trim_qty >= qty) {
+                    trim_qty -= qty
+                    trim_pairs++
+                }
+                inc_count = 0
 
-            val qty = AppGlobal.instance.get_trim_qty().toInt()
-            val pairs = AppGlobal.instance.get_trim_pairs()
-            var pairs_int = 1
-            when (pairs) {
-                "1/2" -> pairs_int = 2
-                "1/4" -> pairs_int = 4
-                "1/8" -> pairs_int = 8
+                while (trim_pairs >= pairs_int) {
+                    trim_pairs -= pairs_int
+                    inc_count++
+                }
+            } else if (AppGlobal.instance.get_count_type() == "t_s") {
+                trim_qty += inc_count
+            } else {
+                return
             }
-
-            trim_qty += inc_count
-
-            while (trim_qty >= qty) {
-                trim_qty -= qty
-                trim_pairs++
-            }
-            inc_count = 0
-
-            while (trim_pairs >= pairs_int) {
-                trim_pairs -= pairs_int
-                inc_count++
-            }
-
-//            val qty = AppGlobal.instance.get_trim_qty()
-//            val pairs = AppGlobal.instance.get_trim_pairs()
-//            var pairs_int = 1
-//            when (pairs) {
-//                "1/2" -> pairs_int = 2
-//                "1/4" -> pairs_int = 4
-//                "1/8" -> pairs_int = 8
-//            }
-//
-//            trim_pairs += inc_count
-//
-//            while (trim_pairs >= pairs_int) {
-//                trim_qty++
-//                trim_pairs -= pairs_int
-//            }
-//
-//            inc_count = 0
-//
-//            while (trim_qty >= qty.toInt()) {
-//                trim_qty -= qty.toInt()
-//                inc_count++
-//            }
             //Log.e("count", "qty=" + trim_qty+", pairs="+trim_pairs)
 
         } else if (cmd == "S") {
 
-            if (AppGlobal.instance.get_count_type() != "stitch") return
+            if (AppGlobal.instance.get_count_type() == "stitch") {
+                val delay_time = AppGlobal.instance.get_stitch_delay_time()
 
-            val delay_time = AppGlobal.instance.get_stitch_delay_time()
+                val now = DateTime().millis
+                if (last_time == 0L) last_time = now
 
-            val now = DateTime().millis
-            if (last_time == 0L) last_time = now
+                // Delay time 계산
+                val delay_float: Float = delay_time.toFloat()
+                val delay_long: Long = (delay_float * 1000).toLong()
 
-            // Delay time 계산
-            val delay_float: Float = delay_time.toFloat()
-            val delay_long: Long = (delay_float * 1000).toLong()
+                if (delay_long <= 0) {
+                    Toast.makeText(this, "There is a delay time problem.", Toast.LENGTH_SHORT).show(); return
+                }
 
-            if (delay_long <= 0) {
-                Toast.makeText(this, "There is a delay time problem.", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            val qty_start = AppGlobal.instance.get_stitch_qty_start().toInt()
+                val qty_start = AppGlobal.instance.get_stitch_qty_start().toInt()
 //            val qty_end = AppGlobal.instance.get_stitch_qty_end()
-            val pairs = AppGlobal.instance.get_stitch_pairs()
+                val pairs = AppGlobal.instance.get_stitch_pairs()
 
-            var real_count = false
+                var real_count = false
 
-            // 목표 수량에 도달하지 못했으면 무조건 더한다.
-            if (stitch_qty < qty_start) {
-                real_count = true
+                // 목표 수량에 도달하지 못했으면 무조건 더한다.
+                if (stitch_qty < qty_start) {
+                    real_count = true
+                    stitch_qty += inc_count
+                } else {
+                    // 설정한 딜레이 타임이 넘어갔으면 초기화를 한다.
+                    if (now - last_time > delay_long) {
+                        real_count = true
+                        stitch_qty = inc_count
+                    } else {
+                        stitch_qty += inc_count
+                    }
+                }
+
+                inc_count = 0
+
+                // 조건을 검사해야 하는 조건이 참인 경우
+                if (real_count) {
+                    if (stitch_qty >= qty_start) {
+                        var pairs_int = 1
+                        when (pairs) {
+                            "1/2" -> pairs_int = 2
+                            "1/4" -> pairs_int = 4
+                            "1/8" -> pairs_int = 8
+                        }
+
+                        stitch_pairs++
+
+                        while (stitch_pairs >= pairs_int) {
+                            inc_count = 1
+                            stitch_pairs = 0
+                        }
+                    }
+                }
+                //Log.e("==> Stitch count", "last_time=" + last_time + ", now time=" + now + " =========> seconds = " + (now - last_time))
+                last_time = now
+            } else if (AppGlobal.instance.get_count_type() == "t_s") {
                 stitch_qty += inc_count
             } else {
-                // 설정한 딜레이 타임이 넘어갔으면 초기화를 한다.
-                if (now - last_time > delay_long) {
-                    real_count = true
-                    stitch_qty = inc_count
-                } else {
-                    stitch_qty += inc_count
-                }
+                return
             }
+        }
 
-            inc_count = 0
+        // Trim + Stitch 인 경우 둘다 수량이 넘었는지 검사한다.
+        if (AppGlobal.instance.get_count_type() == "t_s") {
+            val qty = AppGlobal.instance.get_trim_qty().toInt()
+            val qty_start = AppGlobal.instance.get_stitch_qty_start().toInt()
+            val pairs = AppGlobal.instance.get_trim_stitch_pairs()
+            if (trim_qty >= qty && stitch_qty >= qty_start) {
+                trim_qty = 0
+                stitch_qty = 0
+                t_s_pairs++
 
-            // 조건을 검사해야 하는 조건이 참인 경우
-            if (real_count) {
-                if (stitch_qty >= qty_start) {
-                    var pairs_int = 1
-                    when (pairs) {
-                        "1/2" -> pairs_int = 2
-                        "1/4" -> pairs_int = 4
-                        "1/8" -> pairs_int = 8
-                    }
+                inc_count = 0
 
-                    stitch_pairs++
-
-                    while (stitch_pairs >= pairs_int) {
-                        inc_count = 1
-                        stitch_pairs = 0
-                    }
+                var pairs_int = 1
+                when (pairs) {
+                    "1/2" -> pairs_int = 2
+                    "1/4" -> pairs_int = 4
+                    "1/8" -> pairs_int = 8
                 }
+
+                if (t_s_pairs >= pairs_int) {
+                    t_s_pairs = 0
+                    inc_count = 1
+                }
+            } else {
+                inc_count = 0
             }
-
-            Log.e("==> Stitch count", "last_time=" + last_time + ", now time=" + now + " =========> seconds = " + (now - last_time))
-
-            last_time = now
         }
 
         if (inc_count <= 0) return

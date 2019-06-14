@@ -54,6 +54,7 @@
         <activity android:name=".popup.ActualCountEditInputActivity" android:theme="@style/AppTheme.PopupOverlay" />
         <activity android:name=".popup.ActualTotalCountEditActivity" android:theme="@style/AppTheme.PopupOverlay" />
         <activity android:name=".popup.TrimCountEditActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.TrimStitchCountEditActivity" android:theme="@style/AppTheme.PopupOverlay" />
         <activity android:name=".popup.StitchCountEditActivity" android:theme="@style/AppTheme.PopupOverlay" />
         <activity android:name=".ProductionReportTotalActivity" android:screenOrientation="landscape" />
     </application>
