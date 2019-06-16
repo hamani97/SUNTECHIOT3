@@ -25,6 +25,7 @@ import com.suntech.iot.sewing.db.DBHelperForReport
 import com.suntech.iot.sewing.db.DBHelperForTarget
 import com.suntech.iot.sewing.popup.ActualCountEditActivity
 import com.suntech.iot.sewing.popup.ActualTotalCountEditActivity
+import com.suntech.iot.sewing.popup.DownTimeActivity
 import com.suntech.iot.sewing.popup.PushActivity
 import com.suntech.iot.sewing.service.UsbService
 import com.suntech.iot.sewing.util.OEEUtil
@@ -50,6 +51,8 @@ class MainActivity : BaseActivity() {
 
     private var _doubleBackToExitPressedOnce = false
     private var _last_count_received_time = DateTime()
+
+    var _is_call = false
 
     private val _broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -85,6 +88,7 @@ class MainActivity : BaseActivity() {
                     startActivity(Intent(this, ActualTotalCountEditActivity::class.java)); true
                 }
             }
+            btn_downtime.setOnLongClickListener { startDowntimeActivity(); true }
             btn_production_report.setOnLongClickListener { startActivity(Intent(this, ProductionReportTotalActivity::class.java)); true }
         } else {
             btn_home.setOnClickListener { changeFragment(0) }
@@ -96,6 +100,7 @@ class MainActivity : BaseActivity() {
                     startActivity(Intent(this, ActualTotalCountEditActivity::class.java))
                 }
             }
+            btn_downtime.setOnClickListener { startDowntimeActivity() }
             btn_production_report.setOnClickListener { startActivity(Intent(this, ProductionReportTotalActivity::class.java)) }
         }
 
@@ -442,14 +447,13 @@ class MainActivity : BaseActivity() {
         if (AppGlobal.instance.get_count_type() == "t_s") {
             val qty = AppGlobal.instance.get_trim_qty().toInt()
             val qty_start = AppGlobal.instance.get_stitch_qty_start().toInt()
-            val pairs = AppGlobal.instance.get_trim_stitch_pairs()
+            inc_count = 0
             if (trim_qty >= qty && stitch_qty >= qty_start) {
                 trim_qty = 0
                 stitch_qty = 0
                 t_s_pairs++
 
-                inc_count = 0
-
+                val pairs = AppGlobal.instance.get_trim_stitch_pairs()
                 var pairs_int = 1
                 when (pairs) {
                     "1/2" -> pairs_int = 2
@@ -461,10 +465,10 @@ class MainActivity : BaseActivity() {
                     t_s_pairs = 0
                     inc_count = 1
                 }
-            } else {
-                inc_count = 0
             }
         }
+
+        _last_count_received_time = DateTime()      // downtime 시간 초기화
 
         if (inc_count <= 0) return
 
@@ -487,8 +491,6 @@ class MainActivity : BaseActivity() {
         } else {
             sendCountData(value.toString(), inc_count, cnt)  // 서버에 카운트 정보 전송
         }
-
-        _last_count_received_time = DateTime()      // downtime 시간 초기화
 
         val now = cur_shift["date"]
         val date = now.toString()
@@ -592,13 +594,161 @@ class MainActivity : BaseActivity() {
         // 현재 shift의 첫생산인데 지각인경우 downtime 처리
     }
 
+    // downtime 발생시 푸시 발송
+    private fun sendPush() {
+        val uri = "/pushcall.php"
+        var params = listOf(
+            "code" to "push_text_list",
+            "mac_addr" to AppGlobal.instance.getMACAddress(),
+            "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
+            "factory_idx" to AppGlobal.instance.get_room_idx(),
+            "line_idx" to AppGlobal.instance.get_line_idx(),
+            "shift_idx" to  AppGlobal.instance.get_current_shift_idx(),
+            "machine_no" to AppGlobal.instance.get_mc_no1(),
+            "mc_model" to AppGlobal.instance.get_mc_model(),
+            "seq" to "0",
+            "text" to "downtime occurrence")
+
+        request(this, uri, true, params, { result ->
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if(code != "00"){
+//                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun sendStartDownTime(dt:DateTime) {
+        if (AppGlobal.instance.get_server_ip() == "") return
+
+        var work_idx = ""
+
+        // 콤포넌트 선택되어야만 실행되는 경우
+        if (AppGlobal.instance.get_with_component()) {
+            // 선택한 Component 제품이 있는지 확인
+            work_idx = AppGlobal.instance.get_work_idx()
+            if (work_idx == "") return
+        }
+
+//        val work_idx = "" + AppGlobal.instance.get_work_idx()
+//        if (work_idx=="") return
+
+        var down_db = DBHelperForDownTime(this)
+        val count = down_db.counts_for_notcompleted()
+        if (count > 0) return
+
+        if (_is_call) return
+        _is_call = true
+
+        val list = down_db.gets()
+        val didx = "1001"
+
+        val uri = "/downtimedata.php"
+        var params = listOf(
+            "code" to "start",
+            "mac_addr" to AppGlobal.instance.getMACAddress(),
+            "didx" to didx,
+            "sdate" to dt.toString("yyyy-MM-dd"),
+            "stime" to dt.toString("HH:mm:ss"),
+            "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
+            "factory_idx" to AppGlobal.instance.get_room_idx(),
+            "line_idx" to AppGlobal.instance.get_line_idx(),
+            "shift_idx" to  AppGlobal.instance.get_current_shift_idx(),
+            "seq" to (list?.size ?: 0) + 1)
+
+        request(this, uri, true,false, params, { result ->
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if (code == "00") {
+                var idx = result.getString("idx")
+                AppGlobal.instance.set_downtime_idx(idx)
+//                val didx = "1001"
+                val work_info = AppGlobal.instance.get_current_shift_time()
+                val shift_idx = work_info?.getString("shift_idx") ?: ""
+                val shift_name = work_info?.getString("shift_name") ?: ""
+
+                down_db.add(idx, work_idx, didx, shift_idx, shift_name, dt.toString("yyyy-MM-dd HH:mm:ss"))
+
+                sendPush()
+
+            } else {
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+            _is_call = false
+        },{
+            _is_call = false
+        })
+    }
+
+    private fun checkDownTime() {
+        var db = DBHelperForDownTime(this)
+        val count = db.counts_for_notcompleted()
+
+        if (count > 0) {
+            _last_count_received_time = DateTime()
+            return
+        }
+
+        // 콤포넌트 선택되어야만 실행되는 경우
+        if (AppGlobal.instance.get_with_component()) {
+            // 선택한 Component 제품이 있는지 확인
+            if (AppGlobal.instance.get_work_idx() == "") return
+        }
+
+        val now = DateTime()
+        val downtime_time = AppGlobal.instance.get_downtime_sec()
+
+        if (downtime_time == "") {
+            ToastOut(this, R.string.msg_no_downtime)
+            return
+        }
+
+        val item = AppGlobal.instance.get_current_shift_time()
+        if (item==null) return
+
+        var work_stime = OEEUtil.parseDateTime(item["work_stime"].toString())
+        var work_etime = OEEUtil.parseDateTime(item["work_etime"].toString())
+        var planned1_stime_dt = OEEUtil.parseDateTime(item["planned1_stime_dt"].toString())
+        var planned1_etime_dt = OEEUtil.parseDateTime(item["planned1_etime_dt"].toString())
+        var planned2_stime_dt = OEEUtil.parseDateTime(item["planned2_stime_dt"].toString())
+        var planned2_etime_dt = OEEUtil.parseDateTime(item["planned2_etime_dt"].toString())
+
+        val downtime_time_sec = downtime_time.toInt()
+        // 워크 타임안에 있으면서 휴식 시간이 아니고,
+        // 지정된 downtime이 지났으면 downtime을 발생시킨다.
+        if (work_stime.millis < now.millis && work_etime.millis > now.millis &&
+            !(planned1_stime_dt.millis < now.millis && planned1_etime_dt.millis > now.millis ) &&
+            !(planned2_stime_dt.millis < now.millis && planned2_etime_dt.millis > now.millis ) &&
+            downtime_time_sec > 0 &&
+            now.millis - _last_count_received_time.millis > downtime_time_sec*1000) {
+
+            sendStartDownTime(_last_count_received_time)
+            startDowntimeActivity()
+        }
+
+        // 워크 타임이 아니거나 휴식 시간 안에 있으면 downtime 시작 시간을 현재 시간으로 초기화
+        if (work_stime.millis > now.millis ||
+            work_etime.millis < now.millis ||
+            (planned1_stime_dt.millis < now.millis && planned1_etime_dt.millis > now.millis ) ||
+            (planned2_stime_dt.millis < now.millis && planned2_etime_dt.millis > now.millis )) {
+            _last_count_received_time = now
+        }
+    }
+
+    private fun startDowntimeActivity () {
+        val br_intent = Intent("start.downtime")
+        this.sendBroadcast(br_intent)
+        val intent = Intent(this, DownTimeActivity::class.java)
+        startActivity(intent)
+    }
+
     fun changeFragment(pos:Int) {
         vp_fragments.setCurrentItem(pos, true)
     }
 
     // 시작시 호출
     // 이후 10분에 한번씩 호출
-    // 서버에 작업시간, 다운타임 기본시간, 색삭값을 호출
+    // 서버에 작업시간, 다운타임 기본시간, 색상값을 호출
     private fun fetchRequiredData() {
         if (AppGlobal.instance.get_server_ip().trim() != "") {
             fetchWorkData()         // 작업시간
@@ -956,18 +1106,16 @@ Log.e("debug", "line_idx="+AppGlobal.instance.get_line_idx()+"&date="+today+"&ma
     private fun fetchDownTimeType() {
         val uri = "/getlist1.php"
         var params = listOf("code" to "check_time")
-
         request(this, uri, false, params, { result ->
             var code = result.getString("code")
-            var msg = result.getString("msg")
             if (code == "00") {
                 var value = result.getString("value")
                 AppGlobal.instance.set_downtime_sec(value)
-                val s = value.toInt()
-                if (s > 0) {
-                }
+//                val s = value.toInt()
+//                if (s > 0) {
+//                }
             } else {
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -980,7 +1128,6 @@ Log.e("debug", "line_idx="+AppGlobal.instance.get_line_idx()+"&date="+today+"&ma
     private fun fetchColorData() {
         val uri = "/getlist1.php"
         var params = listOf("code" to "color")
-
         request(this, uri, false, params, { result ->
             var code = result.getString("code")
             var msg = result.getString("msg")
@@ -1160,6 +1307,7 @@ Log.e("debug", "line_idx="+AppGlobal.instance.get_line_idx()+"&date="+today+"&ma
             override fun run() {
                 runOnUiThread {
                     checkCurrentShiftEndTime()
+                    checkDownTime()
                 }
             }
         }

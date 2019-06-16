@@ -82,6 +82,12 @@
     <string name="title_actual_count_edit_input">EDIT ACTUAL Q\'ty</string>
     <string name="label_actual_count_edit_input">EDIT ACTUAL Q\'ty</string>
 
+    <!-- 다운타임화면 -->
+    <string name="title_down_time_info">Down Time Info</string>
+    <string name="title_down_time_input">Down Time Input</string>
+    <string name="title_down_time_list">Down Time Input</string>
+    <string name="msg_has_notcompleted">Info not complete</string>
+
     <!-- Buttons -->
     <string name="button_total_count_view">Total Count View</string>
     <string name="button_component_count_view">Component Count View</string>
@@ -106,6 +112,13 @@
     <string name="list_item_employee_number">EMPLOYEE NUMBER</string>
     <string name="list_item_name">NAME</string>
 
+    <string name="list_item_start_time">Start Time</string>
+    <string name="list_item_end_time">End Time</string>
+    <string name="list_item_down_time">DownTime</string>
+    <string name="list_item_completed">Completed</string>
+    <string name="list_item_list">List</string>
+    <string name="list_item_total">TOTAL</string>
+
     <!-- Message -->
     <string name="msg_no_operator">Operator not found</string>
     <string name="msg_not_start_work">Checking Working Time</string>
@@ -121,6 +134,7 @@
     <string name="msg_has_notselected">Nothing Selected</string>
     <string name="msg_data_not_found">Data not found</string>
     <string name="msg_has_not_server_info">Cannot find server</string>
+    <string name="msg_no_downtime">Downtime message not found</string>
     <string name="msg_component_not_enabled">Component function is not enabled.</string>
 
     <string name="msg_exit_automatically">Workday ends automatically</string>
