@@ -8,7 +8,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:padding="10dp"
+            android:padding="6dp"
             android:orientation="horizontal">
 
         <LinearLayout
@@ -20,9 +20,9 @@
 
             <ImageView
                     android:id="@+id/tv_item_downtime_check_box"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"
                     android:background="@drawable/btn_icon_select_box"/>
 
             <TextView
@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="List1"
-                    android:textSize="20sp"
+                    android:textSize="17sp"
                     android:textColor="#c00200"/>
         </LinearLayout>
     </LinearLayout>

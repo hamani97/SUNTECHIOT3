@@ -62,6 +62,9 @@ class AppGlobal private constructor() {
     fun set_message_enable(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_msg_enable", state) }
     fun get_message_enable() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_msg_enable") }
 
+    fun set_downtime_enable(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_downtime_enable", state) }
+    fun get_downtime_enable() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_downtime_enable") }
+
     fun set_sound_at_count(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_sound_count", state) }
     fun get_sound_at_count() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_sound_count") }
 

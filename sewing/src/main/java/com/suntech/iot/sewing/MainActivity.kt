@@ -88,7 +88,13 @@ class MainActivity : BaseActivity() {
                     startActivity(Intent(this, ActualTotalCountEditActivity::class.java)); true
                 }
             }
-            btn_downtime.setOnLongClickListener { startDowntimeActivity(); true }
+            btn_downtime.setOnLongClickListener {
+                if (AppGlobal.instance.get_downtime_enable()) {
+                    startDowntimeActivity(); true
+                } else {
+                    Toast.makeText(this, R.string.msg_downtime_not_enabled, Toast.LENGTH_SHORT).show(); true
+                }
+            }
             btn_production_report.setOnLongClickListener { startActivity(Intent(this, ProductionReportTotalActivity::class.java)); true }
         } else {
             btn_home.setOnClickListener { changeFragment(0) }
@@ -100,7 +106,13 @@ class MainActivity : BaseActivity() {
                     startActivity(Intent(this, ActualTotalCountEditActivity::class.java))
                 }
             }
-            btn_downtime.setOnClickListener { startDowntimeActivity() }
+            btn_downtime.setOnClickListener {
+                if (AppGlobal.instance.get_downtime_enable()) {
+                    startDowntimeActivity()
+                } else {
+                    Toast.makeText(this, R.string.msg_downtime_not_enabled, Toast.LENGTH_SHORT).show()
+                }
+            }
             btn_production_report.setOnClickListener { startActivity(Intent(this, ProductionReportTotalActivity::class.java)) }
         }
 
@@ -251,12 +263,63 @@ class MainActivity : BaseActivity() {
 
     private var recvBuffer = ""
     fun handleData(data:String) {
-        if (data.indexOf("{") >= 0)  recvBuffer = ""
+//        val start = data.indexOf("{")
+//        val end  = data.indexOf("}")
+//        var nextBuffer = ""
+//        if (recvBuffer == "") {
+//            if (start >= 0) {
+//                if (end >= 0) {
+//                    recvBuffer = data.substring(start, end)
+//                } else {
+//                    recvBuffer = data.substring(start)
+//                    return
+//                }
+//            } else {
+//                return
+//            }
+//        } else {
+//            if (end >= 0) {
+//                recvBuffer += data.substring(0, end)
+//                if (start >= 0) {
+//                    nextBuffer = data.substring(start)
+//                }
+//            } else {
+//                recvBuffer += data
+//                return
+//            }
+//        }
+//        //
+//        if (end >= 0) {
+//
+//        }
+//        if (nextBuffer != "") {
+//        }
 
-        recvBuffer += data
+        val start = data.indexOf("{")
+        val end  = data.indexOf("}")
 
-        val pos_end = recvBuffer.indexOf("}")
-        if (pos_end < 0) return
+        if (start >= 0) {
+            if (end >= 0) {
+                recvBuffer = data.substring(start, end)
+            } else {
+                recvBuffer = data.substring(start)
+                return
+            }
+        } else {
+            if (end >= 0) {
+                recvBuffer += data.substring(0, end)
+            } else {
+                recvBuffer += data
+                return
+            }
+        }
+
+//        if (data.indexOf("{") >= 0)  recvBuffer = ""
+//
+//        recvBuffer += data
+//
+//        val pos_end = recvBuffer.indexOf("}")
+//        if (pos_end < 0) return
 
         if (isJSONValid(recvBuffer)) {
             val parser = JsonParser()
@@ -681,6 +744,8 @@ class MainActivity : BaseActivity() {
     }
 
     private fun checkDownTime() {
+        if (AppGlobal.instance.get_downtime_enable()==false) return
+
         var db = DBHelperForDownTime(this)
         val count = db.counts_for_notcompleted()
 

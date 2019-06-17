@@ -94,6 +94,7 @@ class SettingActivity : BaseActivity() {
 
         sw_long_touch.isChecked = AppGlobal.instance.get_long_touch()
         sw_message_enable.isChecked = AppGlobal.instance.get_message_enable()
+        sw_downtime_enable.isChecked = AppGlobal.instance.get_downtime_enable()
         sw_sound_at_count.isChecked = AppGlobal.instance.get_sound_at_count()
         sw_without_component.isChecked = AppGlobal.instance.get_with_component()
         sw_screen_blink_effect.isChecked = AppGlobal.instance.get_screen_blink()
@@ -322,6 +323,7 @@ class SettingActivity : BaseActivity() {
         AppGlobal.instance.set_server_port(et_setting_port.text.toString())
         AppGlobal.instance.set_long_touch(sw_long_touch.isChecked)
         AppGlobal.instance.set_message_enable(sw_message_enable.isChecked)
+        AppGlobal.instance.set_downtime_enable(sw_downtime_enable.isChecked)
         AppGlobal.instance.set_sound_at_count(sw_sound_at_count.isChecked)
         AppGlobal.instance.set_with_component(sw_without_component.isChecked)
 

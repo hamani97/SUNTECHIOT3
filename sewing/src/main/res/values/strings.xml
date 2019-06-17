@@ -136,6 +136,7 @@
     <string name="msg_has_not_server_info">Cannot find server</string>
     <string name="msg_no_downtime">Downtime message not found</string>
     <string name="msg_component_not_enabled">Component function is not enabled.</string>
+    <string name="msg_downtime_not_enabled">Downtime function is not enabled.</string>
 
     <string name="msg_exit_automatically">Workday ends automatically</string>
 
