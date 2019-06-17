@@ -295,31 +295,31 @@ class MainActivity : BaseActivity() {
 //        if (nextBuffer != "") {
 //        }
 
-        val start = data.indexOf("{")
-        val end  = data.indexOf("}")
-
-        if (start >= 0) {
-            if (end >= 0) {
-                recvBuffer = data.substring(start, end)
-            } else {
-                recvBuffer = data.substring(start)
-                return
-            }
-        } else {
-            if (end >= 0) {
-                recvBuffer += data.substring(0, end)
-            } else {
-                recvBuffer += data
-                return
-            }
-        }
-
-//        if (data.indexOf("{") >= 0)  recvBuffer = ""
+//        val start = data.indexOf("{")
+//        val end  = data.indexOf("}")
 //
-//        recvBuffer += data
-//
-//        val pos_end = recvBuffer.indexOf("}")
-//        if (pos_end < 0) return
+//        if (start >= 0) {
+//            if (end >= 0) {
+//                recvBuffer = data.substring(start, end)
+//            } else {
+//                recvBuffer = data.substring(start)
+//                return
+//            }
+//        } else {
+//            if (end >= 0) {
+//                recvBuffer += data.substring(0, end)
+//            } else {
+//                recvBuffer += data
+//                return
+//            }
+//        }
+
+        if (data.indexOf("{") >= 0)  recvBuffer = ""
+
+        recvBuffer += data
+
+        val pos_end = recvBuffer.indexOf("}")
+        if (pos_end < 0) return
 
         if (isJSONValid(recvBuffer)) {
             val parser = JsonParser()
