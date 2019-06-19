@@ -263,54 +263,43 @@ class MainActivity : BaseActivity() {
 
     private var recvBuffer = ""
     fun handleData(data:String) {
-//        val start = data.indexOf("{")
-//        val end  = data.indexOf("}")
-//        var nextBuffer = ""
-//        if (recvBuffer == "") {
-//            if (start >= 0) {
-//                if (end >= 0) {
-//                    recvBuffer = data.substring(start, end)
-//                } else {
-//                    recvBuffer = data.substring(start)
-//                    return
-//                }
-//            } else {
-//                return
-//            }
-//        } else {
-//            if (end >= 0) {
-//                recvBuffer += data.substring(0, end)
-//                if (start >= 0) {
-//                    nextBuffer = data.substring(start)
-//                }
-//            } else {
-//                recvBuffer += data
-//                return
-//            }
-//        }
-//        //
-//        if (end >= 0) {
-//
-//        }
-//        if (nextBuffer != "") {
-//        }
+        // {ABCDEF}
+        // ABCD}EF
+        // ABCD}{EF
+        // AB{CDEF
+        // ABCDEF
 
-//        val start = data.indexOf("{")
-//        val end  = data.indexOf("}")
+//        var last_pos = 0
 //
-//        if (start >= 0) {
+//        while (true) {
+//            val start = data.indexOf("{", last_pos)
+//            val end = data.indexOf("}", last_pos)
+//
 //            if (end >= 0) {
-//                recvBuffer = data.substring(start, end)
+//                if (start >= 0 && start < end) {
+//                    recvBuffer = data.substring(start, end + 1)
+//                } else {
+//                    recvBuffer += data.substring(0, end + 1)
+//                }
 //            } else {
-//                recvBuffer = data.substring(start)
-//                return
+//                if (start >= 0) {
+//                    recvBuffer = data.substring(start)
+//                } else {
+//                    recvBuffer += data.substring(last_pos)
+//                }
+//                break
 //            }
-//        } else {
+//            // 처리
+//
 //            if (end >= 0) {
-//                recvBuffer += data.substring(0, end)
+//                if (end >= data.length-1) {
+//                    recvBuffer = ""
+//                    break
+//                } else {
+//                    last_pos = end + 1
+//                }
 //            } else {
-//                recvBuffer += data
-//                return
+//                break
 //            }
 //        }
 
