@@ -66,13 +66,13 @@
                                 android:layout_width="0dp"
                                 android:layout_marginLeft="80dp"
                                 android:layout_weight="1"
-                                android:text="WORK TIME" />
+                                android:text="@string/list_item_work_time" />
                         <TextView
                                 style="@style/tab_btn_on"
                                 android:layout_width="0dp"
                                 android:layout_marginLeft="30dp"
                                 android:layout_weight="1"
-                                android:text="PLANNED TIME" />
+                                android:text="@string/list_item_planned_time" />
                     </LinearLayout>
                     <LinearLayout
                             android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                                     android:layout_weight="1"
                                     android:paddingRight="30dp"
                                     android:gravity="center"
-                                    android:text="START"
+                                    android:text="@string/start"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="14sp" />
                             <TextView
@@ -99,7 +99,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="center"
-                                    android:text="END"
+                                    android:text="@string/end"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="14sp" />
                         </LinearLayout>
@@ -115,7 +115,7 @@
                                     android:layout_weight="1"
                                     android:paddingRight="30dp"
                                     android:gravity="center"
-                                    android:text="START"
+                                    android:text="@string/start"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="14sp" />
                             <TextView
@@ -123,7 +123,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="center"
-                                    android:text="END"
+                                    android:text="@string/end"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="14sp" />
                         </LinearLayout>
@@ -139,7 +139,7 @@
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="SHIFT 1"
+                                android:text="@string/label_shift_1"
                                 android:textColor="@color/colorWhite"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
@@ -182,7 +182,7 @@
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="SHIFT 2"
+                                android:text="@string/label_shift_2"
                                 android:textColor="@color/colorWhite"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
@@ -225,7 +225,7 @@
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="SHIFT 3"
+                                android:text="@string/label_shift_3"
                                 android:textColor="@color/colorWhite"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />

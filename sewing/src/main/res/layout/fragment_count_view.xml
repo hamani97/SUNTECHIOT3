@@ -42,7 +42,7 @@
                             android:id="@+id/tv_repair_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="REPAIR MODE"
+                            android:text="@string/repair_mode"
                             android:textSize="85sp"
                             android:textColor="@color/colorWhite"
                             android:textStyle="bold"/>
@@ -57,7 +57,7 @@
 
                     <!-- Trim -->
                     <LinearLayout style="@style/table_row" android:layout_width="wrap_content" android:layout_marginLeft="20dp">
-                        <TextView style="@style/table_row_title" android:text="TRIM TEST" />
+                        <TextView style="@style/table_row_title" android:text="@string/trim_test" />
                         <TextView style="@style/table_row_data_readonly"
                                   android:id="@+id/tv_test_trim"
                                   android:layout_width="70dp"
@@ -67,7 +67,7 @@
 
                     <!-- Stitch -->
                     <LinearLayout style="@style/table_row" android:layout_width="wrap_content" android:layout_marginLeft="20dp">
-                        <TextView style="@style/table_row_title" android:text="STITCH TEST" android:layout_width="130dp" />
+                        <TextView style="@style/table_row_title" android:text="@string/stitch_test" android:layout_width="130dp" />
                         <TextView style="@style/table_row_data_readonly"
                                   android:id="@+id/tv_test_stitch"
                                   android:layout_width="70dp"
@@ -78,7 +78,7 @@
                                 style="@style/tab_btn_on"
                                 android:layout_marginLeft="20dp"
                                 android:stateListAnimator="@null"
-                                android:text="REFRESH" />
+                                android:text="@string/refresh" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -93,7 +93,7 @@
                             android:layout_width="130dp"
                             android:background="@color/colorButtonBlue"
                             android:stateListAnimator="@null"
-                            android:text="COUNT MODE" />
+                            android:text="@string/count_mode" />
                     <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
                                 android:layout_width="130dp"
                                 android:background="@color/colorButtonOrange"
                                 android:stateListAnimator="@null"
-                                android:text="TEST MODE" />
+                                android:text="@string/test_mode" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -230,7 +230,7 @@
                                 android:layout_width="130dp"
                                 android:background="@color/colorButtonBlue"
                                 android:stateListAnimator="@null"
-                                android:text="REPAIR MODE" />
+                                android:text="@string/repair_mode" />
 
                         <LinearLayout android:layout_width="0dp"
                                       android:layout_height="wrap_content"
@@ -244,7 +244,7 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:layout_gravity="center"
-                                    android:text="TRIM  :  "
+                                    android:text="@string/label_count_trim_colon"
                                     android:textSize="16sp"
                                     android:textColor="@color/colorWhite" />
                             <TextView
@@ -302,7 +302,7 @@
                                 android:id="@+id/btn_init_actual"
                                 style="@style/btn_default"
                                 android:stateListAnimator="@null"
-                                android:text="EDIT" />
+                                android:text="@string/edit" />
 
                     </LinearLayout>
 
@@ -322,7 +322,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="COMP COUNT"
+                            android:text="@string/comp_count"
                             android:textSize="18sp"
                             android:paddingTop="8dp"
                             android:paddingBottom="8dp"
@@ -342,7 +342,8 @@
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="SIZE  "
+                                    android:text="@string/label_size"
+                                    android:layout_marginRight="10dp"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="18sp" />
                             <TextView
@@ -361,7 +362,8 @@
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="PAIR(S)  "
+                                    android:text="@string/label_pairs"
+                                    android:layout_marginRight="10dp"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="18sp" />
                             <TextView
@@ -379,7 +381,8 @@
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="TARGET  "
+                                    android:text="@string/list_item_target"
+                                    android:layout_marginRight="10dp"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="18sp" />
                             <TextView
@@ -397,7 +400,8 @@
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="ACTUAL  "
+                                    android:text="@string/list_item_actual"
+                                    android:layout_marginRight="10dp"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="18sp" />
                             <TextView
@@ -495,7 +499,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Availability"
+                            android:text="@string/availability"
                             android:textSize="13sp"
                             android:textColor="@color/colorWhite2"
                             android:background="#383838" />
@@ -533,7 +537,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Performance"
+                            android:text="@string/performance"
                             android:textSize="13sp"
                             android:textColor="@color/colorWhite2"
                             android:background="#383838" />
@@ -571,7 +575,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Quality"
+                            android:text="@string/quality"
                             android:textSize="13sp"
                             android:textColor="@color/colorWhite2"
                             android:background="#383838" />

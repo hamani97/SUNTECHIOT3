@@ -73,7 +73,7 @@
                             android:layout_marginRight="4dp"
                             android:background="#db4030"
                             android:stateListAnimator="@null"
-                            android:text="COUNT VIEW"
+                            android:text="@string/count_view"
                             android:textSize="22sp"
                             android:textColor="@color/colorWhite"
                             android:textStyle="bold"/>
@@ -86,7 +86,7 @@
                             android:layout_marginLeft="4dp"
                             android:background="#E29612"
                             android:stateListAnimator="@null"
-                            android:text="WORK INFO"
+                            android:text="@string/button_work_info"
                             android:textColor="@color/colorWhite"
                             android:textSize="22sp"
                             android:textStyle="bold" />
@@ -108,7 +108,7 @@
                             android:layout_marginRight="4dp"
                             android:background="#3581CA"
                             android:stateListAnimator="@null"
-                            android:text="OPERATOR DETAIL"
+                            android:text="@string/button_operator_detail"
                             android:textSize="22sp"
                             android:textColor="@color/colorWhite"
                             android:textStyle="bold"/>
@@ -121,7 +121,7 @@
                             android:layout_marginLeft="4dp"
                             android:background="#4AA221"
                             android:stateListAnimator="@null"
-                            android:text="SETTING"
+                            android:text="@string/button_setting"
                             android:textSize="22sp"
                             android:textColor="@color/colorWhite"
                             android:textStyle="bold"/>

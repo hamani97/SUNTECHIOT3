@@ -28,27 +28,27 @@
                         android:id="@+id/btn_setting_server"
                         style="@style/tab_btn_on"
                         android:stateListAnimator="@null"
-                        android:text="SERVER" />
+                        android:text="@string/server" />
                 <Button
                         android:id="@+id/btn_setting_device"
                         style="@style/tab_btn_off"
                         android:stateListAnimator="@null"
-                        android:text="DEVICE" />
+                        android:text="@string/device" />
                 <Button
                         android:id="@+id/btn_setting_count"
                         style="@style/tab_btn_off"
                         android:stateListAnimator="@null"
-                        android:text="COUNT" />
+                        android:text="@string/count" />
                 <Button
                         android:id="@+id/btn_setting_target"
                         style="@style/tab_btn_off"
                         android:stateListAnimator="@null"
-                        android:text="TARAGET" />
+                        android:text="@string/label_target" />
                 <Button
                         android:id="@+id/btn_setting_option"
                         style="@style/tab_btn_off"
                         android:stateListAnimator="@null"
-                        android:text="OPTION" />
+                        android:text="@string/option" />
             </LinearLayout>
 
             <FrameLayout
@@ -111,7 +111,7 @@
                         <TextView style="@style/table_title" android:text="@string/title_blink_effect" />
 
                         <LinearLayout style="@style/table_row">
-                            <TextView style="@style/table_row_title" android:text="Screen blink effect"
+                            <TextView style="@style/table_row_title" android:text="@string/label_screen_blink_effect"
                                       android:layout_width="160dp" />
                             <LinearLayout
                                     android:layout_width="match_parent"
@@ -127,7 +127,7 @@
                             </LinearLayout>
                         </LinearLayout>
                         <LinearLayout style="@style/table_row">
-                            <TextView style="@style/table_row_title" android:text="Remaining number"
+                            <TextView style="@style/table_row_title" android:text="@string/label_remaining_number"
                                       android:layout_width="160dp" />
                             <EditText
                                     style="@style/table_row_data_editor1"
@@ -527,21 +527,21 @@
                                     android:layout_width="match_parent"
                                     android:layout_margin="2dp"
                                     android:stateListAnimator="@null"
-                                    android:text="Accumulation by Start" />
+                                    android:text="@string/label_accumulation_by_start" />
                             <Button
                                     android:id="@+id/btn_server_hourly"
                                     style="@style/tab_btn_off"
                                     android:layout_width="match_parent"
                                     android:layout_margin="2dp"
                                     android:stateListAnimator="@null"
-                                    android:text="Accumulation by Hourly" />
+                                    android:text="@string/label_accumulation_by_hourly" />
                             <Button
                                     android:id="@+id/btn_server_shifttotal"
                                     style="@style/tab_btn_off"
                                     android:layout_width="match_parent"
                                     android:layout_margin="2dp"
                                     android:stateListAnimator="@null"
-                                    android:text="Total Target per Shift" />
+                                    android:text="@string/label_total_target_per_shift" />
 
                         </LinearLayout>
 
@@ -562,21 +562,21 @@
                                     android:layout_width="match_parent"
                                     android:layout_margin="2dp"
                                     android:stateListAnimator="@null"
-                                    android:text="Accumulation by Start" />
+                                    android:text="@string/label_accumulation_by_start" />
                             <Button
                                     android:id="@+id/btn_manual_hourly"
                                     style="@style/tab_btn_off"
                                     android:layout_width="match_parent"
                                     android:layout_margin="2dp"
                                     android:stateListAnimator="@null"
-                                    android:text="Accumulation by Hourly" />
+                                    android:text="@string/label_accumulation_by_hourly" />
                             <Button
                                     android:id="@+id/btn_manual_shifttotal"
                                     style="@style/tab_btn_off"
                                     android:layout_width="match_parent"
                                     android:layout_margin="2dp"
                                     android:stateListAnimator="@null"
-                                    android:text="Total Target per Shift" />
+                                    android:text="@string/label_total_target_per_shift" />
 
                         </LinearLayout>
 
@@ -587,7 +587,7 @@
                                 style="@style/table_row_title"
                                 android:layout_width="180dp"
                                 android:background="@color/colorBackgroundTop"
-                                android:text="TARGET PER SHIFT"
+                                android:text="@string/label_target_per_shift"
                                 android:textStyle="bold" />
                     </LinearLayout>
 
@@ -604,7 +604,7 @@
                                 android:layout_marginRight="20dp"
                                 android:orientation="horizontal">
                             <LinearLayout style="@style/table_row">
-                                <TextView style="@style/table_row_title" android:text="1 Shift" />
+                                <TextView style="@style/table_row_title" android:text="@string/label_shift_1" />
                                 <EditText android:id="@+id/tv_shift_1" style="@style/table_row_data_editor1" android:singleLine="true" android:inputType="number" />
                             </LinearLayout>
                         </LinearLayout>
@@ -615,7 +615,7 @@
                                 android:layout_marginRight="20dp"
                                 android:orientation="horizontal">
                             <LinearLayout style="@style/table_row">
-                                <TextView style="@style/table_row_title" android:text="2 Shift" />
+                                <TextView style="@style/table_row_title" android:text="@string/label_shift_2" />
                                 <EditText android:id="@+id/tv_shift_2" style="@style/table_row_data_editor1" android:text="0" android:singleLine="true" android:inputType="number" />
                             </LinearLayout>
                         </LinearLayout>
@@ -625,7 +625,7 @@
                                 android:layout_weight="1"
                                 android:orientation="horizontal">
                             <LinearLayout style="@style/table_row">
-                                <TextView style="@style/table_row_title" android:text="3 Shift" />
+                                <TextView style="@style/table_row_title" android:text="@string/label_shift_3" />
                                 <EditText android:id="@+id/tv_shift_3" style="@style/table_row_data_editor1" android:text="0" android:singleLine="true" android:inputType="number" />
                             </LinearLayout>
                         </LinearLayout>
@@ -651,7 +651,7 @@
                         <TextView style="@style/table_title" android:text="@string/title_etc" />
 
                         <LinearLayout style="@style/table_row">
-                            <TextView style="@style/table_row_title" android:text="Long Touch Enable"
+                            <TextView style="@style/table_row_title" android:text="@string/label_long_touch_enable"
                                       android:layout_width="160dp" />
                             <LinearLayout
                                     android:layout_width="match_parent"
@@ -669,7 +669,7 @@
                         </LinearLayout>
 
                         <LinearLayout style="@style/table_row">
-                            <TextView style="@style/table_row_title" android:text="Message Enable"
+                            <TextView style="@style/table_row_title" android:text="@string/label_message_enable"
                                       android:layout_width="160dp" />
                             <LinearLayout
                                     android:layout_width="match_parent"
@@ -686,7 +686,7 @@
                         </LinearLayout>
 
                         <LinearLayout style="@style/table_row">
-                            <TextView style="@style/table_row_title" android:text="Downtime Enable"
+                            <TextView style="@style/table_row_title" android:text="@string/label_downtime_enable"
                                       android:layout_width="160dp" />
                             <LinearLayout
                                     android:layout_width="match_parent"
@@ -703,7 +703,7 @@
                         </LinearLayout>
 
                         <LinearLayout style="@style/table_row">
-                            <TextView style="@style/table_row_title" android:text="Sound at Count"
+                            <TextView style="@style/table_row_title" android:text="@string/label_sound_at_count"
                                       android:layout_width="160dp" />
                             <LinearLayout
                                     android:layout_width="match_parent"
@@ -730,7 +730,7 @@
                         <TextView style="@style/table_title" android:text="@string/title_function" />
 
                         <LinearLayout style="@style/table_row">
-                            <TextView style="@style/table_row_title" android:text="Component"
+                            <TextView style="@style/table_row_title" android:text="@string/label_component"
                                       android:layout_width="170dp" />
                             <LinearLayout
                                     android:layout_width="match_parent"

@@ -17,6 +17,8 @@
     <string name="title_component_layer_count">COMPONENT LAYER COUNT</string>
     <string name="title_target_type">TARGET TYPE</string>
     <string name="title_push_info">PUSH INFO</string>
+    <string name="title_edit_stitch_count">EDIT STITCH COUNT</string>
+    <string name="title_edit_trim_count">EDIT TRIM COUNT</string>
 
     <!-- SETTING 화면 -->
     <string name="label_wifi">WiFi</string>
@@ -34,12 +36,30 @@
     <string name="label_from_server">TARGET TYPE FROM SERVER</string>
     <string name="label_from_device">TARGET TYPE FROM DEVICE</string>
     <string name="label_count_trim">TRIM</string>
+    <string name="label_count_trim_space">TRIM  </string>
+    <string name="label_count_trim_colon">TRIM  :  </string>
     <string name="label_count_stitch">STITCH</string>
+    <string name="label_count_stitch_colon">STITCH  :  </string>
+    <string name="label_count_stitch_space">     STITCH  </string>
     <string name="label_count_trim_and_stitch">TRIM and STITCH</string>
     <string name="label_count_trim_qty">TRIM</string>
     <string name="label_count_trim_pairs">Pair(s)</string>
     <string name="label_count_stitch_qty">STITCH</string>
     <string name="label_count_stitch_delay_time">Delay Time(sec)</string>
+
+    <string name="label_screen_blink_effect">Screen blink effect</string>
+    <string name="label_remaining_number">Remaining number</string>
+    <string name="label_accumulation_by_start">Accumulation by Start</string>
+    <string name="label_accumulation_by_hourly">Accumulation by Hourly</string>
+    <string name="label_total_target_per_shift">Total Target per Shift</string>
+    <string name="label_target_per_shift">TARGET PER SHIFT</string>
+    <string name="label_shift_1">1 SHIFT</string>
+    <string name="label_shift_2">2 SHIFT</string>
+    <string name="label_shift_3">3 SHIFT</string>
+    <string name="label_long_touch_enable">Long Touch Enable</string>
+    <string name="label_message_enable">Message Enable</string>
+    <string name="label_sound_at_count">Sound at Count</string>
+    <string name="label_downtime_enable">Downtime Enable</string>
 
     <!-- 홈화면 -->
     <string name="bottom_label_machine_info">MACHINE INFO</string>
@@ -52,9 +72,15 @@
     <string name="bottom_label_number">M/C NUMBER : \u0020</string>
     <string name="bottom_label_mc_model">MODEL : \u0020</string>
 
+    <string name="bottom_label_trim">TRIM :  </string>
+    <string name="bottom_label_stitch">STITCH :  </string>
+    <string name="bottom_label_pairs">PAIR(S) :  </string>
+    <string name="bottom_label_delaytime">DELAY TIME :  </string>
+
     <!-- COUNT VIEW 화면 -->
     <string name="label_target">TARGET</string>
     <string name="label_actual">ACTUAL</string>
+    <string name="label_accumulate">ACCUMULATE</string>
     <string name="label_rate">RATE</string>
 
     <!-- COMPONENT COUNT VIEW 화면 -->
@@ -62,16 +88,20 @@
     <string name="list_item_model">MODEL</string>
     <string name="list_item_size">SIZE</string>
     <string name="list_item_target">TARGET</string>
+    <string name="list_item_target_space">TARGET  </string>
     <string name="list_item_actual">ACTUAL</string>
+    <string name="list_item_actual_space">ACTUAL  </string>
     <string name="list_item_balance">BALANCE</string>
 
     <!-- COMPONENT 화면 -->
     <string name="label_wos">WOS</string>
     <string name="label_component">COMPONENT</string>
     <string name="label_size">SIZE</string>
+    <string name="label_size_space">SIZE  </string>
     <string name="label_layer">LAYER</string>
     <string name="label_layers">LAYER(S)</string>
     <string name="label_pairs">PAIR(S)</string>
+    <string name="label_pairs_space">     PAIR(S)  </string>
     <string name="label_model2">MODEL</string>
     <string name="label_style">STYLE</string>
     <!--<string name="label_from_server2">FROM SERVER</string>-->
@@ -89,12 +119,20 @@
     <string name="msg_has_notcompleted">Info not complete</string>
 
     <!-- Buttons -->
+    <string name="button_count_view">COUNT VIEW</string>
+    <string name="button_work_info">WORK INFO</string>
+    <string name="button_operator_detail">OPERATOR DETAIL</string>
+    <string name="button_setting">SETTING</string>
+
     <string name="button_total_count_view">Total Count View</string>
     <string name="button_component_count_view">Component Count View</string>
     <string name="button_select_component">Select Component</string>
 
     <!-- Common -->
     <string name="server">SERVER</string>
+    <string name="device">DEVICE</string>
+    <string name="count">COUNT</string>
+    <string name="option">OPTION</string>
     <string name="manual">Manual</string>
     <string name="confirm">Confirm</string>
     <string name="save">Save</string>
@@ -103,21 +141,42 @@
     <string name="check">Check</string>
     <string name="search">SEARCH</string>
     <string name="notice">Notice</string>
+    <string name="start">START</string>
+    <string name="end">END</string>
+    <string name="edit">EDIT</string>
+    <string name="comp_count">COMP COUNT</string>
+    <string name="availability">Availability</string>
+    <string name="performance">Performance</string>
+    <string name="quality">Quality</string>
+    <string name="time">TIME</string>
+    <string name="no_data">No Data</string>
+
+    <string name="repair_mode">REPAIR MODE</string>
+    <string name="test_mode">TEST MODE</string>
+    <string name="count_mode">COUNT MODE</string>
+    <string name="count_view">COUNT VIEW</string>
+    <string name="refresh">REFRESH</string>
+    <string name="trim_test">TRIM TEST</string>
+    <string name="stitch_test">STITCH TEST</string>
 
     <string name="list_item_shift">SHIFT</string>
     <string name="list_item_work_time">WORK TIME</string>
+    <string name="list_item_planned_time">PLANNED TIME</string>
     <string name="list_item_planned_time1">PLANNED TIME1</string>
     <string name="list_item_planned_time2">PLANNED TIME2</string>
-
     <string name="list_item_employee_number">EMPLOYEE NUMBER</string>
     <string name="list_item_name">NAME</string>
-
     <string name="list_item_start_time">Start Time</string>
     <string name="list_item_end_time">End Time</string>
     <string name="list_item_down_time">DownTime</string>
     <string name="list_item_completed">Completed</string>
     <string name="list_item_list">List</string>
     <string name="list_item_total">TOTAL</string>
+
+    <string name="trim_count">TRIM COUNT</string>
+    <string name="stitch_count">STITCH COUNT</string>
+    <string name="edit_pairs">EDIT PAIR(S)</string>
+    <string name="delay_time">DELAY TIME</string>
 
     <!-- Message -->
     <string name="msg_no_operator">Operator not found</string>

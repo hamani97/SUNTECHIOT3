@@ -78,7 +78,7 @@ class CountViewFragment : BaseFragment() {
             if (AppGlobal.instance.get_count_type() == "trim") {
                 ll_t_s_block.visibility = View.GONE
 
-                tv_kind_name.text = "TRIM  :  "
+                tv_kind_name.text = getString(R.string.label_count_trim_colon) // "TRIM  :  "
                 tv_kind_qty.text = "" + (activity as MainActivity).trim_qty
                 tv_kind_pairs.text = "" + (activity as MainActivity).trim_pairs
 
@@ -100,7 +100,7 @@ class CountViewFragment : BaseFragment() {
             } else if (AppGlobal.instance.get_count_type() == "stitch") {
                 ll_t_s_block.visibility = View.GONE
 
-                tv_kind_name.text = "STITCH  :  "
+                tv_kind_name.text = getString(R.string.label_count_stitch_colon) // "STITCH  :  "
                 tv_kind_qty.text = "" + (activity as MainActivity).stitch_qty
                 tv_kind_pairs.text = "" + (activity as MainActivity).stitch_pairs
 
@@ -213,21 +213,21 @@ class CountViewFragment : BaseFragment() {
             ll_repair_mode.visibility = View.VISIBLE
 
             (activity as MainActivity).repairModeType = 1  // Repair mode 로 세팅
-            tv_repair_title.text = "REPAIR MODE"
+            tv_repair_title.text = getString(R.string.repair_mode) // "REPAIR MODE"
             ll_test_layout.visibility = View.INVISIBLE
-            btn_go_test_mode.text = "TEST MODE"
+            btn_go_test_mode.text = getString(R.string.test_mode) // "TEST MODE"
         }
         btn_go_test_mode.setOnClickListener {
             if ((activity as MainActivity).repairModeType == 1) {
                 (activity as MainActivity).repairModeType = 2  // Test mode 로 세팅
-                tv_repair_title.text = "TEST MODE"
+                tv_repair_title.text = getString(R.string.test_mode) // "TEST MODE"
                 ll_test_layout.visibility = View.VISIBLE
                 btn_go_test_mode.text = "CLOSE TEST"
             } else {
                 (activity as MainActivity).repairModeType = 1  // Repair mode 로 세팅
-                tv_repair_title.text = "REPAIR MODE"
+                tv_repair_title.text = getString(R.string.repair_mode) // "REPAIR MODE"
                 ll_test_layout.visibility = View.INVISIBLE
-                btn_go_test_mode.text = "TEST MODE"
+                btn_go_test_mode.text = getString(R.string.test_mode) // "TEST MODE"
             }
         }
         btn_test_mode_refresh.setOnClickListener {

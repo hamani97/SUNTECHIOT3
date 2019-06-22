@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="EDIT TRIM COUNT"
+                    android:text="@string/title_edit_trim_count"
                     android:textColor="#fff"
                     android:textSize="28dp"
                     android:textStyle="bold"/>
@@ -58,7 +58,7 @@
                 <TextView
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
-                        android:text="TRIM COUNT"
+                        android:text="@string/trim_count"
                         android:textSize="21sp"
                         android:textColor="#333"
                         android:textStyle="bold"/>
@@ -78,7 +78,7 @@
                 <TextView
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
-                        android:text="PAIR(S)"
+                        android:text="@string/label_pairs"
                         android:textSize="21sp"
                         android:textColor="#333"
                         android:textStyle="bold"/>
@@ -118,7 +118,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:gravity="center"
-                        android:text="EDIT TRIM COUNT"
+                        android:text="@string/title_edit_trim_count"
                         android:textSize="21sp"
                         android:textColor="#333"
                         android:textStyle="bold"/>
@@ -193,7 +193,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:gravity="center"
-                        android:text="EDIT PAIR(S)"
+                        android:text="@string/edit_pairs"
                         android:textSize="21sp"
                         android:textColor="#333"
                         android:textStyle="bold"/>

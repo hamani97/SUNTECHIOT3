@@ -59,7 +59,7 @@
                         android:id="@+id/tv_prod_edit_wos_name"
                         android:layout_width="90dp"
                         android:layout_height="wrap_content"
-                        android:text="WOS"
+                        android:text="@string/list_item_wos"
                         android:textSize="21sp"
                         android:textColor="#333"
                         android:textStyle="bold"/>
@@ -79,7 +79,7 @@
                 <TextView
                         android:layout_width="90dp"
                         android:layout_height="wrap_content"
-                        android:text="MODEL"
+                        android:text="@string/list_item_model"
                         android:textSize="21sp"
                         android:textColor="#333"
                         android:textStyle="bold"/>
@@ -99,7 +99,7 @@
                 <TextView
                         android:layout_width="90dp"
                         android:layout_height="wrap_content"
-                        android:text="SIZE"
+                        android:text="@string/list_item_size"
                         android:textSize="21sp"
                         android:textColor="#333"
                         android:textStyle="bold"/>
@@ -119,7 +119,7 @@
                 <TextView
                         android:layout_width="90dp"
                         android:layout_height="wrap_content"
-                        android:text="ACTUAL"
+                        android:text="@string/list_item_actual"
                         android:textSize="21sp"
                         android:textColor="#333"
                         android:textStyle="bold"/>
