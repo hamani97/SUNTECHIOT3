@@ -45,19 +45,22 @@
                 android:name=".service.UsbService"
                 android:enabled="true" />
 
-        <activity android:name=".ComponentInfoActivity" android:screenOrientation="landscape" />
+        <activity android:name=".DesignInfoActivity" android:screenOrientation="landscape" />
         <activity android:name=".WorkInfoActivity" android:screenOrientation="landscape" />
         <activity android:name=".SettingActivity" android:screenOrientation="landscape" />
         <activity android:name=".PopupSelectList" android:theme="@style/AppTheme.PopupOverlay" />
         <activity android:name=".popup.PushActivity" android:theme="@style/AppTheme.PopupOverlay" />
         <activity android:name=".popup.ActualCountEditActivity" android:theme="@style/AppTheme.PopupOverlay" />
         <activity android:name=".popup.ActualCountEditInputActivity" android:theme="@style/AppTheme.PopupOverlay" />
-        <activity android:name=".popup.ActualTotalCountEditActivity" android:theme="@style/AppTheme.PopupOverlay" />
         <activity android:name=".popup.TrimCountEditActivity" android:theme="@style/AppTheme.PopupOverlay" />
         <activity android:name=".popup.TrimStitchCountEditActivity" android:theme="@style/AppTheme.PopupOverlay" />
         <activity android:name=".popup.StitchCountEditActivity" android:theme="@style/AppTheme.PopupOverlay" />
         <activity android:name=".popup.DownTimeActivity" android:theme="@style/AppTheme.PopupOverlay" />
         <activity android:name=".popup.DownTimeInputActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.DefectiveActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.DefectiveInputActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.WorkSheetActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.WorkSheetDetailActivity" android:theme="@style/AppTheme.PopupOverlay" />
         <activity android:name=".ProductionReportTotalActivity" android:screenOrientation="landscape" />
     </application>
 

@@ -60,22 +60,14 @@ class ActualTotalCountEditActivity : BaseActivity() {
         if (shift_idx == "") shift_idx = "0"
         val seq = 1
 
-        val uri = "/senddata1.php"
+        val uri = "/Scount.php"
         var params = listOf(
             "mac_addr" to AppGlobal.instance.getMACAddress(),
-            "didx" to "1001",
+            "didx" to AppGlobal.instance.get_design_info_idx(),
             "count" to inc_count.toString(),
             "total_count" to new_actual,
-            "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
-            "factory_idx" to AppGlobal.instance.get_room_idx(),
-            "line_idx" to AppGlobal.instance.get_line_idx(),
             "shift_idx" to  shift_idx,
-            "seq" to seq,
-            "wos" to AppGlobal.instance.get_compo_wos(),
-            "comp" to AppGlobal.instance.get_compo_component_idx(),
-            "size" to AppGlobal.instance.get_compo_size(),
-            "max_rpm" to "",
-            "avr_rpm" to "")
+            "seq" to seq)
 
         request(this, uri, true,false, params, { result ->
             var code = result.getString("code")

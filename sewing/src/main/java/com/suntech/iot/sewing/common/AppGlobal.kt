@@ -28,6 +28,14 @@ class AppGlobal private constructor() {
     }
     fun setContext(ctx : Context) { _context = ctx }
 
+    // millis value for Downtime
+    fun set_last_received(value: String) { UtilLocalStorage.setString(instance._context!!, "last_received", value) }
+    fun get_last_received() : String { return UtilLocalStorage.getString(instance._context!!, "last_received") }
+
+    // auto setting
+    fun set_auto_setting(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "auto_setting", state) }
+    fun get_auto_setting() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "auto_setting") }
+
     // Default Setting
     fun set_factory_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_factory_idx", idx) }
     fun get_factory_idx() : String { return UtilLocalStorage.getString(instance._context!!, "current_factory_idx") }
@@ -68,14 +76,17 @@ class AppGlobal private constructor() {
     fun set_sound_at_count(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_sound_count", state) }
     fun get_sound_at_count() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_sound_count") }
 
-    fun set_with_component(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_with_component", state) }
-    fun get_with_component() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_with_component") }
+//    fun set_with_component(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_with_component", state) }
+//    fun get_with_component() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_with_component") }
 
-    fun set_wos_name(name: String) { UtilLocalStorage.setString(instance._context!!, "current_wos_name", name) }
-    fun get_wos_name() : String {
-        val name = UtilLocalStorage.getString(instance._context!!, "current_wos_name")
-        return if (name != "") name else "WOS"
-    }
+//    fun set_wos_name(name: String) { UtilLocalStorage.setString(instance._context!!, "current_wos_name", name) }
+//    fun get_wos_name() : String {
+//        val name = UtilLocalStorage.getString(instance._context!!, "current_wos_name")
+//        return if (name != "") name else "WOS"
+//    }
+
+    fun set_worksheet_display_time(value: Int) { UtilLocalStorage.setInt(instance._context!!, "current_sheet_disptime", value) }
+    fun get_worksheet_display_time() : Int { return UtilLocalStorage.getInt(instance._context!!, "current_sheet_disptime") }
 
     fun set_screen_blink(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_screen_blink", state) }
     fun get_screen_blink() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_screen_blink") }
@@ -91,35 +102,35 @@ class AppGlobal private constructor() {
 
 
     // Component 필터 세팅값
-    fun set_compo_sort_key(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_sort_key", value) }
-    fun get_compo_sort_key() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_sort_key") }
-
-    fun set_compo_wos_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_wos_idx", idx) }
-    fun get_compo_wos_idx() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_wos_idx") }
-    fun set_compo_wos(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_wos", value) }
-    fun get_compo_wos() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_wos") }
-
-    fun set_compo_model(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_model", value) }
-    fun get_compo_model() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_model") }
-    fun set_compo_style(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_style", value) }
-    fun get_compo_style() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_style") }
-
-    fun set_compo_component_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_component_idx", idx) }
-    fun get_compo_component_idx() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_component_idx") }
-    fun set_compo_component(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_component", value) }
-    fun get_compo_component() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_component") }
+//    fun set_compo_sort_key(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_sort_key", value) }
+//    fun get_compo_sort_key() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_sort_key") }
+//
+//    fun set_compo_wos_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_wos_idx", idx) }
+//    fun get_compo_wos_idx() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_wos_idx") }
+//    fun set_compo_wos(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_wos", value) }
+//    fun get_compo_wos() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_wos") }
+//
+//    fun set_compo_model(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_model", value) }
+//    fun get_compo_model() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_model") }
+//    fun set_compo_style(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_style", value) }
+//    fun get_compo_style() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_style") }
+//
+//    fun set_compo_component_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_component_idx", idx) }
+//    fun get_compo_component_idx() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_component_idx") }
+//    fun set_compo_component(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_component", value) }
+//    fun get_compo_component() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_component") }
     //
 //    fun set_compo_size_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_size_idx", idx) }
 //    fun get_compo_size_idx() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_size_idx") }
-    fun set_compo_size(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_size", value) }
-    fun get_compo_size() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_size") }
-    fun set_compo_target(value: Int) { UtilLocalStorage.setInt(instance._context!!, "current_compo_target", value) }
-    fun get_compo_target() : Int { return UtilLocalStorage.getInt(instance._context!!, "current_compo_target") }
-
-    fun set_compo_layer(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_layer", value) }
-    fun get_compo_layer() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_layer") }
-    fun set_compo_pairs(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_pairs", value) }
-    fun get_compo_pairs() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_pairs") }
+//    fun set_compo_size(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_size", value) }
+//    fun get_compo_size() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_size") }
+//    fun set_compo_target(value: Int) { UtilLocalStorage.setInt(instance._context!!, "current_compo_target", value) }
+//    fun get_compo_target() : Int { return UtilLocalStorage.getInt(instance._context!!, "current_compo_target") }
+//
+//    fun set_compo_layer(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_layer", value) }
+//    fun get_compo_layer() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_layer") }
+//    fun set_compo_pairs(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_pairs", value) }
+//    fun get_compo_pairs() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_pairs") }
 
 
     // 작업자 정보 설정
@@ -158,21 +169,36 @@ class AppGlobal private constructor() {
 
 
     // 작업 프로덕트 고유값 설정
-//    fun reset_product_idx() {
-//        UtilLocalStorage.setString(instance._context!!, "work_idx", "")
-//    }
-//    fun set_product_idx() {
-//        var product_idx = get_product_idx()
-//        if (product_idx == "" ) product_idx = "1000"
-//        val new_product_idx = product_idx.toInt() + 1
-//        UtilLocalStorage.setString(instance._context!!, "work_idx", new_product_idx.toString())
-//    }
-//    fun get_product_idx() : String {
-//        return UtilLocalStorage.getString(instance._context!!, "work_idx")
-//    }
+    fun set_product_idx() {
+        var product_idx = get_product_idx()
+        val new_product_idx = if (product_idx == "") "1000" else product_idx.toInt() + 1
+        UtilLocalStorage.setString(instance._context!!, "work_idx", new_product_idx.toString())
+    }
+    fun get_product_idx() : String { return UtilLocalStorage.getString(instance._context!!, "work_idx") }
+    fun reset_product_idx() { UtilLocalStorage.setString(instance._context!!, "work_idx", "") }
 
 
     // 디자인 정보 설정
+    fun set_design_info(data: JSONArray) { UtilLocalStorage.setJSONArray(instance._context!!, "design_info", data) }
+    fun get_design_info() : JSONArray { return UtilLocalStorage.getJSONArray(instance._context!!, "design_info") }
+    fun set_design_info_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_design_info_idx", idx) }
+    fun get_design_info_idx() : String { return UtilLocalStorage.getString(instance._context!!, "current_design_info_idx") }
+
+//    fun set_pieces_info(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_pieces_info", idx) }
+//    fun get_pieces_info() : String { return UtilLocalStorage.getString(instance._context!!, "current_pieces_info") }
+//    fun set_pairs_info(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_pairs_info", idx) }
+//    fun get_pairs_info() : String { return UtilLocalStorage.getString(instance._context!!, "current_pairs_info") }
+
+    fun set_model(data: String) { UtilLocalStorage.setString(instance._context!!, "current_model", data) }
+    fun get_model() : String { return UtilLocalStorage.getString(instance._context!!, "current_model") }
+    fun set_article(data: String) { UtilLocalStorage.setString(instance._context!!, "current_article", data) }
+    fun get_article() : String { return UtilLocalStorage.getString(instance._context!!, "current_article") }
+    fun set_material_way(data: String) { UtilLocalStorage.setString(instance._context!!, "current_material_way", data) }
+    fun get_material_way() : String { return UtilLocalStorage.getString(instance._context!!, "current_material_way") }
+    fun set_component(data: String) { UtilLocalStorage.setString(instance._context!!, "current_component", data) }
+    fun get_component() : String { return UtilLocalStorage.getString(instance._context!!, "current_component") }
+
+
 //    fun set_design_info_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_design_info_idx", idx) }
 //    fun get_design_info_idx() : String { return UtilLocalStorage.getString(instance._context!!, "current_design_info_idx") }
 //    fun set_design_info(data: JSONArray) { UtilLocalStorage.setJSONArray(instance._context!!, "design_info", data) }

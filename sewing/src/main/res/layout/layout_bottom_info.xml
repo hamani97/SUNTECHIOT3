@@ -19,7 +19,7 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginLeft="20dp"
                     android:text="@string/bottom_label_machine_info"
                     android:textSize="16sp"
                     android:textColor="@color/colorWhite"
@@ -61,7 +61,7 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginLeft="20dp"
                     android:text="@string/bottom_label_operator_info"
                     android:textSize="16sp"
                     android:textColor="@color/colorWhite"

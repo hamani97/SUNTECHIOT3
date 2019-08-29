@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import android.widget.Toast
 import com.suntech.iot.sewing.R
 import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.db.DBHelperForDownTime
@@ -58,12 +59,12 @@ class DownTimeActivity : BaseActivity() {
 
     private fun initView() {
         btn_confirm.setOnClickListener {
-//            var db = DBHelperForDownTime(this)
-//            val count = db.counts_for_notcompleted()
-//            if (count>0) {
-//                Toast.makeText(this, getString(R.string.msg_has_notcompleted), Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
+            var db = DBHelperForDownTime(this)
+            val count = db.counts_for_notcompleted()
+            if (count>0) {
+                Toast.makeText(this, getString(R.string.msg_has_notcompleted), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             finish(true, 1, "ok", null)
         }
 

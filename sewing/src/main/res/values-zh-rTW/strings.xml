@@ -168,4 +168,30 @@
     <string name="bottom_label_pairs">"双数 : "</string>
     <string name="bottom_label_stitch">"车缝 : "</string>
     <string name="bottom_label_delaytime">"延迟时间 : "</string>
+    <string name="list_item_defective">DEFECTIVE</string>
+    <string name="list_item_design_idx">DESIGN IDX</string>
+    <string name="list_item_product_rate">PRODUCT RATE</string>
+    <string name="list_item_qualti_rate">QUALLTY RATE</string>
+    <string name="msg_design_not_selected">Design not selected</string>
+    <string name="label_defective_input_list">Defective List</string>
+    <string name="label_defective_input_qty">Defective Q\'ty</string>
+    <string name="title_defective_input">Defective input</string>
+    <string name="title_product_list">Product List</string>
+    <string name="end_of_display">Display Stop</string>
+    <string name="start_of_display">Display Start</string>
+    <string name="title_work_sheet">WORK SHEET</string>
+    <string name="back">Back</string>
+    <string name="msg_select_design">Please select a Design</string>
+    <string name="guide_pieces">= 1 Count</string>
+    <string name="label_pieces">Pieces</string>
+    <string name="list_header_article">Article</string>
+    <string name="list_header_component">Component</string>
+    <string name="list_header_cycle_time">Cycle Time</string>
+    <string name="list_header_idx">IDX</string>
+    <string name="list_header_material">Material</string>
+    <string name="list_header_model">Model</string>
+    <string name="title_design_info">DESIGN INFO</string>
+    <string name="title_pieces_info">PIECES INFO</string>
+    <string name="label_worksheet_display_time">WorkSheet Display Time</string>
+    <string name="label_cycle_time">TARGET TYPE FROM CYCLE TIME</string>
 </resources>

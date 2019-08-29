@@ -90,13 +90,17 @@ class SettingActivity : BaseActivity() {
         et_setting_server_ip.setText(AppGlobal.instance.get_server_ip())
         et_setting_port.setText(AppGlobal.instance.get_server_port())
 
-        et_setting_wos_name.setText(AppGlobal.instance.get_wos_name())
+        // 워크시트 토글 시간(초). 0일때는 5로 초기화
+        val sec = if (AppGlobal.instance.get_worksheet_display_time()==0) "5" else AppGlobal.instance.get_worksheet_display_time().toString()
+        et_setting_worksheet_display_time.setText(sec)
+
+//        et_setting_wos_name.setText(AppGlobal.instance.get_wos_name())
 
         sw_long_touch.isChecked = AppGlobal.instance.get_long_touch()
         sw_message_enable.isChecked = AppGlobal.instance.get_message_enable()
         sw_downtime_enable.isChecked = AppGlobal.instance.get_downtime_enable()
         sw_sound_at_count.isChecked = AppGlobal.instance.get_sound_at_count()
-        sw_without_component.isChecked = AppGlobal.instance.get_with_component()
+//        sw_without_component.isChecked = AppGlobal.instance.get_with_component()
         sw_screen_blink_effect.isChecked = AppGlobal.instance.get_screen_blink()
 
         // 깜박임 기능. 0일때는 10으로 초기화
@@ -167,7 +171,11 @@ class SettingActivity : BaseActivity() {
 
         // Target setting button listener
         btn_server_accumulate.setOnClickListener { targetTypeChange("server_per_accumulate") }
-        btn_server_hourly.setOnClickListener { targetTypeChange("server_per_hourly") }
+//        btn_server_hourly.setOnClickListener { targetTypeChange("server_per_hourly") }
+        btn_server_hourly.setOnClickListener {
+            Toast.makeText(this, "Not yet supported.", Toast.LENGTH_SHORT).show();
+//            targetTypeChange("server_per_hourly")
+        }
         btn_server_shifttotal.setOnClickListener { targetTypeChange("server_per_day_total") }
         btn_manual_accumulate.setOnClickListener { targetTypeChange("device_per_accumulate") }
         btn_manual_hourly.setOnClickListener { targetTypeChange("device_per_hourly") }
@@ -182,10 +190,10 @@ class SettingActivity : BaseActivity() {
         // click listener
         // Tab button
         btn_setting_server.setOnClickListener { tabChange(1) }
-        btn_setting_device.setOnClickListener { tabChange(2) }
-        btn_setting_count.setOnClickListener { tabChange(3) }
-        btn_setting_target.setOnClickListener { tabChange(4) }
-        btn_setting_option.setOnClickListener { tabChange(5) }
+//        btn_setting_device.setOnClickListener { tabChange(2) }
+        btn_setting_count.setOnClickListener { tabChange(2) }
+        btn_setting_target.setOnClickListener { tabChange(3) }
+        btn_setting_option.setOnClickListener { tabChange(4) }
 
         // System setting button listener
         tv_setting_factory.setOnClickListener { fetchDataForFactory() }
@@ -228,7 +236,9 @@ class SettingActivity : BaseActivity() {
         if (AppGlobal.instance._server_state) btn_server_state.isSelected = true
         else btn_server_state.isSelected = false
 
-        if (et_setting_server_ip.text.toString() == "") et_setting_server_ip.setText("49.247.205.235")     // 10.10.10.90
+        // 10.10.10.90
+        // 49.247.205.235
+        if (et_setting_server_ip.text.toString() == "") et_setting_server_ip.setText("115.68.227.31")
         if (et_setting_port.text.toString() == "") et_setting_port.setText("80")
     }
 
@@ -253,15 +263,9 @@ class SettingActivity : BaseActivity() {
     }
 
     private fun saveSettingData() {
-        val remain_num = if (et_remain_number.text.toString()=="") 10 else et_remain_number.text.toString().toInt()
-        if (remain_num < 5 || remain_num > 30) {
-            tabChange(1)
-            Toast.makeText(this, getString(R.string.msg_remain_out_of_range), Toast.LENGTH_SHORT).show()
-            return
-        }
         // check value
         if (_selected_factory_idx == "" || _selected_room_idx == "" || _selected_line_idx == "" || tv_setting_mac.text.toString().trim() == "") {
-            tabChange(2)
+            tabChange(1)
             Toast.makeText(this, getString(R.string.msg_require_info), Toast.LENGTH_SHORT).show()
             return
         }
@@ -269,28 +273,29 @@ class SettingActivity : BaseActivity() {
 //            Toast.makeText(this, getString(R.string.msg_select_layer1), Toast.LENGTH_SHORT).show()
 //            return
 //        }
+
         // count type check
         if (_selected_count_type == "trim") {
             if (tv_trim_qty.text.toString().trim()=="" || tv_trim_pairs.text.toString()=="") {
-                tabChange(3)
+                tabChange(2)
                 Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
                 return
             }
         } else if (_selected_count_type == "stitch") {
             if (tv_stitch_start.text.toString().trim()=="" || tv_stitch_end.text.toString().trim()=="" ||
                 tv_stitch_delay_time.text.toString().trim()=="" || tv_stitch_pairs.text.toString()=="") {
-                tabChange(3)
+                tabChange(2)
                 Toast.makeText(this, getString(R.string.msg_require_stitch_info), Toast.LENGTH_SHORT).show()
                 return
             }
         } else if (_selected_count_type == "t_s") {
             if (tv_stitch_start2.text.toString().trim()=="" || tv_stitch_end2.text.toString().trim()=="") {
-                tabChange(3)
+                tabChange(2)
                 Toast.makeText(this, getString(R.string.msg_require_stitch_info), Toast.LENGTH_SHORT).show()
                 return
             }
             if (tv_trim_qty2.text.toString().trim()=="" || tv_trim_stitch_pairs.text.toString()=="") {
-                tabChange(3)
+                tabChange(2)
                 Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
                 return
             }
@@ -299,11 +304,21 @@ class SettingActivity : BaseActivity() {
         // target check
         if (_selected_target_type.substring(0, 6) == "device") {
             if (tv_shift_1.text.toString().trim()=="" || tv_shift_2.text.toString().trim()=="" || tv_shift_3.text.toString().trim()=="") {
-                tabChange(4)
+                tabChange(3)
                 Toast.makeText(this, getString(R.string.msg_require_target_quantity), Toast.LENGTH_SHORT).show()
                 return
             }
         }
+
+        // option
+        val remain_num = if (et_remain_number.text.toString()=="") 10 else et_remain_number.text.toString().toInt()
+        if (remain_num < 5 || remain_num > 30) {
+            tabChange(4)
+            Toast.makeText(this, getString(R.string.msg_remain_out_of_range), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val worksheet_time = if (et_setting_worksheet_display_time.text.toString()=="") 5 else et_setting_worksheet_display_time.text.toString().toInt()
 
         // setting value
         AppGlobal.instance.set_factory_idx(_selected_factory_idx)
@@ -325,9 +340,11 @@ class SettingActivity : BaseActivity() {
         AppGlobal.instance.set_message_enable(sw_message_enable.isChecked)
         AppGlobal.instance.set_downtime_enable(sw_downtime_enable.isChecked)
         AppGlobal.instance.set_sound_at_count(sw_sound_at_count.isChecked)
-        AppGlobal.instance.set_with_component(sw_without_component.isChecked)
+//        AppGlobal.instance.set_with_component(sw_without_component.isChecked)
 
-        AppGlobal.instance.set_wos_name(et_setting_wos_name.text.toString())
+//        AppGlobal.instance.set_wos_name(et_setting_wos_name.text.toString())
+
+        AppGlobal.instance.set_worksheet_display_time(worksheet_time)
 
         AppGlobal.instance.set_screen_blink(sw_screen_blink_effect.isChecked)
         AppGlobal.instance.set_remain_number(remain_num)
@@ -616,22 +633,22 @@ class SettingActivity : BaseActivity() {
                 btn_setting_server.setBackgroundResource(R.color.colorButtonDefault)
                 layout_setting_server.visibility = View.GONE
             }
+//            2 -> {
+//                btn_setting_device.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+//                btn_setting_device.setBackgroundResource(R.color.colorButtonDefault)
+//                layout_setting_device.visibility = View.GONE
+//            }
             2 -> {
-                btn_setting_device.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
-                btn_setting_device.setBackgroundResource(R.color.colorButtonDefault)
-                layout_setting_device.visibility = View.GONE
-            }
-            3 -> {
                 btn_setting_count.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
                 btn_setting_count.setBackgroundResource(R.color.colorButtonDefault)
                 layout_setting_count.visibility = View.GONE
             }
-            4 -> {
+            3 -> {
                 btn_setting_target.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
                 btn_setting_target.setBackgroundResource(R.color.colorButtonDefault)
                 layout_setting_target.visibility = View.GONE
             }
-            5 -> {
+            4 -> {
                 btn_setting_option.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
                 btn_setting_option.setBackgroundResource(R.color.colorButtonDefault)
                 layout_setting_option.visibility = View.GONE
@@ -644,22 +661,22 @@ class SettingActivity : BaseActivity() {
                 btn_setting_server.setBackgroundResource(R.color.colorButtonBlue)
                 layout_setting_server.visibility = View.VISIBLE
             }
+//            2 -> {
+//                btn_setting_device.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
+//                btn_setting_device.setBackgroundResource(R.color.colorButtonBlue)
+//                layout_setting_device.visibility = View.VISIBLE
+//            }
             2 -> {
-                btn_setting_device.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
-                btn_setting_device.setBackgroundResource(R.color.colorButtonBlue)
-                layout_setting_device.visibility = View.VISIBLE
-            }
-            3 -> {
                 btn_setting_count.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
                 btn_setting_count.setBackgroundResource(R.color.colorButtonBlue)
                 layout_setting_count.visibility = View.VISIBLE
             }
-            4 -> {
+            3 -> {
                 btn_setting_target.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
                 btn_setting_target.setBackgroundResource(R.color.colorButtonBlue)
                 layout_setting_target.visibility = View.VISIBLE
             }
-            5 -> {
+            4 -> {
                 btn_setting_option.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
                 btn_setting_option.setBackgroundResource(R.color.colorButtonBlue)
                 layout_setting_option.visibility = View.VISIBLE

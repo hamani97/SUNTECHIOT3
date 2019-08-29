@@ -18,9 +18,9 @@
 
     <!-- common -->
     <color name="transparent">#00ff0000</color>
-    <color name="colorBackground">#1c2c39</color>
-    <color name="colorBackground2">#16222a</color>
-    <color name="colorBackgroundTop">#192533</color>
+    <color name="colorBackground">#1F3242</color>
+    <color name="colorBackground2">#162936</color>
+    <color name="colorBackgroundTop">#122338</color>
     <color name="colorBackgroundSide">#192533</color>
 
     <color name="colorReadonly">#4d4d4d</color>
@@ -33,6 +33,8 @@
     <color name="colorButtonDefaultFocus">#333E4D</color>
     <color name="colorButtonGray">#535353</color>
     <color name="colorButtonGrayFocus">#727272</color>
+    <color name="colorButtonRed">#FF1D1D</color>
+    <color name="colorButtonRedFocus">#DB3737</color>
     <color name="colorButtonOrange">#E68900</color>
     <color name="colorButtonOrangeFocus">#D39E35</color>
     <color name="colorButtonGreen">#87c947</color>

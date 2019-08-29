@@ -8,7 +8,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:padding="8dp"
+            android:padding="10dp"
             android:orientation="horizontal">
 
         <TextView
@@ -22,15 +22,15 @@
                 android:textColor="#333"/>
 
 
-        <TextView
-                android:id="@+id/tv_item_work_time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="Work Time"
-                android:textSize="14sp"
-                android:textColor="#333"/>
+        <!--<TextView-->
+        <!--android:id="@+id/tv_item_work_time"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="2"-->
+        <!--android:gravity="center"-->
+        <!--android:text="Work Time"-->
+        <!--android:textSize="14sp"-->
+        <!--android:textColor="#333"/>-->
 
 
         <TextView
@@ -44,15 +44,15 @@
                 android:textColor="#333"/>
 
 
-        <TextView
-                android:id="@+id/tv_item_target"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Target"
-                android:textSize="14sp"
-                android:textColor="#333"/>
+        <!--<TextView-->
+        <!--android:id="@+id/tv_item_target"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center"-->
+        <!--android:text="Target"-->
+        <!--android:textSize="14sp"-->
+        <!--android:textColor="#333"/>-->
 
         <TextView
                 android:id="@+id/tv_item_actual"
@@ -63,15 +63,15 @@
                 android:text="Actual"
                 android:textSize="14sp"
                 android:textColor="#333"/>
-        <TextView
-                android:id="@+id/tv_item_product_rate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Product Rate"
-                android:textSize="14sp"
-                android:textColor="#333"/>
+        <!--<TextView-->
+        <!--android:id="@+id/tv_item_product_rate"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center"-->
+        <!--android:text="Product Rate"-->
+        <!--android:textSize="14sp"-->
+        <!--android:textColor="#333"/>-->
 
         <TextView
                 android:id="@+id/tv_item_defective"
@@ -80,7 +80,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Defective"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textColor="#333"/>
 
         <TextView

@@ -10,13 +10,12 @@
             android:id="@+id/ll_popup_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"></LinearLayout>
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginVertical="50dp"
-            android:layout_marginHorizontal="40dp"
+            android:layout_margin="60dp"
             android:orientation="vertical"
             android:gravity="center"
             android:background="#fff"
@@ -24,7 +23,7 @@
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="55dp"
                 android:gravity="center_vertical"
                 android:background="#4f4f4f"
                 android:orientation="horizontal">
@@ -35,9 +34,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="@string/title_actual_count_edit"
+                    android:text="@string/title_product_list"
                     android:textColor="#fff"
-                    android:textSize="22sp"
+                    android:textSize="28dp"
                     android:textStyle="bold"/>
 
         </LinearLayout>
@@ -47,10 +46,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="0dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:orientation="vertical">
 
             <LinearLayout
@@ -60,14 +59,17 @@
 
                 <include layout="@layout/list_item_product_title"
                          android:layout_width="match_parent"
-                         android:layout_height="wrap_content" />
-
+                         android:layout_height="wrap_content"/>
             </LinearLayout>
 
             <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:background="#000"/>
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#999"/>
 
             <ListView
                     android:id="@+id/lv_products"
@@ -75,12 +77,17 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:divider="#fff"
-                    android:dividerHeight="0dp" />
+                    android:dividerHeight="0dp"
+            />
 
             <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:background="#000"/>
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#999"/>
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -96,15 +103,16 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="40dp"
-                android:paddingBottom="10dp"
+                android:paddingRight="100dp"
+                android:paddingBottom="20dp"
                 android:gravity="end"
                 android:orientation="horizontal">
+
             <Button
                     android:id="@+id/btn_confirm"
                     style="@style/btn_orange"
                     android:stateListAnimator="@null"
-                    android:text="@string/exit" />
+                    android:text="@string/confirm" />
 
         </LinearLayout>
     </LinearLayout>
