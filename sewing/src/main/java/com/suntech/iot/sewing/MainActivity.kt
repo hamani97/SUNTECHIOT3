@@ -253,7 +253,7 @@ class MainActivity : BaseActivity() {
         if (AppGlobal.instance.get_server_ip().trim() != "") {
             fetchWorkData()         // 작업시간
             fetchDesignData()
-            fetchServerTarget()     // 목표수량
+//            fetchServerTarget()     // 목표수량
             fetchDownTimeType()
             fetchColorData()
         }
@@ -298,57 +298,57 @@ class MainActivity : BaseActivity() {
     /*
      *  당일 작업 Shift 별 목표수량 가져오기
      */
-    private fun fetchServerTarget() {
-        val today = DateTime().toString("yyyy-MM-dd")
-        val mac = AppGlobal.instance.getMACAddress()
-        val uri = "/getlist1.php"
-        Log.e("debug", "line_idx="+AppGlobal.instance.get_line_idx()+"&date="+today+"&mac_addr="+mac)
-        var params = listOf("code" to "target",
-            "line_idx" to AppGlobal.instance.get_line_idx(),
-            "shift_idx" to  "1",
-            "date" to today,
-            "mac_addr" to mac
-        )
-        request(this, uri, false, params, { result ->
-            val code = result.getString("code")
-            if (code == "00") {
-                val daytargetsum = result.getString("daytargetsum")
-                AppGlobal.instance.set_target_server_shift("1", daytargetsum)
-            } else {
-                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
-            }
-        })
-        params = listOf("code" to "target",
-            "line_idx" to AppGlobal.instance.get_line_idx(),
-            "shift_idx" to  "2",
-            "date" to today,
-            "mac_addr" to mac
-        )
-        request(this, uri, false, params, { result ->
-            val code = result.getString("code")
-            if (code == "00") {
-                val daytargetsum = result.getString("daytargetsum")
-                AppGlobal.instance.set_target_server_shift("2", daytargetsum)
-            } else {
-                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
-            }
-        })
-        params = listOf("code" to "target",
-            "line_idx" to AppGlobal.instance.get_line_idx(),
-            "shift_idx" to  "3",
-            "date" to today,
-            "mac_addr" to mac
-        )
-        request(this, uri, false, params, { result ->
-            val code = result.getString("code")
-            if (code == "00") {
-                val daytargetsum = result.getString("daytargetsum")
-                AppGlobal.instance.set_target_server_shift("3", daytargetsum)
-            } else {
-                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
+//    private fun fetchServerTarget() {
+//        val today = DateTime().toString("yyyy-MM-dd")
+//        val mac = AppGlobal.instance.getMACAddress()
+//        val uri = "/getlist1.php"
+//        Log.e("debug", "line_idx="+AppGlobal.instance.get_line_idx()+"&date="+today+"&mac_addr="+mac)
+//        var params = listOf("code" to "target",
+//            "line_idx" to AppGlobal.instance.get_line_idx(),
+//            "shift_idx" to  "1",
+//            "date" to today,
+//            "mac_addr" to mac
+//        )
+//        request(this, uri, false, params, { result ->
+//            val code = result.getString("code")
+//            if (code == "00") {
+//                val daytargetsum = result.getString("daytargetsum")
+//                AppGlobal.instance.set_target_server_shift("1", daytargetsum)
+//            } else {
+//                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//        params = listOf("code" to "target",
+//            "line_idx" to AppGlobal.instance.get_line_idx(),
+//            "shift_idx" to  "2",
+//            "date" to today,
+//            "mac_addr" to mac
+//        )
+//        request(this, uri, false, params, { result ->
+//            val code = result.getString("code")
+//            if (code == "00") {
+//                val daytargetsum = result.getString("daytargetsum")
+//                AppGlobal.instance.set_target_server_shift("2", daytargetsum)
+//            } else {
+//                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//        params = listOf("code" to "target",
+//            "line_idx" to AppGlobal.instance.get_line_idx(),
+//            "shift_idx" to  "3",
+//            "date" to today,
+//            "mac_addr" to mac
+//        )
+//        request(this, uri, false, params, { result ->
+//            val code = result.getString("code")
+//            if (code == "00") {
+//                val daytargetsum = result.getString("daytargetsum")
+//                AppGlobal.instance.set_target_server_shift("3", daytargetsum)
+//            } else {
+//                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
 
     private fun fetchDesignData() {
         if (AppGlobal.instance.get_server_ip() == "") return
@@ -479,14 +479,61 @@ class MainActivity : BaseActivity() {
         // 현재 쉬프트의 종료 시간을 구한다. 자동 종료를 위해
         // 종료 시간이 있으면 다음 시작 시간을 구할 필요없음. 종료되면 이 로직이 실행되므로 자동으로 구해지기 때문..
         if (list.length() > 0) {
-
             // DB에 Shift 정보를 저장한다.
             // Production report 때문에 그날의 정보를 모두 저장해야 함.
             var target_type = AppGlobal.instance.get_target_type()
             for (i in 0..(list.length() - 1)) {
                 val item = list.getJSONObject(i)
-                var target = if (target_type=="server_per_hourly" || target_type=="server_per_accumulate" || target_type=="server_per_day_total")
-                    AppGlobal.instance.get_target_server_shift(item["shift_idx"].toString()) else AppGlobal.instance.get_target_manual_shift(item["shift_idx"].toString())
+                var target = "0"
+                var target_int = 0
+
+                if (target_type.substring(0, 6) == "server") {
+                    val shift_time = AppGlobal.instance.get_current_shift_time()
+                    var current_cycle_time = AppGlobal.instance.get_cycle_time()
+                    if (shift_time != null && current_cycle_time > 0) {
+                        var work_idx = AppGlobal.instance.get_product_idx()
+                        if (work_idx == "") work_idx = "0"
+
+                        val design_db = DBHelperForDesign(this)
+                        val db_list = design_db.gets()  // 전체 디자인
+
+                        val work_etime = shift_time["work_etime"].toString()
+
+                        for (i in 0..((db_list?.size ?: 1) - 1)) {
+                            val item = db_list?.get(i)
+                            val work_idx2 = item?.get("work_idx").toString()
+                            if (work_idx == work_idx2) {        // 현재 진행중인 디자인
+                                val start_dt = OEEUtil.parseDateTime(item?.get("start_dt").toString())    // 디자인의 시작시간
+                                val shift_end_dt = OEEUtil.parseDateTime(work_etime)    // 시프트의 종료 시간
+
+                                // 설정되어 있는 휴식 시간
+                                val _planned1_stime = OEEUtil.parseDateTime(shift_time["planned1_stime_dt"].toString())
+                                val _planned1_etime = OEEUtil.parseDateTime(shift_time["planned1_etime_dt"].toString())
+                                val _planned2_stime = OEEUtil.parseDateTime(shift_time["planned2_stime_dt"].toString())
+                                val _planned2_etime = OEEUtil.parseDateTime(shift_time["planned2_etime_dt"].toString())
+
+                                // 끝나는 시간까지 계산 (시프트의 총 타겟수를 구하기 위해 무조건 계산함)
+                                val d1 = AppGlobal.instance.compute_time(start_dt, shift_end_dt, _planned1_stime, _planned1_etime)
+                                val d2 = AppGlobal.instance.compute_time(start_dt, shift_end_dt, _planned2_stime, _planned2_etime)
+
+                                // 디자인의 시작부터 시프트 종료시간까지 (초)
+                                val work_time = ((shift_end_dt.millis - start_dt.millis) / 1000) - d1 - d2 -1
+
+                                target_int += ((work_time / current_cycle_time).toInt() + 1) // 현 시간에 만들어야 할 갯수
+
+                            } else {        // 지난 디자인
+                                target_int += item?.get("target").toString().toInt()
+                            }
+                        }
+                        target = target_int.toString()
+//                        target = AppGlobal.instance.get_target_server_shift(item["shift_idx"].toString())
+                    }
+                } else {
+                    target = AppGlobal.instance.get_target_manual_shift(item["shift_idx"].toString())
+                }
+//                var target = if (target_type=="server_per_hourly" || target_type=="server_per_accumulate" || target_type=="server_per_day_total")
+//                    AppGlobal.instance.get_target_server_shift(item["shift_idx"].toString()) else AppGlobal.instance.get_target_manual_shift(item["shift_idx"].toString())
+
                 if (target == null || target == "") target = "0"
 
                 val row = _target_db.get(item["date"].toString(), item["shift_idx"].toString())

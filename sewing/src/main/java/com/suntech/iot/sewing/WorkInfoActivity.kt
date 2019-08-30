@@ -166,7 +166,10 @@ class WorkInfoActivity : BaseActivity() {
             }
             saveWorkTime()
         }
-        btn_setting_cancel.setOnClickListener { finish() }
+        btn_setting_cancel.setOnClickListener {
+            AppGlobal.instance.set_auto_setting(false)
+            finish()
+        }
     }
 
     private fun saveWorkTime() {
@@ -216,7 +219,8 @@ class WorkInfoActivity : BaseActivity() {
             shift3.put("planned1_etime", "")
         }
         AppGlobal.instance.set_work_time_manual(shift3)
-        finish()
+
+        finish(true, 1, "ok", null)
     }
 
     private fun fetchShiftData() {

@@ -79,7 +79,7 @@ class SettingActivity : BaseActivity() {
         // widget
         tv_setting_wifi.text = AppGlobal.instance.getWiFiSSID(this)
         tv_setting_ip.text = AppGlobal.instance.get_local_ip()
-        tv_setting_mac.text = AppGlobal.instance.get_mac_address()
+        tv_setting_mac.text = AppGlobal.instance.getMACAddress()
         tv_setting_factory.text = AppGlobal.instance.get_factory()
         tv_setting_room.text = AppGlobal.instance.get_room()
         tv_setting_line.text = AppGlobal.instance.get_line()
@@ -228,7 +228,10 @@ class SettingActivity : BaseActivity() {
         }
 
         // Cancel button click
-        btn_setting_cancel.setOnClickListener { finish() }
+        btn_setting_cancel.setOnClickListener {
+            AppGlobal.instance.set_auto_setting(false)
+            finish()
+        }
 
         if (AppGlobal.instance.isOnline(this)) btn_wifi_state.isSelected = true
         else btn_wifi_state.isSelected = false

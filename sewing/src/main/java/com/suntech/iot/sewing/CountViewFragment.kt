@@ -789,10 +789,14 @@ class CountViewFragment : BaseFragment() {
             for (i in 0..(_list.size - 1)) {
                 val snumber = _list[i]["snumber"]?.toInt() ?: 0
                 val enumber = _list[i]["enumber"]?.toInt() ?: 0
-                if (snumber <= oee_int && enumber >= oee_int) oee_color_code = _list[i]["color_code"].toString()
-                if (snumber <= availability_int && enumber >= availability_int) availability_color_code = _list[i]["color_code"].toString()
-                if (snumber <= performance_int && enumber >= performance_int) performance_color_code = _list[i]["color_code"].toString()
-                if (snumber <= quality_int && enumber >= quality_int) quality_color_code = _list[i]["color_code"].toString()
+//                if (snumber <= oee_int && enumber >= oee_int) oee_color_code = _list[i]["color_code"].toString()
+//                if (snumber <= availability_int && enumber >= availability_int) availability_color_code = _list[i]["color_code"].toString()
+//                if (snumber <= performance_int && enumber >= performance_int) performance_color_code = _list[i]["color_code"].toString()
+//                if (snumber <= quality_int && enumber >= quality_int) quality_color_code = _list[i]["color_code"].toString()
+                if (snumber <= oee_int) oee_color_code = _list[i]["color_code"].toString()
+                if (snumber <= availability_int) availability_color_code = _list[i]["color_code"].toString()
+                if (snumber <= performance_int) performance_color_code = _list[i]["color_code"].toString()
+                if (snumber <= quality_int) quality_color_code = _list[i]["color_code"].toString()
             }
 
             oee_progress.progressStartColor = Color.parseColor("#" + oee_color_code)
