@@ -353,8 +353,10 @@ class MainActivity : BaseActivity() {
     private fun fetchDesignData() {
         if (AppGlobal.instance.get_server_ip() == "") return
 
+        // 일반재봉기 sewing 인 경우 code=design2
         val uri = "/getlist1.php"
-        var params = listOf("code" to "design",
+        var params = listOf(
+            "code" to "design2",
             "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
             "factory_idx" to AppGlobal.instance.get_room_idx())
 

@@ -73,7 +73,7 @@
                             android:layout_marginRight="4dp"
                             android:background="#db4030"
                             android:stateListAnimator="@null"
-                            android:text="@string/count_view"
+                            android:text="@string/button_count_view"
                             android:textSize="22sp"
                             android:textColor="@color/colorWhite"
                             android:textStyle="bold"/>
@@ -86,7 +86,7 @@
                             android:layout_marginLeft="4dp"
                             android:background="#FAC82E"
                             android:stateListAnimator="@null"
-                            android:text="@string/button_work_info"
+                            android:text="@string/button_design_info"
                             android:textColor="@color/colorWhite"
                             android:textSize="22sp"
                             android:textStyle="bold" />
