@@ -82,7 +82,7 @@ class HomeFragment : BaseFragment() {
                 if (!_running) checkAutoSetting()
                 startAutoSettingHandler()
             }
-        }, 800)
+        }, 900)
     }
 
     private fun checkAutoSetting() {
@@ -126,12 +126,12 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun updateView() {
-        tv_factory.text = AppGlobal.instance.get_factory()
-        tv_room.text = AppGlobal.instance.get_room()
-        tv_line.text = AppGlobal.instance.get_line()
-        tv_mc_no.text = AppGlobal.instance.get_mc_no1() //+ "-" + AppGlobal.instance.get_mc_no2()
-        tv_employee_no.text = AppGlobal.instance.get_worker_no()
-        tv_employee_name.text = AppGlobal.instance.get_worker_name()
-        tv_shift.text = AppGlobal.instance.get_current_shift_name()
+        tv_factory?.text = AppGlobal.instance.get_factory()
+        tv_room?.text = AppGlobal.instance.get_room()
+        tv_line?.text = AppGlobal.instance.get_line()
+        tv_mc_no?.text = AppGlobal.instance.get_mc_no1() //+ "-" + AppGlobal.instance.get_mc_no2()
+        tv_employee_no?.text = AppGlobal.instance.get_worker_no()
+        tv_employee_name?.text = AppGlobal.instance.get_worker_name()
+        tv_shift?.text = AppGlobal.instance.get_current_shift_name()
     }
 }

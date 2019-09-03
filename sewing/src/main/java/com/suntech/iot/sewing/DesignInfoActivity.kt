@@ -19,10 +19,15 @@ import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.common.AppGlobal
 import com.suntech.iot.sewing.util.OEEUtil
 import kotlinx.android.synthetic.main.activity_design_info.*
-import kotlinx.android.synthetic.main.layout_top_menu_component.*
+import kotlinx.android.synthetic.main.activity_design_info.btn_setting_cancel
+import kotlinx.android.synthetic.main.activity_design_info.btn_setting_confirm
+import kotlinx.android.synthetic.main.layout_top_menu_2.*
 import org.joda.time.DateTime
 
 class DesignInfoActivity : BaseActivity() {
+
+    private var tab_pos : Int = 1
+    private var _selected_count_type: String = ""
 
     private var list_adapter: ListAdapter? = null
     private var _list: ArrayList<HashMap<String, String>> = arrayListOf()
@@ -96,6 +101,33 @@ class DesignInfoActivity : BaseActivity() {
             tv_title.setText("No shift")
         }
 
+        // count setting
+        tv_trim_qty.setText(AppGlobal.instance.get_trim_qty())
+        tv_trim_pairs.text = AppGlobal.instance.get_trim_pairs()
+
+        tv_stitch_start.setText(AppGlobal.instance.get_stitch_qty_start())
+        tv_stitch_end.setText(AppGlobal.instance.get_stitch_qty_end())
+        tv_stitch_delay_time.setText(AppGlobal.instance.get_stitch_delay_time())
+        tv_stitch_pairs.text = AppGlobal.instance.get_stitch_pairs()
+
+        tv_stitch_start2.setText(AppGlobal.instance.get_stitch_qty_start2())
+        tv_stitch_end2.setText(AppGlobal.instance.get_stitch_qty_end2())
+        tv_trim_qty2.setText(AppGlobal.instance.get_trim_qty2())
+        tv_trim_stitch_pairs.setText(AppGlobal.instance.get_trim_stitch_pairs())
+
+        // count type setting
+        if (AppGlobal.instance.get_count_type() == "") countTypeChange("trim")
+        else countTypeChange(AppGlobal.instance.get_count_type())
+
+        tv_setting_count_trim.setOnClickListener { countTypeChange("trim") }
+        tv_setting_count_stitch.setOnClickListener { countTypeChange("stitch") }
+        tv_setting_count_trim_stitch.setOnClickListener { countTypeChange("t_s") }
+
+        tv_trim_pairs.setOnClickListener { selectTrimPair() }
+        tv_stitch_pairs.setOnClickListener { selectStitchPair() }
+        tv_trim_stitch_pairs.setOnClickListener { selectTrimStitchPair() }
+
+
         list_adapter = ListAdapter(this, _filtered_list)
         lv_design_info.adapter = list_adapter
 
@@ -108,7 +140,6 @@ class DesignInfoActivity : BaseActivity() {
         }
 
         et_setting_server_ip.addTextChangedListener(object : TextWatcher {
-
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s != "") {
                     filterData()
@@ -118,26 +149,11 @@ class DesignInfoActivity : BaseActivity() {
             override fun afterTextChanged(s: Editable) {}
         })
 
-        btn_setting_confirm.setOnClickListener {
-//            if (tv_design_pieces.text.toString() == "" || tv_design_pairs.text.toString() == "") {
-//                Toast.makeText(this, getString(R.string.msg_require_info), Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
-//            AppGlobal.instance.set_pieces_info(tv_design_pieces.text.toString())
-//            AppGlobal.instance.set_pairs_info(tv_design_pairs.text.toString())
+        // Tab button click
+        btn_design_info.setOnClickListener { tabChange(1) }
+        btn_count_setting.setOnClickListener { tabChange(2) }
 
-            if (_selected_index < 0) {
-                finish(false, 0, "ok", null)
-//                Toast.makeText(this, getString(R.string.msg_has_notselected), Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-            } else {
-                finish(true, 1, "ok", _filtered_list[_selected_index])
-            }
-
-//            val pieces_info = et_design_pieces.text.toString().toInt()
-//            AppGlobal.instance.set_pieces_info(pieces_info)
-//            Log.e("data", ""+_filtered_list[_selected_index].toString())
-        }
+        btn_setting_confirm.setOnClickListener { saveDesignData() }
         btn_setting_cancel.setOnClickListener {
             AppGlobal.instance.set_auto_setting(false)
             finish(false, 0, "ok", null)
@@ -145,6 +161,65 @@ class DesignInfoActivity : BaseActivity() {
 
 //        tv_design_pieces.setOnClickListener { fetchPiecesData() }
 //        tv_design_pairs.setOnClickListener { fetchPairsData() }
+    }
+
+    private fun saveDesignData() {
+        if (_selected_index < 0 && AppGlobal.instance.get_design_info_idx() == "") {
+            tabChange(1)
+            Toast.makeText(this, getString(R.string.msg_select_design), Toast.LENGTH_SHORT).show()
+            return
+        }
+        // count type check
+        if (_selected_count_type == "trim") {
+            if (tv_trim_qty.text.toString().trim()=="" || tv_trim_pairs.text.toString()=="") {
+                tabChange(2)
+                Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
+                return
+            }
+        } else if (_selected_count_type == "stitch") {
+            if (tv_stitch_start.text.toString().trim()=="" || tv_stitch_end.text.toString().trim()=="" ||
+                tv_stitch_delay_time.text.toString().trim()=="" || tv_stitch_pairs.text.toString()=="") {
+                tabChange(2)
+                Toast.makeText(this, getString(R.string.msg_require_stitch_info), Toast.LENGTH_SHORT).show()
+                return
+            }
+        } else if (_selected_count_type == "t_s") {
+            if (tv_stitch_start2.text.toString().trim()=="" || tv_stitch_end2.text.toString().trim()=="") {
+                tabChange(2)
+                Toast.makeText(this, getString(R.string.msg_require_stitch_info), Toast.LENGTH_SHORT).show()
+                return
+            }
+            if (tv_trim_qty2.text.toString().trim()=="" || tv_trim_stitch_pairs.text.toString()=="") {
+                tabChange(2)
+                Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
+                return
+            }
+        } else {
+            tabChange(2)
+            Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // count setting
+        AppGlobal.instance.set_count_type(_selected_count_type)
+        AppGlobal.instance.set_trim_qty(tv_trim_qty.text.toString())
+        AppGlobal.instance.set_trim_pairs(tv_trim_pairs.text.toString())
+
+        AppGlobal.instance.set_stitch_qty_start(tv_stitch_start.text.toString())
+        AppGlobal.instance.set_stitch_qty_end(tv_stitch_end.text.toString())
+        AppGlobal.instance.set_stitch_delay_time(tv_stitch_delay_time.text.toString())
+        AppGlobal.instance.set_stitch_pairs(tv_stitch_pairs.text.toString())
+
+        AppGlobal.instance.set_stitch_qty_start2(tv_stitch_start2.text.toString())
+        AppGlobal.instance.set_stitch_qty_end2(tv_stitch_end2.text.toString())
+        AppGlobal.instance.set_trim_qty2(tv_trim_qty2.text.toString())
+        AppGlobal.instance.set_trim_stitch_pairs(tv_trim_stitch_pairs.text.toString())
+
+        if (_selected_index < 0) {
+            finish(false, 0, "ok", null)
+        } else {
+            finish(true, 1, "ok", _filtered_list[_selected_index])
+        }
     }
 
     private fun fetchData() {
@@ -210,6 +285,8 @@ class DesignInfoActivity : BaseActivity() {
     private fun filterData() {
         _filtered_list.removeAll(_filtered_list)
 
+        val cur_design_idx = AppGlobal.instance.get_design_info_idx()
+
         _selected_index = -1
         val filter_text = et_setting_server_ip.text.toString()
 
@@ -229,6 +306,7 @@ class DesignInfoActivity : BaseActivity() {
             val e = component.toUpperCase().contains(filter_text.toUpperCase())
             if (filter_text=="" || a || b || c|| d || e) {
                 _filtered_list.add(item)
+                if (idx == cur_design_idx) _selected_index = i
             }
         }
         list_adapter?.notifyDataSetChanged()
@@ -303,6 +381,94 @@ class DesignInfoActivity : BaseActivity() {
                 this.tv_item_material = row?.findViewById<TextView>(R.id.tv_item_material) as TextView
                 this.tv_item_component = row?.findViewById<TextView>(R.id.tv_item_component) as TextView
                 this.tv_item_cycle = row?.findViewById<TextView>(R.id.tv_item_cycle) as TextView
+            }
+        }
+    }
+
+    private fun selectTrimPair() {
+        var arr: ArrayList<String> = arrayListOf<String>()
+        arr.add("1/8")
+        arr.add("1/4")
+        arr.add("1/2")
+        arr.add("1")
+
+        val intent = Intent(this, PopupSelectList::class.java)
+        intent.putStringArrayListExtra("list", arr)
+        startActivity(intent, { r, c, m, d ->
+            if (r) {
+                tv_trim_pairs.text = arr[c]
+//                _selected_trim_pair = arr[c]
+            }
+        })
+    }
+
+    private fun selectStitchPair() {
+        var arr: ArrayList<String> = arrayListOf<String>()
+        arr.add("1/8")
+        arr.add("1/4")
+        arr.add("1/2")
+        arr.add("1")
+
+        val intent = Intent(this, PopupSelectList::class.java)
+        intent.putStringArrayListExtra("list", arr)
+        startActivity(intent, { r, c, m, d ->
+            if (r) {
+                tv_stitch_pairs.text = arr[c]
+//                _selected_stitch_pair = arr[c]
+            }
+        })
+    }
+
+    private fun selectTrimStitchPair() {
+        var arr: ArrayList<String> = arrayListOf<String>()
+        arr.add("1/8")
+        arr.add("1/4")
+        arr.add("1/2")
+        arr.add("1")
+
+        val intent = Intent(this, PopupSelectList::class.java)
+        intent.putStringArrayListExtra("list", arr)
+        startActivity(intent, { r, c, m, d ->
+            if (r) {
+                tv_trim_stitch_pairs.text = arr[c]
+            }
+        })
+    }
+
+    private fun countTypeChange(v : String) {
+        if (_selected_count_type == v) return
+        when (_selected_count_type) {
+            "trim" -> tv_setting_count_trim.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
+            "stitch" -> tv_setting_count_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
+            "t_s" -> tv_setting_count_trim_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
+        }
+        _selected_count_type = v
+        when (_selected_count_type) {
+            "trim" -> tv_setting_count_trim.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+            "stitch" -> tv_setting_count_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+            "t_s" -> tv_setting_count_trim_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+        }
+    }
+
+    private fun tabChange(v : Int) {
+        if (tab_pos == v) return
+        tab_pos = v
+        when (tab_pos) {
+            1 -> {
+                btn_design_info.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
+                btn_design_info.setBackgroundResource(R.color.colorButtonBlue)
+                btn_count_setting.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+                btn_count_setting.setBackgroundResource(R.color.colorButtonDefault)
+                layout_design_info.visibility = View.VISIBLE
+                layout_count_setting.visibility = View.GONE
+            }
+            2 -> {
+                btn_design_info.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+                btn_design_info.setBackgroundResource(R.color.colorButtonDefault)
+                btn_count_setting.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
+                btn_count_setting.setBackgroundResource(R.color.colorButtonBlue)
+                layout_design_info.visibility = View.GONE
+                layout_count_setting.visibility = View.VISIBLE
             }
         }
     }

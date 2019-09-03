@@ -29,11 +29,11 @@
                         style="@style/tab_btn_on"
                         android:stateListAnimator="@null"
                         android:text="@string/server" />
-                <Button
-                        android:id="@+id/btn_setting_count"
-                        style="@style/tab_btn_off"
-                        android:stateListAnimator="@null"
-                        android:text="@string/count" />
+                <!--<Button-->
+                        <!--android:id="@+id/btn_setting_count"-->
+                        <!--style="@style/tab_btn_off"-->
+                        <!--android:stateListAnimator="@null"-->
+                        <!--android:text="@string/count" />-->
                 <Button
                         android:id="@+id/btn_setting_target"
                         style="@style/tab_btn_off"

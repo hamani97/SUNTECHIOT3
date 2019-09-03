@@ -195,4 +195,5 @@
     <string name="label_worksheet_display_time">WorkSheet Display Time</string>
     <string name="label_cycle_time">TARGET TYPE FROM CYCLE TIME</string>
     <string name="button_design_info">DESIGN INFO</string>
+    <string name="button_count_setting">COUNT SETTING</string>
 </resources>

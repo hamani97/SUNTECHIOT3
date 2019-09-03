@@ -743,17 +743,19 @@ class MainActivity : BaseActivity() {
                 val performance = result.getString("performance")
                 val quality = result.getString("quality")
 //Log.e("oeegraph", "avail="+availability+", performance="+performance+", quality="+quality)
+
+                val old_perform = AppGlobal.instance.get_performance().toFloat()
+
                 AppGlobal.instance.set_availability(availability)
                 AppGlobal.instance.set_performance(performance)
                 AppGlobal.instance.set_quality(quality)
 
                 val new_perform = performance.toFloat()
-                val old_perform = AppGlobal.instance.get_performance().toFloat()
 
                 // performance가 100%를 넘었으면 푸시를 보낸다. 단, 이전에 100% 이전인 경우만..
                 if (new_perform >= 100.0f) {
                     if (old_perform < 100.0f) {
-                        sendPush("Best performance")
+                        sendPush("Best performance", false)
                     }
                 }
             } else {
@@ -1443,7 +1445,7 @@ class MainActivity : BaseActivity() {
     }
 
     // downtime 발생시 푸시 발송
-    private fun sendPush(push_text: String) {
+    private fun sendPush(push_text: String, progress: Boolean) {
         val uri = "/pushcall.php"
         var params = listOf(
             "code" to "push_text_list",
@@ -1457,7 +1459,7 @@ class MainActivity : BaseActivity() {
             "seq" to "0",
             "text" to push_text)
 
-        request(this, uri, true, params, { result ->
+        request(this, uri, progress, params, { result ->
             var code = result.getString("code")
             var msg = result.getString("msg")
             if(code != "00"){
@@ -1508,7 +1510,7 @@ class MainActivity : BaseActivity() {
 
                 down_db.add(idx, work_idx, didx, shift_idx, shift_name, dt.toString("yyyy-MM-dd HH:mm:ss"))
 
-                sendPush("downtime occurrence")
+                sendPush("downtime occurrence", false)
 
             } else {
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()

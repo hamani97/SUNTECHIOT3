@@ -19,7 +19,7 @@ import java.util.*
 class SettingActivity : BaseActivity() {
 
     private var tab_pos: Int = 1
-    private var _selected_count_type: String = ""
+//    private var _selected_count_type: String = ""
     private var _selected_target_type: String = "device"
     private var _selected_blink_color: String = AppGlobal.instance.get_blink_color()
 
@@ -154,16 +154,16 @@ class SettingActivity : BaseActivity() {
 //        if (_selected_layer_5 != "") tv_layer_5.text = addPairText(_selected_layer_5)
 
         // count type setting
-        if (AppGlobal.instance.get_count_type() == "") countTypeChange("trim")
-        else countTypeChange(AppGlobal.instance.get_count_type())
-
-        tv_setting_count_trim.setOnClickListener { countTypeChange("trim") }
-        tv_setting_count_stitch.setOnClickListener { countTypeChange("stitch") }
-        tv_setting_count_trim_stitch.setOnClickListener { countTypeChange("t_s") }
-
-        tv_trim_pairs.setOnClickListener { selectTrimPair() }
-        tv_stitch_pairs.setOnClickListener { selectStitchPair() }
-        tv_trim_stitch_pairs.setOnClickListener { selectTrimStitchPair() }
+//        if (AppGlobal.instance.get_count_type() == "") countTypeChange("trim")
+//        else countTypeChange(AppGlobal.instance.get_count_type())
+//
+//        tv_setting_count_trim.setOnClickListener { countTypeChange("trim") }
+//        tv_setting_count_stitch.setOnClickListener { countTypeChange("stitch") }
+//        tv_setting_count_trim_stitch.setOnClickListener { countTypeChange("t_s") }
+//
+//        tv_trim_pairs.setOnClickListener { selectTrimPair() }
+//        tv_stitch_pairs.setOnClickListener { selectStitchPair() }
+//        tv_trim_stitch_pairs.setOnClickListener { selectTrimStitchPair() }
 
         // target setting
         if (AppGlobal.instance.get_target_type() == "") targetTypeChange("device_per_accumulate")
@@ -191,7 +191,7 @@ class SettingActivity : BaseActivity() {
         // Tab button
         btn_setting_server.setOnClickListener { tabChange(1) }
 //        btn_setting_device.setOnClickListener { tabChange(2) }
-        btn_setting_count.setOnClickListener { tabChange(2) }
+//        btn_setting_count.setOnClickListener { tabChange(2) }
         btn_setting_target.setOnClickListener { tabChange(3) }
         btn_setting_option.setOnClickListener { tabChange(4) }
 
@@ -241,6 +241,7 @@ class SettingActivity : BaseActivity() {
 
         // 10.10.10.90
         // 49.247.205.235
+        // 183.81.156.206 : inni
         if (et_setting_server_ip.text.toString() == "") et_setting_server_ip.setText("115.68.227.31")
         if (et_setting_port.text.toString() == "") et_setting_port.setText("80")
     }
@@ -278,31 +279,31 @@ class SettingActivity : BaseActivity() {
 //        }
 
         // count type check
-        if (_selected_count_type == "trim") {
-            if (tv_trim_qty.text.toString().trim()=="" || tv_trim_pairs.text.toString()=="") {
-                tabChange(2)
-                Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
-                return
-            }
-        } else if (_selected_count_type == "stitch") {
-            if (tv_stitch_start.text.toString().trim()=="" || tv_stitch_end.text.toString().trim()=="" ||
-                tv_stitch_delay_time.text.toString().trim()=="" || tv_stitch_pairs.text.toString()=="") {
-                tabChange(2)
-                Toast.makeText(this, getString(R.string.msg_require_stitch_info), Toast.LENGTH_SHORT).show()
-                return
-            }
-        } else if (_selected_count_type == "t_s") {
-            if (tv_stitch_start2.text.toString().trim()=="" || tv_stitch_end2.text.toString().trim()=="") {
-                tabChange(2)
-                Toast.makeText(this, getString(R.string.msg_require_stitch_info), Toast.LENGTH_SHORT).show()
-                return
-            }
-            if (tv_trim_qty2.text.toString().trim()=="" || tv_trim_stitch_pairs.text.toString()=="") {
-                tabChange(2)
-                Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
-                return
-            }
-        }
+//        if (_selected_count_type == "trim") {
+//            if (tv_trim_qty.text.toString().trim()=="" || tv_trim_pairs.text.toString()=="") {
+//                tabChange(2)
+//                Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
+//                return
+//            }
+//        } else if (_selected_count_type == "stitch") {
+//            if (tv_stitch_start.text.toString().trim()=="" || tv_stitch_end.text.toString().trim()=="" ||
+//                tv_stitch_delay_time.text.toString().trim()=="" || tv_stitch_pairs.text.toString()=="") {
+//                tabChange(2)
+//                Toast.makeText(this, getString(R.string.msg_require_stitch_info), Toast.LENGTH_SHORT).show()
+//                return
+//            }
+//        } else if (_selected_count_type == "t_s") {
+//            if (tv_stitch_start2.text.toString().trim()=="" || tv_stitch_end2.text.toString().trim()=="") {
+//                tabChange(2)
+//                Toast.makeText(this, getString(R.string.msg_require_stitch_info), Toast.LENGTH_SHORT).show()
+//                return
+//            }
+//            if (tv_trim_qty2.text.toString().trim()=="" || tv_trim_stitch_pairs.text.toString()=="") {
+//                tabChange(2)
+//                Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
+//                return
+//            }
+//        }
 
         // target check
         if (_selected_target_type.substring(0, 6) == "device") {
@@ -354,25 +355,19 @@ class SettingActivity : BaseActivity() {
         AppGlobal.instance.set_blink_color(_selected_blink_color)
 
         // count setting
-        AppGlobal.instance.set_count_type(_selected_count_type)
-        AppGlobal.instance.set_trim_qty(tv_trim_qty.text.toString())
-        AppGlobal.instance.set_trim_pairs(tv_trim_pairs.text.toString())
-
-        AppGlobal.instance.set_stitch_qty_start(tv_stitch_start.text.toString())
-        AppGlobal.instance.set_stitch_qty_end(tv_stitch_end.text.toString())
-        AppGlobal.instance.set_stitch_delay_time(tv_stitch_delay_time.text.toString())
-        AppGlobal.instance.set_stitch_pairs(tv_stitch_pairs.text.toString())
-
-        AppGlobal.instance.set_stitch_qty_start2(tv_stitch_start2.text.toString())
-        AppGlobal.instance.set_stitch_qty_end2(tv_stitch_end2.text.toString())
-        AppGlobal.instance.set_trim_qty2(tv_trim_qty2.text.toString())
-        AppGlobal.instance.set_trim_stitch_pairs(tv_trim_stitch_pairs.text.toString())
-//        AppGlobal.instance.set_layer_pairs("0", _selected_layer_0)
-//        AppGlobal.instance.set_layer_pairs("1", _selected_layer_1)
-//        AppGlobal.instance.set_layer_pairs("2", _selected_layer_2)
-//        AppGlobal.instance.set_layer_pairs("3", _selected_layer_3)
-//        AppGlobal.instance.set_layer_pairs("4", _selected_layer_4)
-//        AppGlobal.instance.set_layer_pairs("5", _selected_layer_5)
+//        AppGlobal.instance.set_count_type(_selected_count_type)
+//        AppGlobal.instance.set_trim_qty(tv_trim_qty.text.toString())
+//        AppGlobal.instance.set_trim_pairs(tv_trim_pairs.text.toString())
+//
+//        AppGlobal.instance.set_stitch_qty_start(tv_stitch_start.text.toString())
+//        AppGlobal.instance.set_stitch_qty_end(tv_stitch_end.text.toString())
+//        AppGlobal.instance.set_stitch_delay_time(tv_stitch_delay_time.text.toString())
+//        AppGlobal.instance.set_stitch_pairs(tv_stitch_pairs.text.toString())
+//
+//        AppGlobal.instance.set_stitch_qty_start2(tv_stitch_start2.text.toString())
+//        AppGlobal.instance.set_stitch_qty_end2(tv_stitch_end2.text.toString())
+//        AppGlobal.instance.set_trim_qty2(tv_trim_qty2.text.toString())
+//        AppGlobal.instance.set_trim_stitch_pairs(tv_trim_stitch_pairs.text.toString())
 
         // target type
         AppGlobal.instance.set_target_type(_selected_target_type)
@@ -418,55 +413,55 @@ class SettingActivity : BaseActivity() {
         })
     }
 
-    private fun selectTrimPair() {
-        var arr: ArrayList<String> = arrayListOf<String>()
-        arr.add("1/8")
-        arr.add("1/4")
-        arr.add("1/2")
-        arr.add("1")
-
-        val intent = Intent(this, PopupSelectList::class.java)
-        intent.putStringArrayListExtra("list", arr)
-        startActivity(intent, { r, c, m, d ->
-            if (r) {
-                tv_trim_pairs.text = arr[c]
-//                _selected_trim_pair = arr[c]
-            }
-        })
-    }
-
-    private fun selectStitchPair() {
-        var arr: ArrayList<String> = arrayListOf<String>()
-        arr.add("1/8")
-        arr.add("1/4")
-        arr.add("1/2")
-        arr.add("1")
-
-        val intent = Intent(this, PopupSelectList::class.java)
-        intent.putStringArrayListExtra("list", arr)
-        startActivity(intent, { r, c, m, d ->
-            if (r) {
-                tv_stitch_pairs.text = arr[c]
-//                _selected_stitch_pair = arr[c]
-            }
-        })
-    }
-
-    private fun selectTrimStitchPair() {
-        var arr: ArrayList<String> = arrayListOf<String>()
-        arr.add("1/8")
-        arr.add("1/4")
-        arr.add("1/2")
-        arr.add("1")
-
-        val intent = Intent(this, PopupSelectList::class.java)
-        intent.putStringArrayListExtra("list", arr)
-        startActivity(intent, { r, c, m, d ->
-            if (r) {
-                tv_trim_stitch_pairs.text = arr[c]
-            }
-        })
-    }
+//    private fun selectTrimPair() {
+//        var arr: ArrayList<String> = arrayListOf<String>()
+//        arr.add("1/8")
+//        arr.add("1/4")
+//        arr.add("1/2")
+//        arr.add("1")
+//
+//        val intent = Intent(this, PopupSelectList::class.java)
+//        intent.putStringArrayListExtra("list", arr)
+//        startActivity(intent, { r, c, m, d ->
+//            if (r) {
+//                tv_trim_pairs.text = arr[c]
+////                _selected_trim_pair = arr[c]
+//            }
+//        })
+//    }
+//
+//    private fun selectStitchPair() {
+//        var arr: ArrayList<String> = arrayListOf<String>()
+//        arr.add("1/8")
+//        arr.add("1/4")
+//        arr.add("1/2")
+//        arr.add("1")
+//
+//        val intent = Intent(this, PopupSelectList::class.java)
+//        intent.putStringArrayListExtra("list", arr)
+//        startActivity(intent, { r, c, m, d ->
+//            if (r) {
+//                tv_stitch_pairs.text = arr[c]
+////                _selected_stitch_pair = arr[c]
+//            }
+//        })
+//    }
+//
+//    private fun selectTrimStitchPair() {
+//        var arr: ArrayList<String> = arrayListOf<String>()
+//        arr.add("1/8")
+//        arr.add("1/4")
+//        arr.add("1/2")
+//        arr.add("1")
+//
+//        val intent = Intent(this, PopupSelectList::class.java)
+//        intent.putStringArrayListExtra("list", arr)
+//        startActivity(intent, { r, c, m, d ->
+//            if (r) {
+//                tv_trim_stitch_pairs.text = arr[c]
+//            }
+//        })
+//    }
 
     private fun fetchDataForFactory() {
         val url = "http://"+ et_setting_server_ip.text.toString()
@@ -641,11 +636,11 @@ class SettingActivity : BaseActivity() {
 //                btn_setting_device.setBackgroundResource(R.color.colorButtonDefault)
 //                layout_setting_device.visibility = View.GONE
 //            }
-            2 -> {
-                btn_setting_count.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
-                btn_setting_count.setBackgroundResource(R.color.colorButtonDefault)
-                layout_setting_count.visibility = View.GONE
-            }
+//            2 -> {
+//                btn_setting_count.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+//                btn_setting_count.setBackgroundResource(R.color.colorButtonDefault)
+//                layout_setting_count.visibility = View.GONE
+//            }
             3 -> {
                 btn_setting_target.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
                 btn_setting_target.setBackgroundResource(R.color.colorButtonDefault)
@@ -669,11 +664,11 @@ class SettingActivity : BaseActivity() {
 //                btn_setting_device.setBackgroundResource(R.color.colorButtonBlue)
 //                layout_setting_device.visibility = View.VISIBLE
 //            }
-            2 -> {
-                btn_setting_count.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
-                btn_setting_count.setBackgroundResource(R.color.colorButtonBlue)
-                layout_setting_count.visibility = View.VISIBLE
-            }
+//            2 -> {
+//                btn_setting_count.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
+//                btn_setting_count.setBackgroundResource(R.color.colorButtonBlue)
+//                layout_setting_count.visibility = View.VISIBLE
+//            }
             3 -> {
                 btn_setting_target.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
                 btn_setting_target.setBackgroundResource(R.color.colorButtonBlue)
@@ -687,20 +682,20 @@ class SettingActivity : BaseActivity() {
         }
     }
 
-    private fun countTypeChange(v : String) {
-        if (_selected_count_type == v) return
-        when (_selected_count_type) {
-            "trim" -> tv_setting_count_trim.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
-            "stitch" -> tv_setting_count_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
-            "t_s" -> tv_setting_count_trim_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
-        }
-        _selected_count_type = v
-        when (_selected_count_type) {
-            "trim" -> tv_setting_count_trim.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
-            "stitch" -> tv_setting_count_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
-            "t_s" -> tv_setting_count_trim_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
-        }
-    }
+//    private fun countTypeChange(v : String) {
+//        if (_selected_count_type == v) return
+//        when (_selected_count_type) {
+//            "trim" -> tv_setting_count_trim.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
+//            "stitch" -> tv_setting_count_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
+//            "t_s" -> tv_setting_count_trim_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorReadonly))
+//        }
+//        _selected_count_type = v
+//        when (_selected_count_type) {
+//            "trim" -> tv_setting_count_trim.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+//            "stitch" -> tv_setting_count_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+//            "t_s" -> tv_setting_count_trim_stitch.setTextColor(ContextCompat.getColor(this, R.color.colorOrange))
+//        }
+//    }
 
     private fun targetTypeChange(v : String) {
         if (_selected_target_type == v) return

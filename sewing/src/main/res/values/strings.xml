@@ -145,6 +145,7 @@
     <string name="button_count_view">COUNT VIEW</string>
     <string name="button_work_info">WORK INFO</string>
     <string name="button_design_info">DESIGN INFO</string>
+    <string name="button_count_setting">COUNT SETTING</string>
     <string name="button_operator_detail">OPERATOR DETAIL</string>
     <string name="button_setting">SETTING</string>
 
