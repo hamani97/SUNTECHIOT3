@@ -82,8 +82,10 @@ class HomeFragment : BaseFragment() {
                 if (!_running) checkAutoSetting()
                 startAutoSettingHandler()
             }
-        }, 900)
+        }, 1000)
     }
+
+    var auto_pos = 0
 
     private fun checkAutoSetting() {
         if (AppGlobal.instance.get_factory() == "" || AppGlobal.instance.get_room() == "" || AppGlobal.instance.get_line() == "") {
@@ -91,14 +93,26 @@ class HomeFragment : BaseFragment() {
             getBaseActivity().startActivity(Intent(activity, SettingActivity::class.java), { r, c, m, d ->
                 _running = false
             })
-        } else if (AppGlobal.instance.get_worker_no() == "" || AppGlobal.instance.get_worker_name() == "") {
-            _running = true
-            getBaseActivity().startActivity(Intent(activity, WorkInfoActivity::class.java), { r, c, m, d ->
-                _running = false
-            })
-        } else if (AppGlobal.instance.get_design_info_idx() == "") {
-            designInfofunc()
+        } else {
+            if (auto_pos == 0) {
+                auto_pos = 1
+                _running = true
+                getBaseActivity().startActivity(Intent(activity, WorkInfoActivity::class.java), { r, c, m, d ->
+                    _running = false
+                })
+            } else if (auto_pos == 1) {
+                auto_pos = 2
+                designInfofunc()
+            }
         }
+//        } else if (AppGlobal.instance.get_worker_no() == "" || AppGlobal.instance.get_worker_name() == "") {
+//            _running = true
+//            getBaseActivity().startActivity(Intent(activity, WorkInfoActivity::class.java), { r, c, m, d ->
+//                _running = false
+//            })
+//        } else if (AppGlobal.instance.get_design_info_idx() == "") {
+//            designInfofunc()
+//        }
     }
 
     private fun designInfofunc() {
