@@ -1,5 +1,6 @@
 package com.suntech.iot.sewing.util
 
+import android.util.Log
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
@@ -25,5 +26,11 @@ object OEEUtil {
     fun parseDateTime(dt_txt:String?) : DateTime {
         if (dt_txt==null || dt_txt=="") return DateTime()
         return DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(dt_txt)
+    }
+
+    fun LogWrite(txt: String="No values", title:String="Watching Data") {
+        Log.e(title, "--------------------------------------------------------")
+        Log.e(title, "" + txt.toString())
+        Log.e(title, "--------------------------------------------------------")
     }
 }

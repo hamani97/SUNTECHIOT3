@@ -182,13 +182,13 @@ open class BaseActivity : AppCompatActivity() {
         hideProgressDialog()
     }
 
-    fun ToastOut(context: Context, msg: String) {
-        if (AppGlobal.instance.get_message_enable()) {
+    fun ToastOut(context: Context, msg: String, force: Boolean=false) {
+        if (AppGlobal.instance.get_message_enable() || force) {
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         }
     }
-    fun ToastOut(context: Context, msg: Int) {
-        if (AppGlobal.instance.get_message_enable()) {
+    fun ToastOut(context: Context, msg: Int, force: Boolean=false) {
+        if (AppGlobal.instance.get_message_enable() || force) {
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         }
     }

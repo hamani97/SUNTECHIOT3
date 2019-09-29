@@ -35,9 +35,6 @@ class AppGlobal private constructor() {
     fun set_last_received(value: String) { UtilLocalStorage.setString(instance._context!!, "last_received", value) }
     fun get_last_received() : String { return UtilLocalStorage.getString(instance._context!!, "last_received") }
 
-    // auto setting
-    fun set_auto_setting(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "auto_setting", state) }
-    fun get_auto_setting() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "auto_setting") }
 
     // Default Setting
     fun set_factory_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_factory_idx", idx) }
@@ -78,6 +75,9 @@ class AppGlobal private constructor() {
 
     fun set_sound_at_count(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_sound_count", state) }
     fun get_sound_at_count() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_sound_count") }
+
+    fun set_start_at_target(value: Int) { UtilLocalStorage.setInt(instance._context!!, "start_at_target", value) }
+    fun get_start_at_target() : Int { return UtilLocalStorage.getInt(instance._context!!, "start_at_target") }
 
 //    fun set_with_component(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_with_component", state) }
 //    fun get_with_component() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_with_component") }
@@ -295,6 +295,8 @@ class AppGlobal private constructor() {
     // 기타
     fun set_color_code(data: JSONArray) { UtilLocalStorage.setJSONArray(instance._context!!, "color_code", data) }
     fun get_color_code() : JSONArray { return UtilLocalStorage.getJSONArray(instance._context!!, "color_code") }
+    fun set_comopnent_data(data: JSONArray) { UtilLocalStorage.setJSONArray(instance._context!!, "comopnent_data", data) }
+    fun get_comopnent_data() : JSONArray { return UtilLocalStorage.getJSONArray(instance._context!!, "comopnent_data") }
 
     fun set_availability(value: String) { UtilLocalStorage.setString(instance._context!!, "current_availability", value) }
     fun get_availability() : String { return UtilLocalStorage.getString(instance._context!!, "current_availability") }
@@ -403,7 +405,21 @@ class AppGlobal private constructor() {
         return compute_work_time(shift_stime, shift_etime, false, false)
     }
 
+    // 두시간(기간)에서 겹치는 시간을 계산해서 초로 리턴
+    fun compute_time_millis(src_dt_s:Long, src_dt_e:Long, dst_dt_s:Long, dst_dt_e:Long) : Int {
+        var dst_dt_s_cpy = dst_dt_s
+        var dst_dt_e_cpy = dst_dt_e
+        if (src_dt_s > dst_dt_s_cpy ) dst_dt_s_cpy = src_dt_s
+        if (src_dt_e < dst_dt_e_cpy ) dst_dt_e_cpy = src_dt_e
+
+        if (dst_dt_s_cpy >= src_dt_s && dst_dt_s_cpy <= src_dt_e &&
+            dst_dt_e_cpy >= src_dt_s && dst_dt_e_cpy <= src_dt_e) {
+            return ((dst_dt_e_cpy-dst_dt_s_cpy) / 1000 ).toInt()
+        }
+        return 0
+    }
     // 두시간(기간)에서 겹치는 시간을 계산
+    // 위의 compute_time_millis()와 같음.
     fun compute_time(src_dt_s: DateTime, src_dt_e: DateTime, dst_dt_s: DateTime, dst_dt_e: DateTime) : Int {
         var dst_dt_s_cpy = dst_dt_s
         var dst_dt_e_cpy = dst_dt_e

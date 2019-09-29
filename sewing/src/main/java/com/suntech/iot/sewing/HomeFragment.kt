@@ -66,8 +66,6 @@ class HomeFragment : BaseFragment() {
         btn_setting_view.setOnClickListener { startActivity(Intent(activity, SettingActivity::class.java)) }
 
         updateView()
-
-        startAutoSettingHandler()
     }
 
     override fun onSelected() {
@@ -75,53 +73,9 @@ class HomeFragment : BaseFragment() {
         updateView()
     }
 
-    private fun startAutoSettingHandler() {
-        val handler = Handler()
-        handler.postDelayed({
-            if (AppGlobal.instance.get_auto_setting()) {
-                if (!_running) checkAutoSetting()
-                startAutoSettingHandler()
-            }
-        }, 1000)
-    }
-
-    var auto_pos = 0
-
-    private fun checkAutoSetting() {
-        if (AppGlobal.instance.get_factory() == "" || AppGlobal.instance.get_room() == "" || AppGlobal.instance.get_line() == "") {
-            _running = true
-            getBaseActivity().startActivity(Intent(activity, SettingActivity::class.java), { r, c, m, d ->
-                _running = false
-            })
-        } else {
-            if (auto_pos == 0) {
-                auto_pos = 1
-                _running = true
-                getBaseActivity().startActivity(Intent(activity, WorkInfoActivity::class.java), { r, c, m, d ->
-                    _running = false
-                })
-            } else if (auto_pos == 1) {
-                auto_pos = 2
-                designInfofunc()
-            }
-        }
-//        } else if (AppGlobal.instance.get_worker_no() == "" || AppGlobal.instance.get_worker_name() == "") {
-//            _running = true
-//            getBaseActivity().startActivity(Intent(activity, WorkInfoActivity::class.java), { r, c, m, d ->
-//                _running = false
-//            })
-//        } else if (AppGlobal.instance.get_design_info_idx() == "") {
-//            designInfofunc()
-//        }
-    }
-
     private fun designInfofunc() {
-        _running = true
-
         val intent = Intent(activity, DesignInfoActivity::class.java)
         getBaseActivity().startActivity(intent, { r, c, m, d ->
-            _running = false
-
             if (r && d!=null) {
                 val idx = d!!["idx"]!!
                 val cycle_time = d["ct"]!!.toInt()
@@ -131,10 +85,6 @@ class HomeFragment : BaseFragment() {
                 val component = d["component"]!!.toString()
 
                 (activity as MainActivity).startNewProduct(idx, cycle_time, model, article, material_way, component)
-            }
-            if (AppGlobal.instance.get_auto_setting()) {
-                AppGlobal.instance.set_auto_setting(false)
-                (activity as MainActivity).changeFragment(1)
             }
         })
     }

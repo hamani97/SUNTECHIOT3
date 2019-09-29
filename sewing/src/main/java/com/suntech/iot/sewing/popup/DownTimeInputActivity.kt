@@ -21,6 +21,8 @@ import java.util.*
 
 class DownTimeInputActivity : BaseActivity() {
 
+    private var _db = DBHelperForDownTime(this)
+
     private var list_adapter: ListAdapter? = null
     private var _list: ArrayList<HashMap<String, String>> = arrayListOf()
     private var _selected_idx = -1
@@ -85,9 +87,46 @@ class DownTimeInputActivity : BaseActivity() {
             Toast.makeText(this, getString(R.string.msg_has_not_server_info), Toast.LENGTH_SHORT).show()
             return
         }
+        if (AppGlobal.instance.get_downtime_idx() == "") {
+            ToastOut(this, getString(R.string.msg_data_not_found), true)
+            return
+        }
         if (_selected_idx < 0) {
             Toast.makeText(this, getString(R.string.msg_has_notselected), Toast.LENGTH_SHORT).show()
             return
+        }
+
+        val idx = AppGlobal.instance.get_downtime_idx()
+
+        val now = DateTime()
+        var down_time = 0
+        var real_down_time = 0
+        var target = 0
+
+        val item = _db.get(idx)
+        if (item != null) {
+            val now_millis = now.millis
+            val down_start_millis = OEEUtil.parseDateTime(item["start_dt"].toString()).millis
+
+            var planned1_time = 0
+            var planned2_time = 0
+
+            val shift_time = AppGlobal.instance.get_current_shift_time()
+
+            if (shift_time != null) {
+                val planned1_stime_millis = OEEUtil.parseDateTime(shift_time["planned1_stime_dt"].toString()).millis
+                val planned1_etime_millis = OEEUtil.parseDateTime(shift_time["planned1_etime_dt"].toString()).millis
+                val planned2_stime_millis = OEEUtil.parseDateTime(shift_time["planned2_stime_dt"].toString()).millis
+                val planned2_etime_millis = OEEUtil.parseDateTime(shift_time["planned2_etime_dt"].toString()).millis
+
+                planned1_time = AppGlobal.instance.compute_time_millis(down_start_millis, now_millis, planned1_stime_millis, planned1_etime_millis)
+                planned2_time = AppGlobal.instance.compute_time_millis(down_start_millis, now_millis, planned2_stime_millis, planned2_etime_millis)
+            }
+            down_time = ((now_millis - down_start_millis) / 1000).toInt()   // 다운시간
+            real_down_time = down_time - planned1_time - planned2_time      // 휴식시간을 뺀 실제 다운타임
+
+            val ct = AppGlobal.instance.get_cycle_time()
+            if (ct > 0) target = real_down_time / ct
         }
 
         val downtime = _list[_selected_idx]["idx"]
@@ -110,7 +149,7 @@ class DownTimeInputActivity : BaseActivity() {
                 val idx = AppGlobal.instance.get_downtime_idx()
 
                 var db = DBHelperForDownTime(this)
-                db.updateEnd(idx, _list[_selected_idx]["name"] ?: "")
+                db.updateEnd(idx, _list[_selected_idx]["name"] ?: "", now.toString("yyyy-MM-dd HH:mm:ss"), down_time, real_down_time, target)
 
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
                 finish(true, 0, "ok", null)

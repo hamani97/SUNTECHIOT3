@@ -26,31 +26,21 @@
                     android:textStyle="bold"/>
 
             <TextView style="@style/bottom_text_title" android:text="@string/bottom_label_factory" />
+            <TextView style="@style/bottom_colon"/>
             <TextView android:id="@+id/tv_factory" style="@style/bottom_text_data" android:text="-" />
 
             <TextView style="@style/bottom_text_title" android:text="@string/bottom_label_room" />
+            <TextView style="@style/bottom_colon"/>
             <TextView android:id="@+id/tv_room" style="@style/bottom_text_data" android:text="-" />
 
             <TextView style="@style/bottom_text_title" android:text="@string/bottom_label_line" />
+            <TextView style="@style/bottom_colon"/>
             <TextView android:id="@+id/tv_line" style="@style/bottom_text_data" android:text="-" />
 
             <TextView style="@style/bottom_text_title" android:text="@string/bottom_label_number" />
+            <TextView style="@style/bottom_colon"/>
             <TextView android:id="@+id/tv_mc_no" style="@style/bottom_text_data" android:text="-" />
 
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="20dp"-->
-            <!--android:text="@string/bottom_label_mc_model"-->
-            <!--android:textSize="14sp"-->
-            <!--android:textColor="@color/colorWhite"/>-->
-            <!--<TextView-->
-            <!--android:id="@+id/tv_mc_model"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="-"-->
-            <!--android:textSize="14sp"-->
-            <!--android:textColor="@color/colorOrange"/>-->
         </LinearLayout>
 
         <LinearLayout
@@ -68,9 +58,11 @@
                     android:textStyle="bold"/>
 
             <TextView style="@style/bottom_text_title" android:text="@string/bottom_label_employee_number" />
+            <TextView style="@style/bottom_colon"/>
             <TextView android:id="@+id/tv_employee_no" style="@style/bottom_text_data" android:text="-" />
 
             <TextView style="@style/bottom_text_title" android:text="@string/bottom_label_employee_name" />
+            <TextView style="@style/bottom_colon"/>
             <TextView android:id="@+id/tv_employee_name" style="@style/bottom_text_data" android:text="-" />
 
             <TextView

@@ -1,6 +1,9 @@
 package com.suntech.iot.sewing.popup
 
+import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.suntech.iot.sewing.R
 import com.suntech.iot.sewing.base.BaseActivity
@@ -19,6 +22,14 @@ class DefectiveInputActivity : BaseActivity() {
         setContentView(R.layout.activity_defective_input)
         initView()
         fetchData()
+    }
+
+    fun parentSpaceClick(view: View) {
+        var view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
     private fun initView() {

@@ -8,6 +8,7 @@ import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.common.AppGlobal
@@ -56,6 +57,14 @@ class SettingActivity : BaseActivity() {
         initView()
     }
 
+    fun parentSpaceClick(view: View) {
+        var v = this.currentFocus
+        if (v != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(v.windowToken, 0)
+        }
+    }
+
     public override fun onResume() {
         super.onResume()
         registerReceiver(_broadcastReceiver, IntentFilter(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION))
@@ -102,6 +111,10 @@ class SettingActivity : BaseActivity() {
         sw_sound_at_count.isChecked = AppGlobal.instance.get_sound_at_count()
 //        sw_without_component.isChecked = AppGlobal.instance.get_with_component()
         sw_screen_blink_effect.isChecked = AppGlobal.instance.get_screen_blink()
+
+        val start_target = AppGlobal.instance.get_start_at_target()
+        if (start_target==0) sw_start_at_target_1.isChecked = false
+        else sw_start_at_target_1.isChecked = true
 
         // 깜박임 기능. 0일때는 10으로 초기화
         val remain = if (AppGlobal.instance.get_remain_number()==0) "10" else AppGlobal.instance.get_remain_number().toString()
@@ -347,6 +360,9 @@ class SettingActivity : BaseActivity() {
 //        AppGlobal.instance.set_with_component(sw_without_component.isChecked)
 
 //        AppGlobal.instance.set_wos_name(et_setting_wos_name.text.toString())
+
+        if (sw_start_at_target_1.isChecked) AppGlobal.instance.set_start_at_target(1)
+        else AppGlobal.instance.set_start_at_target(0)
 
         AppGlobal.instance.set_worksheet_display_time(worksheet_time)
 

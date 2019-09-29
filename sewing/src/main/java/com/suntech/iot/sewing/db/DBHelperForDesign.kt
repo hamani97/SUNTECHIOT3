@@ -59,7 +59,10 @@ class DBHelperForDesign
             db.execSQL(sql)
         }
 
-        override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
+        override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+            db.execSQL("drop table if exists design")
+            onCreate(db)
+        }
     }
 
     /**
@@ -173,6 +176,19 @@ class DBHelperForDesign
         return cnt
     }
 
+    fun max_seq(): Int {
+        val db = _openHelper.readableDatabase ?: return -1
+        val sql = "select max(seq) as cnt from design "
+        val cur = db.rawQuery(sql, arrayOf())
+        var cnt = 0
+        if (cur.moveToNext()) {
+            cnt = cur.getInt(0)
+        }
+        cur.close()
+        db.close()
+        return cnt
+    }
+
     fun add(work_idx: String, start_dt: String, design_idx: String, shift_id:String, shift_name:String, cycle_time: Int, pieces_info: String, pairs_info: String, target:Int, actual:Int, defective:Int, seq:Int): Long {
         val db = _openHelper.writableDatabase ?: return 0
         val row = ContentValues()
@@ -208,7 +224,13 @@ class DBHelperForDesign
 
     fun deleteLastDate(date: String) {
         val db = _openHelper.writableDatabase ?: return
-        db.delete("design", "start_dt < ?", arrayOf(date))
+        db.delete("design", "end_dt != null and end_dt < ?", arrayOf(date))
+        db.close()
+    }
+
+    fun deleteWorkIdx(id: String) {
+        val db = _openHelper.writableDatabase ?: return
+        db.delete("design", "work_idx = ?", arrayOf(id))
         db.close()
     }
 
@@ -225,6 +247,18 @@ class DBHelperForDesign
         row.put("pieces_info", pieces_info)
         row.put("pairs_info", pairs_info)
         row.put("actual", actual)
+        db.update("design", row, "work_idx = ?", arrayOf(work_idx.toString()))
+        db.close()
+    }
+
+    fun updateDesignInfo(work_idx: String, shift_id: String, shift_name: String, cycle_time: Int, pieces_info: String, pairs_info: String) {
+        val db = _openHelper.writableDatabase ?: return
+        val row = ContentValues()
+        row.put("shift_id", shift_id)
+        row.put("shift_name", shift_name)
+        row.put("cycle_time", cycle_time)
+        row.put("pieces_info", pieces_info)
+        row.put("pairs_info", pairs_info)
         db.update("design", row, "work_idx = ?", arrayOf(work_idx.toString()))
         db.close()
     }

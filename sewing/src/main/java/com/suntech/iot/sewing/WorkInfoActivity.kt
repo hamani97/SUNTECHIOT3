@@ -12,6 +12,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.BaseAdapter
 import android.widget.TextView
 import android.widget.Toast
@@ -61,6 +62,14 @@ class WorkInfoActivity : BaseActivity() {
         fetchOperatorData()
         initLastWorkers()
         start_timer()
+    }
+
+    fun parentSpaceClick(view: View) {
+        var view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
     public override fun onResume() {

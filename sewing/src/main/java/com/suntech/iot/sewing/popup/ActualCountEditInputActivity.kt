@@ -1,6 +1,9 @@
 package com.suntech.iot.sewing.popup
 
+import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.suntech.iot.sewing.R
 import com.suntech.iot.sewing.base.BaseActivity
@@ -19,6 +22,14 @@ class ActualCountEditInputActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actual_count_edit_input)
         initView()
+    }
+
+    fun parentSpaceClick(view: View) {
+        var view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
     private fun initView() {
@@ -111,6 +122,9 @@ class ActualCountEditInputActivity : BaseActivity() {
                 if (code == "00") {
                     // DB의 Actual 값 갱신
                     db.updateWorkActual(work_idx, actual)
+
+                    // DownTime 초기화
+                    AppGlobal.instance.set_last_received(DateTime().toString("yyyy-MM-dd HH:mm:ss"))
 
 //                    // Total count 의 Actual 값 갱신
 //                    AppGlobal.instance.set_current_shift_actual_cnt(if (new_actual>0) new_actual else 0)

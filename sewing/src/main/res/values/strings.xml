@@ -62,23 +62,24 @@
     <string name="label_long_touch_enable">Long Touch Enable</string>
     <string name="label_message_enable">Message Enable</string>
     <string name="label_sound_at_count">Sound at Count</string>
+    <string name="label_start_at_target_1">Start at target 1</string>
     <string name="label_downtime_enable">Downtime Enable</string>
 
     <!-- 홈화면 -->
     <string name="bottom_label_machine_info">MACHINE INFO</string>
     <string name="bottom_label_operator_info">OPERATOR INFO</string>
-    <string name="bottom_label_employee_number">Employee Number : \u0020</string>
-    <string name="bottom_label_employee_name">Name : \u0020</string>
-    <string name="bottom_label_factory">FACTORY : \u0020</string>
-    <string name="bottom_label_room">ZONE : \u0020</string>
-    <string name="bottom_label_line">LINE : \u0020</string>
-    <string name="bottom_label_number">M/C NUMBER : \u0020</string>
-    <string name="bottom_label_mc_model">MODEL : \u0020</string>
+    <string name="bottom_label_employee_number">Employee Number</string>
+    <string name="bottom_label_employee_name">Name</string>
+    <string name="bottom_label_factory">FACTORY</string>
+    <string name="bottom_label_room">ZONE</string>
+    <string name="bottom_label_line">LINE</string>
+    <string name="bottom_label_number">M/C NUMBER</string>
+    <string name="bottom_label_mc_model">MODEL</string>
 
-    <string name="bottom_label_trim">TRIM :  </string>
-    <string name="bottom_label_stitch">STITCH :  </string>
-    <string name="bottom_label_pairs">PAIR(S) :  </string>
-    <string name="bottom_label_delaytime">DELAY TIME :  </string>
+    <string name="bottom_label_trim">TRIM</string>
+    <string name="bottom_label_stitch">STITCH</string>
+    <string name="bottom_label_pairs">PAIR(S)</string>
+    <string name="bottom_label_delaytime">DELAY TIME</string>
 
     <!-- COUNT VIEW 화면 -->
     <string name="label_target">TARGET</string>
@@ -92,8 +93,8 @@
     <string name="list_item_size">SIZE</string>
     <string name="list_item_target">TARGET</string>
     <string name="list_item_target_space">TARGET  </string>
-    <string name="list_item_actual">ACTUAL</string>
-    <string name="list_item_actual_space">ACTUAL  </string>
+    <string name="list_item_actual">Actual</string>
+    <string name="list_item_actual_space">"ACTUAL "</string>
     <string name="list_item_balance">BALANCE</string>
 
     <!-- COMPONENT 화면 -->
@@ -109,6 +110,11 @@
     <string name="label_style">STYLE</string>
     <!--<string name="label_from_server2">FROM SERVER</string>-->
     <!--<string name="label_from_device2">FROM DEVICE</string>-->
+
+    <string name="list_item_no" translatable="false">NO</string>
+    <string name="list_item_usage_time" translatable="false">Usage Time</string>
+    <string name="list_item_remain_time" translatable="false">Remain Time</string>
+    <string name="list_item_remain_rate" translatable="false">Remain Rate</string>
 
     <!-- 디자인인포화면  -->
     <string name="title_design_info">DESIGN INFO</string>
@@ -178,6 +184,9 @@
     <string name="quality">Quality</string>
     <string name="time">TIME</string>
     <string name="no_data">No Data</string>
+    <string name="defective">Defective</string>
+    <string name="sop" translatable="false">SOP</string>
+
 
     <string name="repair_mode">REPAIR MODE</string>
     <string name="test_mode">TEST MODE</string>

@@ -12,6 +12,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.BaseAdapter
 import android.widget.TextView
 import android.widget.Toast
@@ -54,6 +55,14 @@ class DesignInfoActivity : BaseActivity() {
         initView()
         updateView()
         fetchData()
+    }
+
+    fun parentSpaceClick(view: View) {
+        var view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(et_setting_server_ip.windowToken, 0)
+        }
     }
 
     public override fun onResume() {
@@ -155,7 +164,6 @@ class DesignInfoActivity : BaseActivity() {
 
         btn_setting_confirm.setOnClickListener { saveDesignData() }
         btn_setting_cancel.setOnClickListener {
-            AppGlobal.instance.set_auto_setting(false)
             finish(false, 0, "ok", null)
         }
 
@@ -229,16 +237,18 @@ class DesignInfoActivity : BaseActivity() {
 
             val item = list.getJSONObject(i)
 
-            var map=hashMapOf(
-                "idx" to item.getString("idx"),
-                "model" to item.getString("model"),
-                "article" to item.getString("article"),
-                "material_way" to item.getString("material_way"),
-                "component" to item.getString("component"),
-                "remark" to item.getString("remark"),
-                "ct" to item.getString("ct")
-            )
-            _list.add(map)
+            if (item != null) {
+                var map = hashMapOf(
+                    "idx" to item.getString("idx"),
+                    "model" to item?.getString("model"),
+                    "article" to item.getString("article"),
+                    "material_way" to item.getString("material_way"),
+                    "component" to item.getString("component"),
+                    "remark" to item.getString("remark"),
+                    "ct" to item.getString("ct")
+                )
+                _list.add(map)
+            }
         }
         filterData()
     }

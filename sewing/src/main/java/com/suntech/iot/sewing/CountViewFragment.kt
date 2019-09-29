@@ -23,6 +23,7 @@ import com.suntech.iot.sewing.popup.StitchCountEditActivity
 import com.suntech.iot.sewing.popup.TrimCountEditActivity
 import com.suntech.iot.sewing.popup.TrimStitchCountEditActivity
 import com.suntech.iot.sewing.util.OEEUtil
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_count_view.*
 import kotlinx.android.synthetic.main.layout_bottom_info_3.*
 import kotlinx.android.synthetic.main.layout_side_menu.*
@@ -193,6 +194,10 @@ class CountViewFragment : BaseFragment() {
         tv_performance_rate.text = "0%"
         tv_quality_rate.text = "0%"
 
+        val version = activity.packageManager.getPackageInfo(activity.packageName, 0).versionName
+        val verArr = version.split(".")
+        tv_app_version2?.text = "Sv" + verArr[verArr.size-2] + "." + verArr[verArr.size-1]
+
         // Click event
         // Button click in Count view
         btn_go_repair_mode.setOnClickListener {
@@ -343,6 +348,15 @@ class CountViewFragment : BaseFragment() {
                     })
                 }
             }
+        }
+        btn_toggle_sop.setOnClickListener {
+            (activity as MainActivity).workSheetToggle = true
+            (activity as MainActivity).workSheetShow = false
+            (activity as MainActivity).ll_worksheet_view?.visibility = View.VISIBLE
+//            wv_view_main?.visibility = View.VISIBLE
+            btn_toggle_sop?.visibility = View.GONE
+//            wv_view_main.loadUrl(file_url)
+//            (activity as MainActivity).changeFragment(2)
         }
 
         viewWorkInfo()
@@ -543,6 +557,7 @@ class CountViewFragment : BaseFragment() {
 //        var d2 = 0
 
 
+        val start_at_target = AppGlobal.instance.get_start_at_target()  // 타겟의 시작을 0부터 할지 1부터 할지
         val target_type = AppGlobal.instance.get_target_type()  // setting menu 메뉴에서 선택한 타입
         var current_cycle_time = AppGlobal.instance.get_cycle_time()
 
@@ -574,9 +589,9 @@ class CountViewFragment : BaseFragment() {
                     val d2 = AppGlobal.instance.compute_time(start_dt, shift_end_dt, _planned2_stime, _planned2_etime)
 
                     // 디자인의 시작부터 시프트 종료시간까지 (초)
-                    val work_time = ((shift_end_dt.millis - start_dt.millis) / 1000) - d1 - d2 -1
+                    val work_time = ((shift_end_dt.millis - start_dt.millis) / 1000) - d1 - d2 - start_at_target
+                    val count = (work_time / current_cycle_time).toInt() + start_at_target // 현 시간에 만들어야 할 갯수
 
-                    val count = (work_time / current_cycle_time).toInt() + 1 // 현 시간에 만들어야 할 갯수
                     shift_total_target += count
 
                     if (target_type == "server_per_day_total") {
@@ -590,9 +605,9 @@ class CountViewFragment : BaseFragment() {
                         val d2 = AppGlobal.instance.compute_time(start_dt, now, _planned2_stime, _planned2_etime)
 
                         // 디자인의 시작부터 현재까지 시간(초)
-                        val work_time = ((now.millis - start_dt.millis) / 1000) - d1 - d2 -1
+                        val work_time = ((now.millis - start_dt.millis) / 1000) - d1 - d2 - start_at_target
+                        val count = (work_time / current_cycle_time).toInt() + start_at_target // 현 시간에 만들어야 할 갯수
 
-                        val count = (work_time / current_cycle_time).toInt() + 1 // 현 시간에 만들어야 할 갯수
                         total_target += count
 
                         // target값이 변형되었으면 업데이트
@@ -606,9 +621,9 @@ class CountViewFragment : BaseFragment() {
 //                        val d2 = AppGlobal.instance.compute_time(start_dt, now, _planned2_stime, _planned2_etime)
 //
 //                        // 디자인의 시작부터 현재까지 시간(초)
-//                        val work_time = ((now.millis - start_dt.millis) / 1000) - d1 - d2 -1
+//                        val work_time = ((now.millis - start_dt.millis) / 1000) - d1 - d2 - start_at_target
 //
-//                        val count = (work_time / current_cycle_time).toInt() + 1 // 현 시간에 만들어야 할 갯수
+//                        val count = (work_time / current_cycle_time).toInt() + start_at_target // 현 시간에 만들어야 할 갯수
 //                        total_target += count
 //
 //                        // target값이 변형되었으면 업데이트
@@ -621,9 +636,9 @@ class CountViewFragment : BaseFragment() {
 //                        val d2 = AppGlobal.instance.compute_time(start_dt, shift_end_dt, _planned2_stime, _planned2_etime)
 //
 //                        // 디자인의 시작부터 시프트 종료시간까지 (초)
-//                        val work_time = ((shift_end_dt.millis - start_dt.millis) / 1000) - d1 - d2 -1
-//
-//                        val count = (work_time / current_cycle_time).toInt() + 1 // 현 시간에 만들어야 할 갯수
+//                        val work_time = ((shift_end_dt.millis - start_dt.millis) / 1000) - d1 - d2 - start_at_target
+////                        val count = (work_time / current_cycle_time).toInt() + start_at_target // 현 시간에 만들어야 할 갯수
+
 //                        total_target += count
 //
 //                        // target값이 변형되었으면 업데이트
@@ -644,9 +659,9 @@ class CountViewFragment : BaseFragment() {
                             val d1 = AppGlobal.instance.compute_time(start_dt2, end_dt2, _planned1_stime, _planned1_etime)
                             val d2 = AppGlobal.instance.compute_time(start_dt2, end_dt2, _planned2_stime, _planned2_etime)
 
-                            val work_time2 = ((end_dt2.millis - start_dt2.millis) / 1000) - d1 - d2 -1
+                            val work_time2 = ((end_dt2.millis - start_dt2.millis) / 1000) - d1 - d2 - start_at_target
 
-                            val count = (work_time2 / cycle_time2).toInt() + 1 // 시작할때 1부터 시작이므로 1을 더함
+                            val count = (work_time2 / cycle_time2).toInt() + start_at_target // 시작할때 1부터 시작이므로 1을 더함
                             total_target += count   // 현재 계산된 카운트를 더한다.
                             shift_total_target += count   // 현재 계산된 카운트를 시트프 총합에 더한다.
 

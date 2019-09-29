@@ -10,7 +10,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@color/colorBackground">
+            android:background="@color/colorBackground"
+            android:onClick="parentSpaceClick">
 
         <include layout="@layout/layout_top_menu_2"
                  android:layout_width="match_parent"
@@ -364,8 +365,8 @@
 
                             <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="86dp"
-                                    android:layout_marginBottom="8dp"
+                                    android:layout_height="84dp"
+                                    android:layout_marginBottom="5dp"
                                     android:orientation="horizontal"
                                     android:background="#000">
                                 <ListView
@@ -417,7 +418,7 @@
 
                             <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="192dp"
+                                    android:layout_height="123dp"
                                     android:layout_marginBottom="8dp"
                                     android:background="#000"
                                     android:orientation="vertical">

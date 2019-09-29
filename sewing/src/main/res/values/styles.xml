@@ -41,11 +41,20 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorOrange</item>
     </style>
+    <style name="bottom_colon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:text">:</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
 
     <!-- Button default value -->
     <style name="btn_default">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">34dp</item>
+        <item name="android:layout_height">38dp</item>
         <item name="android:layout_margin">6dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">15sp</item>
@@ -107,27 +116,28 @@
     <!-- Table start -->
     <style name="table_title">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">30dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_height">33dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:background">#010103</item>
+        <item name="android:background">#678ABD</item>
+        <!--<item name="android:background">@color/colorDefault</item>-->
     </style>
     <style name="table_title2">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">30dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:background">#010103</item>
+        <item name="android:background">#334C8A</item>
     </style>
     <style name="table_row">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">36dp</item>
-        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
         <item name="android:orientation">horizontal</item>
     </style>
     <style name="table_row_readonly" parent="table_row">
@@ -136,7 +146,7 @@
     <style name="table_row_title">
         <item name="android:layout_width">110dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginRight">3dp</item>
+        <item name="android:layout_marginRight">2dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">#d0efff</item>
@@ -207,11 +217,13 @@
         <item name="android:layout_height">28dp</item>
         <item name="android:gravity">center</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:background">#2E4B63</item>
+        <item name="android:background">@color/colorDefault</item>
     </style>
     <style name="grid_header_text">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
+        <item name="android:layout_marginLeft">1dp</item>
+        <item name="android:layout_marginRight">1dp</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/colorWhite2</item>
     </style>

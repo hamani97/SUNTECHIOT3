@@ -58,6 +58,35 @@
                 android:layout_height="60dp"
                 android:background="@color/transparent">
             <ImageButton
+                    android:id="@+id/btn_component"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/btn_side_icon_component" />
+            <TextView
+                    android:id="@+id/tv_component_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/shape_orange_round_button"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:paddingRight="3dp"
+                    android:paddingLeft="3dp"
+                    android:text="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorWhite"
+                    android:visibility="gone"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/transparent">
+            <ImageButton
                     android:id="@+id/btn_production_report"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
@@ -78,7 +107,8 @@
                     android:paddingLeft="3dp"
                     android:text="1"
                     android:textSize="16sp"
-                    android:textColor="@color/colorWhite"/>
+                    android:textColor="@color/colorWhite"
+                    android:visibility="gone"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

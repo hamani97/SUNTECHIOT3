@@ -10,14 +10,29 @@
             android:paddingTop="10dp"
             android:paddingBottom="5dp"
             android:background="@color/colorBackground">
-        <TextView
+        <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="WORK INFO"
-                android:textSize="16sp"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold"/>
+                android:orientation="vertical">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:text="@string/button_work_info"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"/>
+            <Button
+                    android:id="@+id/btn_toggle_sop"
+                    style="@style/btn_orange"
+                    android:layout_width="90dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_gravity="center_horizontal"
+                    android:stateListAnimator="@null"
+                    android:text="@string/sop"
+                    android:visibility="gone"/>
+        </LinearLayout>
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -28,20 +43,25 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
                 <TextView style="@style/bottom_text_title" android:text="@string/bottom_label_trim" />
+                <TextView style="@style/bottom_colon"/>
                 <TextView android:id="@+id/tv_trim_qty_bottom" style="@style/bottom_text_data" android:text="4" />
 
                 <TextView style="@style/bottom_text_title" android:text="@string/bottom_label_pairs" />
+                <TextView style="@style/bottom_colon"/>
                 <TextView android:id="@+id/tv_trim_pairs_bottom" style="@style/bottom_text_data" android:text="0" />
 
                 <TextView style="@style/bottom_text_title" android:text="  /  " />
 
                 <TextView style="@style/bottom_text_title" android:text="@string/bottom_label_stitch" />
+                <TextView style="@style/bottom_colon"/>
                 <TextView android:id="@+id/tv_stitch_qty_bottom" style="@style/bottom_text_data" android:text="0" />
 
                 <TextView style="@style/bottom_text_title" android:text="@string/bottom_label_delaytime" />
+                <TextView style="@style/bottom_colon"/>
                 <TextView android:id="@+id/tv_stitch_delay_time_bottom" style="@style/bottom_text_data" android:text="0" />
 
                 <TextView style="@style/bottom_text_title" android:text="@string/bottom_label_pairs" />
+                <TextView style="@style/bottom_colon"/>
                 <TextView android:id="@+id/tv_stitch_pairs_bottom" style="@style/bottom_text_data" android:text="0" />
             </LinearLayout>
 
@@ -52,7 +72,8 @@
                     android:orientation="horizontal">
                 <TextView
                         style="@style/bottom_text_title"
-                        android:text="IDX :  "/>
+                        android:text="@string/list_header_idx"/>
+                <TextView style="@style/bottom_colon"/>
                 <TextView
                         android:id="@+id/tv_idx"
                         style="@style/bottom_text_data"
@@ -61,7 +82,8 @@
                 <TextView
                         style="@style/bottom_text_title"
                         android:layout_marginLeft="30dp"
-                        android:text="Cycle Time :  "/>
+                        android:text="@string/list_header_cycle_time"/>
+                <TextView style="@style/bottom_colon"/>
                 <TextView
                         android:id="@+id/tv_cycle_time"
                         style="@style/bottom_text_data"
@@ -70,7 +92,8 @@
                 <TextView
                         style="@style/bottom_text_title"
                         android:layout_marginLeft="30dp"
-                        android:text="Model :  "/>
+                        android:text="@string/list_header_model"/>
+                <TextView style="@style/bottom_colon"/>
                 <TextView
                         android:id="@+id/tv_model"
                         style="@style/bottom_text_data"
@@ -84,7 +107,8 @@
                     android:orientation="horizontal">
                 <TextView
                         style="@style/bottom_text_title"
-                        android:text="Material :  "/>
+                        android:text="@string/list_header_material"/>
+                <TextView style="@style/bottom_colon"/>
                 <TextView
                         android:id="@+id/tv_material"
                         style="@style/bottom_text_data"
@@ -93,11 +117,23 @@
                 <TextView
                         style="@style/bottom_text_title"
                         android:layout_marginLeft="30dp"
-                        android:text="Component :  "/>
+                        android:text="@string/list_header_component"/>
+                <TextView style="@style/bottom_colon"/>
                 <TextView
                         android:id="@+id/tv_component"
                         style="@style/bottom_text_data"
                         android:text="-"/>
+
+                <TextView
+                        android:id="@+id/tv_app_version2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingRight="14dp"
+                        android:gravity="right"
+                        android:text="1"
+                        android:textSize="14sp"
+                        android:textColor="@color/colorGray"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -5,10 +5,10 @@
     <color name="colorAccent">#D81B60</color>
 
     <!-- common text color -->
-    <color name="colorDefault">#2f3f51</color>
+    <color name="colorDefault">#5B769C</color>    <!--#2f3f51-->
     <color name="colorWhite">#ffffff</color>
     <color name="colorWhite2">#d0efff</color>
-    <color name="colorGray">#888888</color>
+    <color name="colorGray">#D0D7CB</color>
     <color name="colorBlack">#000000</color>
     <color name="colorBlack2">#222222</color>
     <color name="colorDarkGray">#444444</color>
@@ -18,29 +18,29 @@
 
     <!-- common -->
     <color name="transparent">#00ff0000</color>
-    <color name="colorBackground">#1F3242</color>
+    <color name="colorBackground">#2B4153</color>
     <color name="colorBackground2">#162936</color>
-    <color name="colorBackgroundTop">#122338</color>
-    <color name="colorBackgroundSide">#192533</color>
+    <color name="colorBackgroundTop">#263A49</color>
+    <color name="colorBackgroundSide">#263A49</color>
 
-    <color name="colorReadonly">#4d4d4d</color>
+    <color name="colorReadonly">#B6A2A2</color>
     <color name="colorReadonly2">#0079BA</color>
-    <color name="colorSelector">#6A3B80</color>    <!--#8d4dab-->
-    <color name="colorEditor1">#418534</color>
+    <color name="colorSelector">#C00FAE</color>    <!--#8d4dab-->
+    <color name="colorEditor1">#48C412</color>     <!--#418534-->
     <color name="colorEditor2">#333E4D</color>
 
-    <color name="colorButtonDefault">#2f3f51</color>
-    <color name="colorButtonDefaultFocus">#333E4D</color>
-    <color name="colorButtonGray">#535353</color>
-    <color name="colorButtonGrayFocus">#727272</color>
+    <color name="colorButtonDefault">#9A9A9A</color>
+    <color name="colorButtonDefaultFocus">#AAAAAA</color>
+    <color name="colorButtonGray">#9A9A9A</color>
+    <color name="colorButtonGrayFocus">#AAAAAA</color>
     <color name="colorButtonRed">#FF1D1D</color>
     <color name="colorButtonRedFocus">#DB3737</color>
     <color name="colorButtonOrange">#E68900</color>
     <color name="colorButtonOrangeFocus">#D39E35</color>
     <color name="colorButtonGreen">#87c947</color>
     <color name="colorButtonGreenFocus">#70A042</color>
-    <color name="colorButtonBlue">#0079BA</color>
-    <color name="colorButtonBlueFocus">#026CA5</color>
+    <color name="colorButtonBlue">#11A7E9</color>
+    <color name="colorButtonBlueFocus">#0BB1FC</color>
 
     <color name="list_item_bg_color">#090c0f</color>
     <color name="list_item_text_color">#fff</color>

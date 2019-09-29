@@ -10,7 +10,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@color/colorBackground">
+            android:background="@color/colorBackground"
+            android:onClick="parentSpaceClick">
 
         <include layout="@layout/layout_top_menu_2"
                  android:layout_width="match_parent"
@@ -619,6 +620,23 @@
                             </LinearLayout>
                         </LinearLayout>
 
+                        <LinearLayout style="@style/table_row">
+                            <TextView style="@style/table_row_title" android:text="@string/label_start_at_target_1"
+                                      android:layout_width="170dp" />
+                            <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:background="@color/colorDefault">
+                                <Switch
+                                        android:id="@+id/sw_start_at_target_1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="12dp"
+                                        android:checked="false"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
                         <!-- Worksheet Display time -->
                         <LinearLayout style="@style/table_row">
                             <TextView style="@style/table_row_title" android:text="@string/label_worksheet_display_time"
@@ -683,16 +701,16 @@
                                       android:layout_width="160dp" />
                             <EditText
                                     style="@style/table_row_data_editor1"
-                                    android:layout_width="90dp"
+                                    android:layout_width="70dp"
                                     android:inputType="number"
                                     android:id="@+id/et_remain_number" />
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="12dp"
-                                    android:text="( 5 ~ 30 )"
+                                    android:text="(5~30)"
                                     android:textColor="@color/colorGray"
-                                    android:textSize="13sp" />
+                                    android:textSize="16sp" />
                         </LinearLayout>
 
                         <LinearLayout

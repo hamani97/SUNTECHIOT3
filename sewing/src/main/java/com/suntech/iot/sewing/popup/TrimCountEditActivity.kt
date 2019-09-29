@@ -1,6 +1,9 @@
 package com.suntech.iot.sewing.popup
 
+import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.suntech.iot.sewing.R
 import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.common.AppGlobal
@@ -72,6 +75,14 @@ class TrimCountEditActivity : BaseActivity() {
         }
         btn_cancel.setOnClickListener {
             finish(false, 1, "ok", null)
+        }
+    }
+
+    fun parentSpaceClick(view: View) {
+        var view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 }
