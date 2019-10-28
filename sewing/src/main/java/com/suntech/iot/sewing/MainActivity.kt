@@ -141,6 +141,8 @@ class MainActivity : BaseActivity() {
                 true
             }
             btn_production_report.setOnLongClickListener { startActivity(Intent(this, ProductionReportTotalActivity::class.java)); true }
+            btn_component.setOnLongClickListener { startComponentActivity(); true }
+
         } else {
             btn_home.setOnClickListener { changeFragment(0) }
             btn_push_to_app.setOnClickListener { startActivity(Intent(this, PushActivity::class.java)) }
@@ -183,6 +185,7 @@ class MainActivity : BaseActivity() {
                 cview?.btn_toggle_sop?.visibility = View.VISIBLE
             }
             btn_production_report.setOnClickListener { startActivity(Intent(this, ProductionReportTotalActivity::class.java)) }
+            btn_component.setOnClickListener { startComponentActivity() }
         }
 
         // fragment & swipe

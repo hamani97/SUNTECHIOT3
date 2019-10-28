@@ -24,8 +24,13 @@ import kotlinx.android.synthetic.main.activity_design_info.btn_setting_cancel
 import kotlinx.android.synthetic.main.activity_design_info.btn_setting_confirm
 import kotlinx.android.synthetic.main.layout_top_menu_2.*
 import org.joda.time.DateTime
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class DesignInfoActivity : BaseActivity() {
+
+    private var usb_state = false
 
     private var tab_pos : Int = 1
     private var _selected_count_type: String = ""
@@ -53,7 +58,8 @@ class DesignInfoActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_design_info)
         initView()
-        updateView()
+//        updateView()
+        start_timer()
         fetchData()
     }
 
@@ -69,10 +75,17 @@ class DesignInfoActivity : BaseActivity() {
         super.onResume()
         registerReceiver(_broadcastReceiver, IntentFilter(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION))
         updateView()
+        is_loop = true
     }
     public override fun onPause() {
         super.onPause()
         unregisterReceiver(_broadcastReceiver)
+        is_loop = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancel_timer()
     }
 
     private fun updateView() {
@@ -320,6 +333,31 @@ class DesignInfoActivity : BaseActivity() {
             }
         }
         list_adapter?.notifyDataSetChanged()
+    }
+
+    /////// 쓰레드
+    private val _timer_task2 = Timer()
+    private var is_loop = true
+
+    private fun start_timer() {
+        val task2 = object : TimerTask() {
+            override fun run() {
+                runOnUiThread {
+                    if (is_loop) checkUSB()
+                }
+            }
+        }
+        _timer_task2.schedule(task2, 500, 1000)
+    }
+    private fun cancel_timer () {
+        _timer_task2.cancel()
+    }
+
+    private fun checkUSB() {
+        if (usb_state != AppGlobal.instance._usb_state) {
+            usb_state = AppGlobal.instance._usb_state
+            btn_usb_state2.isSelected = usb_state
+        }
     }
 
     private class ListAdapter(context: Context, list: ArrayList<HashMap<String, String>>) : BaseAdapter() {

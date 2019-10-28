@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -18,6 +19,8 @@ import org.joda.time.DateTime
 import java.util.*
 
 class SettingActivity : BaseActivity() {
+
+    private var usb_state = false
 
     private var tab_pos: Int = 1
 //    private var _selected_count_type: String = ""
@@ -32,6 +35,8 @@ class SettingActivity : BaseActivity() {
     private var _selected_line_idx: String = ""
     private var _selected_mc_no_idx: String = ""
     private var _selected_mc_model_idx: String = ""
+
+    private var is_loop = true
 
     val _broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -67,16 +72,40 @@ class SettingActivity : BaseActivity() {
 
     public override fun onResume() {
         super.onResume()
-        registerReceiver(_broadcastReceiver, IntentFilter(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION))
+        val filter = IntentFilter()
+        filter.addAction(Intent.ACTION_TIME_CHANGED)
+        filter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)
+        registerReceiver(_broadcastReceiver, filter)
+        is_loop = true
+        startHandler()
     }
 
     public override fun onPause() {
         super.onPause()
         unregisterReceiver(_broadcastReceiver)
+        is_loop = false
+    }
+
+    fun startHandler() {
+        val handler = Handler()
+        handler.postDelayed({
+            if (is_loop) {
+                checkUSB()
+                startHandler()
+            }
+        }, 1000)
+    }
+
+    private fun checkUSB() {
+        if (usb_state != AppGlobal.instance._usb_state) {
+            usb_state = AppGlobal.instance._usb_state
+            btn_usb_state2.isSelected = usb_state
+        }
     }
 
     private fun initView() {
-        tv_title.setText(R.string.title_setting)
+
+        tv_title?.setText(R.string.title_setting)
 
         // system setting
         _selected_factory_idx = AppGlobal.instance.get_factory_idx()
@@ -86,41 +115,41 @@ class SettingActivity : BaseActivity() {
         _selected_mc_model_idx = AppGlobal.instance.get_mc_model_idx()
 
         // widget
-        tv_setting_wifi.text = AppGlobal.instance.getWiFiSSID(this)
-        tv_setting_ip.text = AppGlobal.instance.get_local_ip()
-        tv_setting_mac.text = AppGlobal.instance.getMACAddress()
-        tv_setting_factory.text = AppGlobal.instance.get_factory()
-        tv_setting_room.text = AppGlobal.instance.get_room()
-        tv_setting_line.text = AppGlobal.instance.get_line()
-        tv_setting_mc_model.text = AppGlobal.instance.get_mc_model()
-        tv_setting_mc_no1.setText(AppGlobal.instance.get_mc_no1())
-        et_setting_mc_serial.setText(AppGlobal.instance.get_mc_serial())
+        tv_setting_wifi?.text = AppGlobal.instance.getWiFiSSID(this)
+        tv_setting_ip?.text = AppGlobal.instance.get_local_ip()
+        tv_setting_mac?.text = AppGlobal.instance.getMACAddress()
+        tv_setting_factory?.text = AppGlobal.instance.get_factory()
+        tv_setting_room?.text = AppGlobal.instance.get_room()
+        tv_setting_line?.text = AppGlobal.instance.get_line()
+        tv_setting_mc_model?.text = AppGlobal.instance.get_mc_model()
+        tv_setting_mc_no1?.setText(AppGlobal.instance.get_mc_no1())
+        et_setting_mc_serial?.setText(AppGlobal.instance.get_mc_serial())
 
-        et_setting_server_ip.setText(AppGlobal.instance.get_server_ip())
-        et_setting_port.setText(AppGlobal.instance.get_server_port())
+        et_setting_server_ip?.setText(AppGlobal.instance.get_server_ip())
+        et_setting_port?.setText(AppGlobal.instance.get_server_port())
 
         // 워크시트 토글 시간(초). 0일때는 5로 초기화
         val sec = if (AppGlobal.instance.get_worksheet_display_time()==0) "5" else AppGlobal.instance.get_worksheet_display_time().toString()
-        et_setting_worksheet_display_time.setText(sec)
+        et_setting_worksheet_display_time?.setText(sec)
 
 //        et_setting_wos_name.setText(AppGlobal.instance.get_wos_name())
 
-        sw_long_touch.isChecked = AppGlobal.instance.get_long_touch()
-        sw_message_enable.isChecked = AppGlobal.instance.get_message_enable()
-        sw_downtime_enable.isChecked = AppGlobal.instance.get_downtime_enable()
-        sw_sound_at_count.isChecked = AppGlobal.instance.get_sound_at_count()
-//        sw_without_component.isChecked = AppGlobal.instance.get_with_component()
-        sw_screen_blink_effect.isChecked = AppGlobal.instance.get_screen_blink()
-        sw_target_stop_when_downtime.isChecked = AppGlobal.instance.get_target_stop_when_downtime()
-        sw_ask_when_clicking_defective.isChecked = AppGlobal.instance.get_ask_when_clicking_defective()
+        sw_long_touch?.isChecked = AppGlobal.instance.get_long_touch()
+        sw_message_enable?.isChecked = AppGlobal.instance.get_message_enable()
+        sw_downtime_enable?.isChecked = AppGlobal.instance.get_downtime_enable()
+        sw_sound_at_count?.isChecked = AppGlobal.instance.get_sound_at_count()
+//        sw_without_component?.isChecked = AppGlobal.instance.get_with_component()
+        sw_screen_blink_effect?.isChecked = AppGlobal.instance.get_screen_blink()
+        sw_target_stop_when_downtime?.isChecked = AppGlobal.instance.get_target_stop_when_downtime()
+        sw_ask_when_clicking_defective?.isChecked = AppGlobal.instance.get_ask_when_clicking_defective()
 
         val start_target = AppGlobal.instance.get_start_at_target()
-        if (start_target==0) sw_start_at_target_1.isChecked = false
-        else sw_start_at_target_1.isChecked = true
+        if (start_target==0) sw_start_at_target_1?.isChecked = false
+        else sw_start_at_target_1?.isChecked = true
 
         // 깜박임 기능. 0일때는 10으로 초기화
         val remain = if (AppGlobal.instance.get_remain_number()==0) "10" else AppGlobal.instance.get_remain_number().toString()
-        et_remain_number.setText(remain)
+        et_remain_number?.setText(remain)
 
         if (_selected_blink_color == "") _selected_blink_color = "ff0000"
         blinkColorChange(_selected_blink_color)
@@ -138,18 +167,18 @@ class SettingActivity : BaseActivity() {
             blinkColorChange("888888")
         }
 
-        tv_trim_qty.setText(AppGlobal.instance.get_trim_qty())
-        tv_trim_pairs.text = AppGlobal.instance.get_trim_pairs()
+        tv_trim_qty?.setText(AppGlobal.instance.get_trim_qty())
+        tv_trim_pairs?.text = AppGlobal.instance.get_trim_pairs()
 
-        tv_stitch_start.setText(AppGlobal.instance.get_stitch_qty_start())
-        tv_stitch_end.setText(AppGlobal.instance.get_stitch_qty_end())
-        tv_stitch_delay_time.setText(AppGlobal.instance.get_stitch_delay_time())
-        tv_stitch_pairs.text = AppGlobal.instance.get_stitch_pairs()
+        tv_stitch_start?.setText(AppGlobal.instance.get_stitch_qty_start())
+        tv_stitch_end?.setText(AppGlobal.instance.get_stitch_qty_end())
+        tv_stitch_delay_time?.setText(AppGlobal.instance.get_stitch_delay_time())
+        tv_stitch_pairs?.text = AppGlobal.instance.get_stitch_pairs()
 
-        tv_stitch_start2.setText(AppGlobal.instance.get_stitch_qty_start2())
-        tv_stitch_end2.setText(AppGlobal.instance.get_stitch_qty_end2())
-        tv_trim_qty2.setText(AppGlobal.instance.get_trim_qty2())
-        tv_trim_stitch_pairs.setText(AppGlobal.instance.get_trim_stitch_pairs())
+        tv_stitch_start2?.setText(AppGlobal.instance.get_stitch_qty_start2())
+        tv_stitch_end2?.setText(AppGlobal.instance.get_stitch_qty_end2())
+        tv_trim_qty2?.setText(AppGlobal.instance.get_trim_qty2())
+        tv_trim_stitch_pairs?.setText(AppGlobal.instance.get_trim_stitch_pairs())
 
 
         // count setting
@@ -212,9 +241,9 @@ class SettingActivity : BaseActivity() {
 //        btn_manual_shifttotal.setOnClickListener { targetTypeChange("device_per_day_total") }
 
 
-        tv_shift_1.setText(AppGlobal.instance.get_target_manual_shift("1"))
-        tv_shift_2.setText(AppGlobal.instance.get_target_manual_shift("2"))
-        tv_shift_3.setText(AppGlobal.instance.get_target_manual_shift("3"))
+        tv_shift_1?.setText(AppGlobal.instance.get_target_manual_shift("1"))
+        tv_shift_2?.setText(AppGlobal.instance.get_target_manual_shift("2"))
+        tv_shift_3?.setText(AppGlobal.instance.get_target_manual_shift("3"))
 
 
         // click listener
@@ -272,8 +301,8 @@ class SettingActivity : BaseActivity() {
         // 10.10.10.90
         // 49.247.205.235
         // 183.81.156.206 : inni
-        if (et_setting_server_ip.text.toString() == "") et_setting_server_ip.setText("115.68.227.31")
-        if (et_setting_port.text.toString() == "") et_setting_port.setText("80")
+        if (et_setting_server_ip?.text.toString() == "") et_setting_server_ip?.setText("115.68.227.31")
+        if (et_setting_port?.text.toString() == "") et_setting_port?.setText("80")
     }
 
     private fun checkServer() {

@@ -29,7 +29,7 @@ class IntroActivity : BaseActivity() {
             } else {
                 sendAppStartTime()
             }
-        }, 800)
+        }, 600)
     }
 
     private fun moveToNext() {

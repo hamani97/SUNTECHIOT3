@@ -24,6 +24,7 @@ class AppGlobal private constructor() {
     private var _context : Context? = null
     var deviceToken : String = ""           // 디바이스 정보
     var _server_state : Boolean = false
+    var _usb_state : Boolean = false
 
     private object Holder { val INSTANCE = AppGlobal() }
 

@@ -15,7 +15,8 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="60dp"
+            android:layout_marginVertical="50dp"
+            android:layout_marginHorizontal="40dp"
             android:orientation="vertical"
             android:gravity="center"
             android:background="#fff"
@@ -23,7 +24,7 @@
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:background="#4f4f4f"
                 android:orientation="horizontal">
@@ -36,7 +37,7 @@
                     android:gravity="center_horizontal"
                     android:text="@string/list_header_component"
                     android:textColor="#fff"
-                    android:textSize="28dp"
+                    android:textSize="22sp"
                     android:textStyle="bold"/>
 
         </LinearLayout>
@@ -47,9 +48,9 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
                 android:orientation="vertical">
 
             <LinearLayout
@@ -65,10 +66,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:background="#000"/>
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#999"/>
 
             <ListView
                     android:id="@+id/lv_components"
@@ -88,8 +85,8 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="100dp"
-                android:paddingBottom="20dp"
+                android:paddingRight="40dp"
+                android:paddingBottom="10dp"
                 android:gravity="end"
                 android:orientation="horizontal">
             <Button
