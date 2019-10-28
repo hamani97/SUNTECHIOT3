@@ -5,11 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.suntech.iot.sewing.base.BaseFragment
 import com.suntech.iot.sewing.common.AppGlobal
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -42,15 +40,18 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        tv_app_version.text = "v " + activity.packageManager.getPackageInfo(activity.packageName, 0).versionName
+        tv_app_version?.text = "v " + activity.packageManager.getPackageInfo(activity.packageName, 0).versionName
 
         // Click event
         btn_count_view.setOnClickListener {
             (activity as MainActivity).changeFragment(1)
         }
+        // 디자인 기능으로 대체됨
         btn_component_info.setOnClickListener {
             if (AppGlobal.instance.get_worker_no() == "" || AppGlobal.instance.get_worker_name() == "") {
-                Toast.makeText(activity, getString(R.string.msg_no_operator), Toast.LENGTH_SHORT).show()
+                (activity as MainActivity).ToastOut(activity, R.string.msg_no_operator, true)
+            } else if (AppGlobal.instance.get_design_info() == null) {
+                (activity as MainActivity).ToastOut(activity, R.string.msg_please_wait_for_loading, true)
             } else {
                 designInfofunc()
             }
@@ -58,7 +59,9 @@ class HomeFragment : BaseFragment() {
 
         btn_work_info.setOnClickListener {
             if (AppGlobal.instance.get_factory() == "" || AppGlobal.instance.get_room() == "" || AppGlobal.instance.get_line() == "") {
-                Toast.makeText(activity, getString(R.string.msg_no_setting), Toast.LENGTH_SHORT).show()
+                (activity as MainActivity).ToastOut(activity, R.string.msg_no_setting, true)
+            } else if (AppGlobal.instance.get_current_work_time() == null) {
+                (activity as MainActivity).ToastOut(activity, R.string.msg_please_wait_for_loading, true)
             } else {
                 startActivity(Intent(activity, WorkInfoActivity::class.java))
             }

@@ -1,9 +1,15 @@
 package com.suntech.iot.sewing.popup
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.BaseAdapter
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import com.suntech.iot.sewing.R
 import com.suntech.iot.sewing.base.BaseActivity
@@ -13,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_defective_input.*
 
 class DefectiveInputActivity : BaseActivity() {
 
-    private var list_adapter: DownTimeInputActivity.ListAdapter? = null
+    private var list_adapter: ListAdapter? = null
     private var _list: ArrayList<HashMap<String, String>> = arrayListOf()
     private var _selected_idx =-1
 
@@ -39,7 +45,7 @@ class DefectiveInputActivity : BaseActivity() {
         tv_design_idx.text = "IDX " + design_idx
         et_defective_qty.setText("")
 
-        list_adapter = DownTimeInputActivity.ListAdapter(this, _list)
+        list_adapter = ListAdapter(this, _list)
         lv_types.adapter = list_adapter
 
         lv_types.setOnItemClickListener { adapterView, view, i, l ->
@@ -67,8 +73,6 @@ class DefectiveInputActivity : BaseActivity() {
 
         request(this, uri, false, params, { result ->
             var code = result.getString("code")
-            var msg = result.getString("msg")
-
             if (code == "00") {
 
                 var list = result.getJSONArray("item")
@@ -86,8 +90,8 @@ class DefectiveInputActivity : BaseActivity() {
                 }
                 list_adapter?.notifyDataSetChanged()
 
-            }else{
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            } else {
+                ToastOut(this, result.getString("msg"), true)
             }
         })
     }
@@ -95,11 +99,11 @@ class DefectiveInputActivity : BaseActivity() {
     private fun sendData(count:String, work_idx:String) {
 
         if (AppGlobal.instance.get_server_ip()=="") {
-            Toast.makeText(this, getString(R.string.msg_has_not_server_info), Toast.LENGTH_SHORT).show()
+            ToastOut(this, R.string.msg_has_not_server_info, true)
             return
         }
         if (_selected_idx < 0) {
-            Toast.makeText(this, getString(R.string.msg_has_notselected), Toast.LENGTH_SHORT).show()
+            ToastOut(this, R.string.msg_has_notselected, true)
             return
         }
 
@@ -123,7 +127,8 @@ class DefectiveInputActivity : BaseActivity() {
         request(this, uri, true,false, params, { result ->
 
             var code = result.getString("code")
-            var msg = result.getString("msg")
+
+            ToastOut(this, result.getString("msg"), true)
 
             if (code == "00") {
                 val item = db.get(work_idx)
@@ -131,12 +136,55 @@ class DefectiveInputActivity : BaseActivity() {
 
                 db.updateDefective(work_idx, defective + count.toInt())
 
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
                 finish(true, 0, "ok", null)
-
-            } else {
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    class ListAdapter(context: Context, list: ArrayList<HashMap<String, String>>) : BaseAdapter() {
+
+        private var _list: ArrayList<HashMap<String, String>>
+        private val _inflator: LayoutInflater
+        private var _context : Context? =null
+
+        init {
+            this._inflator = LayoutInflater.from(context)
+            this._list = list
+            this._context = context
+        }
+
+        override fun getCount(): Int { return _list.size }
+        override fun getItem(position: Int): Any { return _list[position] }
+        override fun getItemId(position: Int): Long { return position.toLong() }
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
+            val view: View?
+            val vh: ViewHolder
+            if (convertView == null) {
+                view = this._inflator.inflate(R.layout.list_item_downtime_type, parent, false)
+                vh = ViewHolder(view)
+                view.tag = vh
+            } else {
+                view = convertView
+                vh = view.tag as ViewHolder
+            }
+
+            vh.tv_item_downtime_name.text = _list[position]["name"]
+            vh.tv_item_downtime_name.setTextColor(Color.parseColor("#"+_list[position]["color"]))
+
+            if (_list[position]["selected"]=="Y") vh.tv_item_downtime_check_box.isSelected = true
+            else vh.tv_item_downtime_check_box.isSelected = false
+            return view
+        }
+
+        private class ViewHolder(row: View?) {
+            val tv_item_downtime_check_box: ImageView
+            val tv_item_downtime_name: TextView
+
+            init {
+                this.tv_item_downtime_check_box = row?.findViewById<ImageView>(R.id.tv_item_downtime_check_box) as ImageView
+                this.tv_item_downtime_name = row?.findViewById<TextView>(R.id.tv_item_downtime_name) as TextView
+            }
+        }
     }
 }

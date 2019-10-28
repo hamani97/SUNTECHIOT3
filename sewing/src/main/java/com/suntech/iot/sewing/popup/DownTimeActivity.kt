@@ -22,6 +22,7 @@ import java.util.*
 
 class DownTimeActivity : BaseActivity() {
 
+    private var _db = DBHelperForDownTime(this)
     private var list_adapter: ListAdapter? = null
     private var _list: ArrayList<HashMap<String, String>> = arrayListOf()
 
@@ -36,7 +37,33 @@ class DownTimeActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_down_time)
-        initView()
+
+        btn_confirm.setOnClickListener {
+            val count = _db.counts_for_notcompleted()
+            if (count>0) {
+                ToastOut(this, R.string.msg_has_notcompleted, true)
+                return@setOnClickListener
+            }
+            finish(true, 1, "ok", null)
+        }
+
+        lv_downtimes.setOnItemClickListener { adapterView, view, i, l ->
+            val idx = _list[i]["idx"].toString()
+            val start_dt = _list[i]["start_dt"].toString()
+            val completed = _list[i]["completed"]
+            if (completed=="Y") return@setOnItemClickListener
+
+            val intent = Intent(this, DownTimeInputActivity::class.java)
+            intent.putExtra("idx", idx)
+            intent.putExtra("start_dt", start_dt)
+            startActivity(intent, { r, c, m, d ->
+                if (r) {
+                    if (_db.counts_for_notcompleted() > 0) updateView()
+                    else finish()
+                }
+            })
+        }
+
         updateView()
         start_timer()
     }
@@ -44,6 +71,7 @@ class DownTimeActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         registerReceiver(_start_down_time_activity, IntentFilter("start.downtime"))
+        is_loop = true
     }
 
     override fun onDestroy() {
@@ -53,45 +81,17 @@ class DownTimeActivity : BaseActivity() {
 
     public override fun onPause() {
         super.onPause()
+        is_loop = false
         overridePendingTransition(0, 0)
         unregisterReceiver(_start_down_time_activity)
     }
 
-    private fun initView() {
-        btn_confirm.setOnClickListener {
-            var db = DBHelperForDownTime(this)
-            val count = db.counts_for_notcompleted()
-            if (count>0) {
-                Toast.makeText(this, getString(R.string.msg_has_notcompleted), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            finish(true, 1, "ok", null)
-        }
-
-        lv_downtimes.setOnItemClickListener { adapterView, view, i, l ->
-            val idx = _list[i]["idx"]
-            val completed = _list[i]["completed"]
-            if (completed=="Y") return@setOnItemClickListener
-
-            val intent = Intent(this, DownTimeInputActivity::class.java)
-            intent.putExtra("idx", idx)
-            startActivity(intent, { r, c, m, d ->
-                if (r) {
-                    updateView()
-                }
-            })
-        }
-    }
-
     private fun updateView() {
-        var db = DBHelperForDownTime(this)
-        _list = db.gets() ?: _list
-
+        _list = _db.gets() ?: _list
         list_adapter = ListAdapter(this, _list)
         lv_downtimes.adapter = list_adapter
 
         var total_downtime = 0
-
         _list?.forEach { item ->
             item.put("downtime", "")
             val start_dt = OEEUtil.parseDateTime(item["start_dt"])
@@ -104,18 +104,22 @@ class DownTimeActivity : BaseActivity() {
                 item.set("downtime", downtime.toString()+ " min")
             }
         }
-        tv_item_downtime_total.text = ""+total_downtime + " min"
+        tv_item_downtime_total?.text = ""+total_downtime + " min"
     }
+
+    private var is_loop = true
 
     private fun start_timer () {
         val task1 = object : TimerTask() {
             override fun run() {
                 runOnUiThread {
-                    updateView()
+                    if (is_loop) {
+                        if (_list.size == 0) updateView()
+                    }
                 }
             }
         }
-        _timer_task1.schedule(task1, 5000, 10000)
+        _timer_task1.schedule(task1, 500, 1000)
     }
     private fun cancel_timer () {
         _timer_task1.cancel()

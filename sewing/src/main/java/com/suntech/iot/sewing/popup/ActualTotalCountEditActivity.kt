@@ -21,8 +21,8 @@ class ActualTotalCountEditActivity : BaseActivity() {
     private fun initView() {
         val actual = AppGlobal.instance.get_current_shift_actual_cnt()
 
-        tv_work_actual.setText(actual.toString())
-        et_defective_qty.setText(actual.toString())
+        tv_work_actual?.setText(actual.toString())
+        et_defective_qty?.setText(actual.toString())
 
         btn_actual_count_edit_plus.setOnClickListener {
             et_defective_qty.setText((et_defective_qty.text.toString().toInt() + 1).toString())

@@ -50,9 +50,9 @@ class ActualCountEditActivity : BaseActivity() {
 
     private fun updateView() {
 
-        tv_item_row0.text = "TOTAL"
-        tv_item_row1.text = ""
-        tv_item_row2.text = ""
+        tv_item_row0?.text = "TOTAL"
+        tv_item_row1?.text = ""
+        tv_item_row2?.text = ""
 
         var db = DBHelperForDesign(this)
         _list = db.gets() ?: _list
@@ -103,11 +103,11 @@ class ActualCountEditActivity : BaseActivity() {
             item.put("work_time", "" +  work_time + " min")
         }
 
-        tv_item_row1.text = "" +  total_work_time + " min"
-        tv_item_row3.text = total_target.toString()
-        tv_item_row4.text = total_actual.toString()
-        tv_item_row5.text = "-"
-        tv_item_row6.text = total_defective.toString()
-        tv_item_row7.text = "-"
+        tv_item_row1?.text = "" +  total_work_time + " min"
+        tv_item_row3?.text = total_target.toString()
+        tv_item_row4?.text = total_actual.toString()
+        tv_item_row5?.text = "-"
+        tv_item_row6?.text = total_defective.toString()
+        tv_item_row7?.text = "-"
     }
 }

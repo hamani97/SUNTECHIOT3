@@ -186,6 +186,15 @@ class DBHelperForDownTime
         db.close()
     }
 
+    fun updateDidxTarget(idx: String, design_idx:String, target:Int) {
+        val db = _openHelper.writableDatabase ?: return
+        val row = ContentValues()
+        row.put("design_idx", design_idx)
+        row.put("target", target)
+        db.update("downtime", row, "idx = ?", arrayOf(idx))
+        db.close()
+    }
+
     fun delete(idx: String) {
         val db = _openHelper.writableDatabase ?: return
         db.delete("downtime", "idx = ?", arrayOf(idx))

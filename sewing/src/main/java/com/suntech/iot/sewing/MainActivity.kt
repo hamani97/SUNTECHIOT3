@@ -824,7 +824,7 @@ class MainActivity : BaseActivity() {
             "factory_idx" to AppGlobal.instance.get_room_idx(),
             "line_idx" to AppGlobal.instance.get_line_idx(),
             "shift_idx" to AppGlobal.instance.get_current_shift_idx(),
-            "category" to "P",
+            "category" to "W",
             "availability" to _availability_rate.toString(),
             "performance" to _performance_rate.toString(),
             "quality" to _quality_rate.toString(),
@@ -839,64 +839,64 @@ class MainActivity : BaseActivity() {
         })
     }
 
-    private fun fetchOEEGraph() {
-        if (AppGlobal.instance.get_server_ip().trim() == "") return
-
-        val item: JSONObject? = AppGlobal.instance.get_current_shift_time()
-        if (item == null) {
-            AppGlobal.instance.set_availability("0")
-            AppGlobal.instance.set_performance("0")
-            AppGlobal.instance.set_quality("0")
-            return
-        }
-
-        val work_date = item["date"].toString()
-
-        val uri = "/getoee.php"
-        var params = listOf(
-            "mac_addr" to AppGlobal.instance.getMACAddress(),
-            "shift_idx" to AppGlobal.instance.get_current_shift_idx(),
-            "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
-            "factory_idx" to AppGlobal.instance.get_room_idx(),
-            "line_idx" to AppGlobal.instance.get_line_idx(),
-            "work_date" to work_date)
-//Log.e("oeegraph", "mac_addr="+AppGlobal.instance.getMACAddress()+", shift_idx="+AppGlobal.instance.get_current_shift_idx()+"," +
-//        " factory_parent_idx="+AppGlobal.instance.get_factory_idx()+", factory_idx="+AppGlobal.instance.get_room_idx()+", line_idx="+AppGlobal.instance.get_line_idx()+
-//        ", work_date="+work_date)
-        request(this, uri, false, params, { result ->
-            var code = result.getString("code")
-            if (code == "00") {
-                val availability = result.getString("availability").toString()
-                val performance = result.getString("performance").toString()
-                val quality = result.getString("quality").toString()
-//Log.e("oeegraph", "avail="+availability+", performance="+performance+", quality="+quality)
-
-                val app_perform = AppGlobal.instance.get_performance()
-
-                AppGlobal.instance.set_availability(availability)
-                AppGlobal.instance.set_performance(performance)
-                AppGlobal.instance.set_quality(quality)
-
-                var old_perform = 0.0f
-                var new_perform = 0.0f
-
-                try {
-                    old_perform = app_perform as Float
-                    new_perform = performance as Float
-                } catch (e: Exception) {
-                }
-
-                // performance가 100%를 넘었으면 푸시를 보낸다. 단, 이전에 100% 이전인 경우만..
-                if (new_perform >= 100.0f) {
-                    if (old_perform < 100.0f) {
-                        sendPush("SYS: PERFORMANCE")
-                    }
-                }
-            } else {
-                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
+//    private fun fetchOEEGraph() {
+//        if (AppGlobal.instance.get_server_ip().trim() == "") return
+//
+//        val item: JSONObject? = AppGlobal.instance.get_current_shift_time()
+//        if (item == null) {
+//            AppGlobal.instance.set_availability("0")
+//            AppGlobal.instance.set_performance("0")
+//            AppGlobal.instance.set_quality("0")
+//            return
+//        }
+//
+//        val work_date = item["date"].toString()
+//
+//        val uri = "/getoee.php"
+//        var params = listOf(
+//            "mac_addr" to AppGlobal.instance.getMACAddress(),
+//            "shift_idx" to AppGlobal.instance.get_current_shift_idx(),
+//            "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
+//            "factory_idx" to AppGlobal.instance.get_room_idx(),
+//            "line_idx" to AppGlobal.instance.get_line_idx(),
+//            "work_date" to work_date)
+////Log.e("oeegraph", "mac_addr="+AppGlobal.instance.getMACAddress()+", shift_idx="+AppGlobal.instance.get_current_shift_idx()+"," +
+////        " factory_parent_idx="+AppGlobal.instance.get_factory_idx()+", factory_idx="+AppGlobal.instance.get_room_idx()+", line_idx="+AppGlobal.instance.get_line_idx()+
+////        ", work_date="+work_date)
+//        request(this, uri, false, params, { result ->
+//            var code = result.getString("code")
+//            if (code == "00") {
+//                val availability = result.getString("availability").toString()
+//                val performance = result.getString("performance").toString()
+//                val quality = result.getString("quality").toString()
+////Log.e("oeegraph", "avail="+availability+", performance="+performance+", quality="+quality)
+//
+//                val app_perform = AppGlobal.instance.get_performance()
+//
+//                AppGlobal.instance.set_availability(availability)
+//                AppGlobal.instance.set_performance(performance)
+//                AppGlobal.instance.set_quality(quality)
+//
+//                var old_perform = 0.0f
+//                var new_perform = 0.0f
+//
+//                try {
+//                    old_perform = app_perform as Float
+//                    new_perform = performance as Float
+//                } catch (e: Exception) {
+//                }
+//
+//                // performance가 100%를 넘었으면 푸시를 보낸다. 단, 이전에 100% 이전인 경우만..
+//                if (new_perform >= 100.0f) {
+//                    if (old_perform < 100.0f) {
+//                        sendPush("SYS: PERFORMANCE")
+//                    }
+//                }
+//            } else {
+//                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
 
     // Parts cycle time 이라는 기능
     private fun fetchComponentData() {
@@ -1177,7 +1177,7 @@ class MainActivity : BaseActivity() {
             override fun run() {
                 runOnUiThread {
                     sendPing()
-                    fetchOEEGraph()
+//                    fetchOEEGraph()
                     RemoveDownTimeData()    // Shift가 지난 다운타임 데이터를 삭제한다.
                 }
             }
@@ -1189,7 +1189,7 @@ class MainActivity : BaseActivity() {
             override fun run() {
                 runOnUiThread {
                     fetchComponentData()    // Parts Cycle Time
-//                    sendOeeGraphData()
+                    sendOeeGraphData()
 //                    updateCurrentWorkTarget()
                 }
             }
@@ -1659,7 +1659,7 @@ class MainActivity : BaseActivity() {
     }
 
     // downtime 발생시 푸시 발송
-    private fun sendPush(push_text: String, add_text: String = "", progress: Boolean=false) {
+    fun sendPush(push_text: String, add_text: String = "", progress: Boolean=false) {
         val uri = "/pushcall.php"
         var params = listOf(
             "code" to "push_text_list",

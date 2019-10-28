@@ -52,7 +52,7 @@ class ComponentActivity : BaseActivity() {
 
     private fun initView() {
         list_adapter = ListAdapter(this, _list)
-        lv_components.adapter = list_adapter
+        lv_components?.adapter = list_adapter
 
         btn_confirm.setOnClickListener {
             finish(true, 1, "ok", null)

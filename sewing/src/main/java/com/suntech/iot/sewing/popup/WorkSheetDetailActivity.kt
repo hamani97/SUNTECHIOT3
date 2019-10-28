@@ -19,23 +19,19 @@ class WorkSheetDetailActivity : BaseActivity() {
     private fun initView() {
         val file_url = intent.getStringExtra("file_url")
         val ext = UtilFile.getFileExt(file_url)
-
-        val settings = wv_view.settings
-//        wv.useWideViewPort = true
-        settings.useWideViewPort = true
-
-//        wv_view.settings = wv
-
         if (ext.toLowerCase()=="pdf") {
             wv_view.visibility = View.GONE
             //pdf_view.visibility = View.VISIBLE
-
             val uri = Uri.parse(file_url)
             //pdf_view.fromUri(uri)
         } else {
-            wv_view.visibility = View.VISIBLE
+            wv_view.setInitialScale(100)
+            var data = "<html><head><title>Example</title></head>"
+            data += "<body style=\"margin:0; padding:0; text-align:center;\"><center><img width=\"100%\" src=\"${file_url}\" /></center></body></html>"
             //pdf_view.visibility = View.GONE
-            wv_view.loadUrl(file_url)
+            wv_view.loadData(data, "text/html", null)
+
+            wv_view.visibility = View.VISIBLE
         }
 
         btn_start.setOnClickListener {

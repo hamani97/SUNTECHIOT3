@@ -65,25 +65,32 @@ class WorkSheetActivity : BaseActivity() {
         request(this, uri, false, params, { result ->
 
             var code = result.getString("code")
-            var msg = result.getString("msg")
             if(code == "00"){
-
                 var list = result.getJSONArray("item")
 
                 for (i in 0..(list.length() - 1)) {
-
                     val item = list.getJSONObject(i)
-
+                    // 구
+//                    var map=hashMapOf(
+//                        "date" to item.getString("date"),
+//                        "file_url" to item.getString("file_url")
+//                    )
+                    // 신
                     var map=hashMapOf(
                         "date" to item.getString("date"),
-                        "file_url" to item.getString("file_url")
+                        "factory" to item.getString("factory"),
+                        "zone" to item.getString("zone"),
+                        "line" to item.getString("line"),
+                        "machine_no" to item.getString("machine_no"),
+                        "file_url" to item.getString("file_url"),
+                        "file_name" to item.getString("file_name")
                     )
                     _list.add(map)
                 }
                 list_adapter?.notifyDataSetChanged()
 
             }else{
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                ToastOut(this, result.getString("msg"), true)
             }
         })
     }
@@ -116,17 +123,23 @@ class WorkSheetActivity : BaseActivity() {
                 vh = view.tag as ViewHolder
             }
 
+            vh.tv_item_factory.text = _list[position]["factory"]
+            vh.tv_item_line.text = _list[position]["line"]
             vh.tv_item_idx.text = _list[position]["date"]
-            vh.tv_item_file_url.text = _list[position]["file_url"]
+            vh.tv_item_file_url.text = _list[position]["file_name"]
 
             return view
         }
 
         private class ViewHolder(row: View?) {
+            val tv_item_factory: TextView
+            val tv_item_line: TextView
             val tv_item_idx: TextView
             val tv_item_file_url: TextView
 
             init {
+                this.tv_item_factory = row?.findViewById<TextView>(R.id.tv_item_factory) as TextView
+                this.tv_item_line = row?.findViewById<TextView>(R.id.tv_item_line) as TextView
                 this.tv_item_idx = row?.findViewById<TextView>(R.id.tv_item_idx) as TextView
                 this.tv_item_file_url = row?.findViewById<TextView>(R.id.tv_item_file_url) as TextView
             }

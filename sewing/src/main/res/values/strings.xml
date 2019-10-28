@@ -20,6 +20,9 @@
     <string name="title_edit_stitch_count">EDIT STITCH COUNT</string>
     <string name="title_edit_trim_count">EDIT TRIM COUNT</string>
     <string name="title_work_sheet">WORK SHEET</string>
+    <string name="title_downtime">DOWNTIME</string>
+    <string name="title_down_time">Down time</string>
+    <string name="title_edit_defective_count" translatable="false">EDIT DEFECTIVE COUNT</string>
 
     <!-- SETTING 화면 -->
     <string name="label_wifi">WiFi</string>
@@ -35,9 +38,9 @@
     <string name="label_server_port">PORT</string>
     <string name="label_wos_name">WOS name to display</string>
     <string name="label_worksheet_display_time">WorkSheet Display Time</string>
-    <string name="label_from_server">TARGET TYPE FROM SERVER</string>
-    <string name="label_from_device">TARGET TYPE FROM DEVICE</string>
-    <string name="label_cycle_time">TARGET TYPE FROM CYCLE TIME</string>
+    <string name="label_from_server">FROM SERVER</string>
+    <string name="label_from_device">FROM DEVICE</string>
+    <string name="label_cycle_time">FROM CYCLE TIME</string>
     <string name="label_count_trim">TRIM</string>
     <string name="label_count_trim_space">TRIM  </string>
     <string name="label_count_trim_colon">TRIM  :  </string>
@@ -64,6 +67,8 @@
     <string name="label_sound_at_count">Sound at Count</string>
     <string name="label_start_at_target_1">Start at target 1</string>
     <string name="label_downtime_enable">Downtime Enable</string>
+    <string name="label_target_stop_when_downtime" translatable="false">Target Q\'ty Stop When DownTime</string>
+    <string name="label_ask_when_clicking_defective" translatable="false">Open window when clicking Defective</string>
 
     <!-- 홈화면 -->
     <string name="bottom_label_machine_info">MACHINE INFO</string>
@@ -186,6 +191,8 @@
     <string name="no_data">No Data</string>
     <string name="defective">Defective</string>
     <string name="sop" translatable="false">SOP</string>
+    <string name="date" translatable="false">Date</string>
+    <string name="filename">File name</string>
 
 
     <string name="repair_mode">REPAIR MODE</string>
@@ -230,6 +237,7 @@
     <string name="msg_connection_fail">The connection to the server failed.</string>
     <string name="msg_require_info">Info not complete</string>
     <string name="msg_no_setting">Setting not found</string>
+    <string name="msg_please_wait_for_loading" translatable="false">Please wait for loading</string>
     <string name="msg_design_not_selected">Design not selected</string>
     <string name="msg_require_trim_info">Please enter a Trim info.</string>
     <string name="msg_require_stitch_info">Please enter a Stitch info.</string>
@@ -243,5 +251,6 @@
     <string name="msg_downtime_not_enabled">Downtime function is not enabled.</string>
 
     <string name="msg_exit_automatically">Workday ends automatically</string>
-
+    <string name="msg_edit_current_design" translatable="false">Adjust the Defect value of the currently selected design.</string>
+    <string name="msg_no_target_value_from_server" translatable="false">No target value was sent from the server.</string>
 </resources>

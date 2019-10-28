@@ -198,4 +198,7 @@
     <string name="button_count_setting">COUNT SETTING</string>
     <string name="defective">有瑕疵</string>
     <string name="label_start_at_target_1">开始目标1</string>
+    <string name="title_downtime">停机时间</string>
+    <string name="title_down_time">停机时间</string>
+    <string name="filename">文件名称</string>
 </resources>

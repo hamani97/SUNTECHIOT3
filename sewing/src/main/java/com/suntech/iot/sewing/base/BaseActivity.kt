@@ -118,9 +118,7 @@ open class BaseActivity : AppCompatActivity() {
 
         val obj = object : Handler<Json> {
             override fun success(request: Request, response: Response, value: Json) {
-
                 if (progress) hideProgressDialog()
-
                 val currentTimeMillisEnd = System.currentTimeMillis()
                 val millis = currentTimeMillisEnd - currentTimeMillisStart
                 try {
@@ -178,7 +176,7 @@ open class BaseActivity : AppCompatActivity() {
     private fun handle_network_error(context: Context, error:String) {
         Log.e("BaseActivity", error)
 //        Toast.makeText(context, R.string.msg_connection_fail, Toast.LENGTH_SHORT).show()
-        ToastOut(context, R.string.msg_connection_fail)
+//        ToastOut(context, R.string.msg_connection_fail)
         hideProgressDialog()
     }
 

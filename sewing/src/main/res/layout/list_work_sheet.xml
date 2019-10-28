@@ -26,12 +26,31 @@
                 android:id="@+id/tv_item_file_url"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="4"
                 android:gravity="center"
                 android:text="-"
                 android:textSize="15sp"
                 android:textColor="#333"/>
 
+        <TextView
+                android:id="@+id/tv_item_factory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="-"
+                android:textSize="15sp"
+                android:textColor="#333"/>
+
+        <TextView
+                android:id="@+id/tv_item_line"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="-"
+                android:textSize="15sp"
+                android:textColor="#333"/>
 
     </LinearLayout>
 

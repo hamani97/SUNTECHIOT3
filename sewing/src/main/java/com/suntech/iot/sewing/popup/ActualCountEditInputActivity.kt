@@ -42,12 +42,12 @@ class ActualCountEditInputActivity : BaseActivity() {
         val row = db.get(work_idx)
 
         if (row == null) {
-            Toast.makeText(this, getString(R.string.msg_has_not_server_info), Toast.LENGTH_SHORT).show()
+            ToastOut(this, R.string.msg_has_not_server_info, true)
             finish()
         }
 
-        tv_work_actual.setText(row!!["actual"].toString())
-        et_defective_qty.setText(row!!["actual"].toString())
+        tv_work_actual?.setText(row!!["actual"].toString())
+        et_defective_qty?.setText(row!!["actual"].toString())
 
         btn_actual_count_edit_plus.setOnClickListener {
             var value = et_defective_qty.text.toString().toInt()
@@ -81,7 +81,7 @@ class ActualCountEditInputActivity : BaseActivity() {
         val row = db.get(work_idx)
 
         if (row == null) {
-            Toast.makeText(this, getString(R.string.msg_data_not_found), Toast.LENGTH_SHORT).show()
+            ToastOut(this, R.string.msg_data_not_found, true)
             return
 
         } else {
@@ -154,7 +154,7 @@ class ActualCountEditInputActivity : BaseActivity() {
                     finish(true, 0, "ok", null)
 
                 } else {
-                    Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+                    ToastOut(this, result.getString("msg"), true)
                 }
             })
         }

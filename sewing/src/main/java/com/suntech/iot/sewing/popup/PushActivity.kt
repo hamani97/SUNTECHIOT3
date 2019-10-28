@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.suntech.iot.sewing.R
 import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.common.AppGlobal
@@ -85,7 +84,7 @@ class PushActivity : BaseActivity() {
             if(code == "00"){
                 finish(true, 1, "ok", null)
             } else {
-                Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+                ToastOut(this, result.getString("msg"), true)
             }
         })
     }
@@ -116,7 +115,7 @@ class PushActivity : BaseActivity() {
                 list_adapter?.notifyDataSetChanged()
 
             } else {
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                ToastOut(this, result.getString("msg"), true)
             }
         })
     }

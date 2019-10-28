@@ -17,8 +17,8 @@ object UtilString {
         return buffer.toString()
     }
 
-    fun addPairText(num_str: String): String {
-        if (num_str.toFloat() >= 2.0) return num_str + " pairs"
-        else return num_str + " pair"
-    }
+//    fun addPairText(num_str: String): String {
+//        if (num_str.toFloat() >= 2.0) return num_str + " pairs"
+//        else return num_str + " pair"
+//    }
 }
