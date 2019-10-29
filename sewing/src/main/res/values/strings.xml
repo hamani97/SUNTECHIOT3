@@ -7,6 +7,7 @@
     <string name="title_available_info">AVAILABLE INFO</string>
     <string name="title_operator_info">OPERATOR INFO</string>
     <string name="title_last_worker">LAST WORKER</string>
+    <string name="title_last_design" translatable="false">LAST DESIGN</string>
     <string name="title_server_info">SERVER INFO</string>
     <string name="title_device_info">DEVICE INFO</string>
     <string name="title_counter_device_info">COUNTER DEVICE INFO</string>
@@ -23,6 +24,7 @@
     <string name="title_downtime">DOWNTIME</string>
     <string name="title_down_time">Down time</string>
     <string name="title_edit_defective_count" translatable="false">EDIT DEFECTIVE COUNT</string>
+    <string name="title_edit_count" translatable="false">EDIT COUNT Q\'ty</string>
 
     <!-- SETTING 화면 -->
     <string name="label_wifi">WiFi</string>
@@ -227,6 +229,7 @@
     <string name="stitch_count">STITCH COUNT</string>
     <string name="edit_pairs">EDIT PAIR(S)</string>
     <string name="delay_time">DELAY TIME</string>
+    <string name="defective_count" translatable="false">DEFECTIVE COUNT</string>
 
     <!-- Message -->
     <string name="msg_no_operator">Operator not found</string>

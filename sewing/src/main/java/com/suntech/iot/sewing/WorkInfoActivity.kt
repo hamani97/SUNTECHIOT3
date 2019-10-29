@@ -78,7 +78,7 @@ class WorkInfoActivity : BaseActivity() {
         registerReceiver(_broadcastReceiver, IntentFilter(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION))
 
         // USB state
-        btn_usb_state2.isSelected = AppGlobal.instance._usb_state
+        btn_usb_state2?.isSelected = AppGlobal.instance._usb_state
 
         updateView()
         is_loop = true
@@ -96,11 +96,11 @@ class WorkInfoActivity : BaseActivity() {
     }
 
     private fun updateView() {
-        if (AppGlobal.instance._server_state) btn_server_state.isSelected = true
-        else btn_server_state.isSelected = false
+        if (AppGlobal.instance._server_state) btn_server_state?.isSelected = true
+        else btn_server_state?.isSelected = false
 
-        if (AppGlobal.instance.isOnline(this)) btn_wifi_state.isSelected = true
-        else btn_wifi_state.isSelected = false
+        if (AppGlobal.instance.isOnline(this)) btn_wifi_state?.isSelected = true
+        else btn_wifi_state?.isSelected = false
     }
 
     private fun initView() {
@@ -169,7 +169,7 @@ class WorkInfoActivity : BaseActivity() {
                 val last_no = AppGlobal.instance.get_worker_no()
                 val last_name = AppGlobal.instance.get_worker_name()
                 if (last_no == "" && last_name == "") {
-                    Toast.makeText(this, getString(R.string.msg_has_notselected), Toast.LENGTH_SHORT).show()
+                    ToastOut(this, R.string.msg_has_notselected, true)
                     return@setOnClickListener
                 }
             }
@@ -202,7 +202,7 @@ class WorkInfoActivity : BaseActivity() {
             if (start_hour.length != 2 || start_min.length != 2 || end_hour.length != 2 || end_min.length != 2 ||
                 start_hour < "00" || start_hour > "23" || end_hour < "00" || end_hour > "23" ||
                 start_min < "00" || start_min > "59" || end_min < "00" || end_min > "59") {
-                Toast.makeText(this, "The time input for shift3 is invalid", Toast.LENGTH_SHORT).show()
+                ToastOut(this, "The time input for shift3 is invalid", true)
                 return
             }
 
@@ -219,7 +219,7 @@ class WorkInfoActivity : BaseActivity() {
                 if (start_hour.length != 2 || start_min.length != 2 || end_hour.length != 2 || end_min.length != 2 ||
                     start_hour < "00" || start_hour > "23" || end_hour < "00" || end_hour > "23" ||
                     start_min < "00" || start_min > "59" || end_min < "00" || end_min > "59") {
-                    Toast.makeText(this, "Planned Time input for shift3 is invalid", Toast.LENGTH_SHORT).show()
+                    ToastOut(this, "Planned Time input for shift3 is invalid", true)
                     return
                 }
                 shift3.put("planned1_stime", start_hour + ":" + start_min)
@@ -242,8 +242,9 @@ class WorkInfoActivity : BaseActivity() {
     private fun fetchShiftData() {
         val list = AppGlobal.instance.get_current_work_time()
 //        _list_json = list
-
         if (list == null) return
+
+        _list.removeAll(_list)
 
         for (i in 0..(list.length() - 1)) {
             val item = list.getJSONObject(i)
@@ -377,8 +378,9 @@ class WorkInfoActivity : BaseActivity() {
 
         request(this, uri, false, params, { result ->
             var code = result.getString("code")
-            var msg = result.getString("msg")
             if (code == "00") {
+                _list_for_operator.removeAll(_list_for_operator)
+
                 var list = result.getJSONArray("item")
                 for (i in 0..(list.length() - 1)) {
                     val item = list.getJSONObject(i)
@@ -391,7 +393,7 @@ class WorkInfoActivity : BaseActivity() {
                 }
                 filterOperatorData()
             } else {
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                ToastOut(this, result.getString("msg"), true)
             }
         })
         filterOperatorData()

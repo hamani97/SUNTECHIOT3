@@ -66,20 +66,57 @@
                             android:orientation="vertical">
 
                         <LinearLayout
-                                style="@style/table_row"
-                                android:layout_width="340dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_marginBottom="5dp">
-                            <TextView
-                                    style="@style/table_row_title"
-                                    android:text="@string/search"/>
 
-                            <EditText
-                                    android:id="@+id/et_setting_server_ip"
-                                    style="@style/table_row_data_editor1"
-                                    android:paddingLeft="10dp"
-                                    android:singleLine="true"
-                                    android:text=""
-                                    android:background="#87c947"/>
+                            <LinearLayout
+                                    style="@style/table_row"
+                                    android:layout_width="340dp"
+                                    android:layout_height="38dp"
+                                    android:orientation="horizontal">
+                                <TextView
+                                        style="@style/table_row_title"
+                                        android:text="@string/search"/>
+
+                                <EditText
+                                        android:id="@+id/et_setting_server_ip"
+                                        style="@style/table_row_data_editor1"
+                                        android:paddingLeft="10dp"
+                                        android:singleLine="true"
+                                        android:text=""
+                                        android:background="#87c947"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginLeft="30dp"
+                                    android:gravity="right"
+                                    android:orientation="horizontal">
+                                <ImageButton
+                                        android:id="@+id/img_last_design"
+                                        style="@style/btn_default"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="34dp"
+                                        android:layout_margin="0dp"
+                                        android:paddingLeft="6dp"
+                                        android:paddingRight="7dp"
+                                        android:src="@drawable/ic_list_add_check_white_32dp"/>
+                                <Button
+                                        android:id="@+id/btn_last_design"
+                                        style="@style/btn_default"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="34dp"
+                                        android:textStyle="normal"
+                                        android:layout_margin="0dp"
+                                        android:paddingRight="10dp"
+                                        android:stateListAnimator="@null"
+                                        android:text="Last Design"
+                                        android:textSize="15sp"/>
+                            </LinearLayout>
+
                         </LinearLayout>
 
                         <LinearLayout style="@style/grid_header">

@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.suntech.iot.sewing.base.BaseActivity
 import com.suntech.iot.sewing.common.AppGlobal
+import com.suntech.iot.sewing.popup.DesignInfoInputActivity
 import com.suntech.iot.sewing.util.OEEUtil
 import kotlinx.android.synthetic.main.activity_design_info.*
 import kotlinx.android.synthetic.main.activity_design_info.btn_setting_cancel
@@ -111,7 +112,7 @@ class DesignInfoActivity : BaseActivity() {
                 val shift_etime = OEEUtil.parseDateTime(item["work_etime"].toString()).millis
                 if (shift_stime <= now_millis && now_millis < shift_etime) {
                     // 타이틀 변경
-                    tv_title.setText(item["shift_name"].toString() + "   " +
+                    tv_title?.setText(item["shift_name"].toString() + "   " +
                             OEEUtil.parseDateTime(item["work_stime"].toString()).toString("HH:mm") + " - " +
                             OEEUtil.parseDateTime(item["work_etime"].toString()).toString("HH:mm"))
                     find_title = true
@@ -120,41 +121,41 @@ class DesignInfoActivity : BaseActivity() {
             }
         }
         if (find_title == false) {
-            tv_title.setText("No shift")
+            tv_title?.setText("No shift")
         }
 
         // count setting
-        tv_trim_qty.setText(AppGlobal.instance.get_trim_qty())
-        tv_trim_pairs.text = AppGlobal.instance.get_trim_pairs()
+        tv_trim_qty?.setText(AppGlobal.instance.get_trim_qty())
+        tv_trim_pairs?.text = AppGlobal.instance.get_trim_pairs()
 
-        tv_stitch_start.setText(AppGlobal.instance.get_stitch_qty_start())
-        tv_stitch_end.setText(AppGlobal.instance.get_stitch_qty_end())
-        tv_stitch_delay_time.setText(AppGlobal.instance.get_stitch_delay_time())
-        tv_stitch_pairs.text = AppGlobal.instance.get_stitch_pairs()
+        tv_stitch_start?.setText(AppGlobal.instance.get_stitch_qty_start())
+        tv_stitch_end?.setText(AppGlobal.instance.get_stitch_qty_end())
+        tv_stitch_delay_time?.setText(AppGlobal.instance.get_stitch_delay_time())
+        tv_stitch_pairs?.text = AppGlobal.instance.get_stitch_pairs()
 
-        tv_stitch_start2.setText(AppGlobal.instance.get_stitch_qty_start2())
-        tv_stitch_end2.setText(AppGlobal.instance.get_stitch_qty_end2())
-        tv_trim_qty2.setText(AppGlobal.instance.get_trim_qty2())
-        tv_trim_stitch_pairs.setText(AppGlobal.instance.get_trim_stitch_pairs())
+        tv_stitch_start2?.setText(AppGlobal.instance.get_stitch_qty_start2())
+        tv_stitch_end2?.setText(AppGlobal.instance.get_stitch_qty_end2())
+        tv_trim_qty2?.setText(AppGlobal.instance.get_trim_qty2())
+        tv_trim_stitch_pairs?.setText(AppGlobal.instance.get_trim_stitch_pairs())
 
         // count type setting
         if (AppGlobal.instance.get_count_type() == "") countTypeChange("trim")
         else countTypeChange(AppGlobal.instance.get_count_type())
 
-        tv_setting_count_trim.setOnClickListener { countTypeChange("trim") }
-        tv_setting_count_stitch.setOnClickListener { countTypeChange("stitch") }
-        tv_setting_count_trim_stitch.setOnClickListener { countTypeChange("t_s") }
+        tv_setting_count_trim?.setOnClickListener { countTypeChange("trim") }
+        tv_setting_count_stitch?.setOnClickListener { countTypeChange("stitch") }
+        tv_setting_count_trim_stitch?.setOnClickListener { countTypeChange("t_s") }
 
-        tv_trim_pairs.setOnClickListener { selectTrimPair() }
-        tv_stitch_pairs.setOnClickListener { selectStitchPair() }
-        tv_trim_stitch_pairs.setOnClickListener { selectTrimStitchPair() }
+        tv_trim_pairs?.setOnClickListener { selectTrimPair() }
+        tv_stitch_pairs?.setOnClickListener { selectStitchPair() }
+        tv_trim_stitch_pairs?.setOnClickListener { selectTrimStitchPair() }
 
 
         list_adapter = ListAdapter(this, _filtered_list)
         lv_design_info.adapter = list_adapter
 
-//        tv_design_pieces.text = AppGlobal.instance.get_pieces_info()
-//        tv_design_pairs.text = AppGlobal.instance.get_pairs_info()
+//        tv_design_pieces?.text = AppGlobal.instance.get_pieces_info()
+//        tv_design_pairs?.text = AppGlobal.instance.get_pairs_info()
 
         lv_design_info.setOnItemClickListener { adapterView, view, i, l ->
             _selected_index = i
@@ -175,49 +176,56 @@ class DesignInfoActivity : BaseActivity() {
         btn_design_info.setOnClickListener { tabChange(1) }
         btn_count_setting.setOnClickListener { tabChange(2) }
 
+        img_last_design.setOnClickListener {
+            lastDesign()
+        }
+        btn_last_design.setOnClickListener {
+            lastDesign()
+        }
+
         btn_setting_confirm.setOnClickListener { saveDesignData() }
         btn_setting_cancel.setOnClickListener {
             finish(false, 0, "ok", null)
         }
 
-//        tv_design_pieces.setOnClickListener { fetchPiecesData() }
-//        tv_design_pairs.setOnClickListener { fetchPairsData() }
+//        tv_design_pieces?.setOnClickListener { fetchPiecesData() }
+//        tv_design_pairs?.setOnClickListener { fetchPairsData() }
     }
 
     private fun saveDesignData() {
         if (_selected_index < 0 && AppGlobal.instance.get_design_info_idx() == "") {
             tabChange(1)
-            Toast.makeText(this, getString(R.string.msg_select_design), Toast.LENGTH_SHORT).show()
+            ToastOut(this, getString(R.string.msg_select_design), true)
             return
         }
         // count type check
         if (_selected_count_type == "trim") {
             if (tv_trim_qty.text.toString().trim()=="" || tv_trim_pairs.text.toString()=="") {
                 tabChange(2)
-                Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
+                ToastOut(this, getString(R.string.msg_require_trim_info), true)
                 return
             }
         } else if (_selected_count_type == "stitch") {
             if (tv_stitch_start.text.toString().trim()=="" || tv_stitch_end.text.toString().trim()=="" ||
                 tv_stitch_delay_time.text.toString().trim()=="" || tv_stitch_pairs.text.toString()=="") {
                 tabChange(2)
-                Toast.makeText(this, getString(R.string.msg_require_stitch_info), Toast.LENGTH_SHORT).show()
+                ToastOut(this, getString(R.string.msg_require_stitch_info), true)
                 return
             }
         } else if (_selected_count_type == "t_s") {
             if (tv_stitch_start2.text.toString().trim()=="" || tv_stitch_end2.text.toString().trim()=="") {
                 tabChange(2)
-                Toast.makeText(this, getString(R.string.msg_require_stitch_info), Toast.LENGTH_SHORT).show()
+                ToastOut(this, getString(R.string.msg_require_stitch_info), true)
                 return
             }
             if (tv_trim_qty2.text.toString().trim()=="" || tv_trim_stitch_pairs.text.toString()=="") {
                 tabChange(2)
-                Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
+                ToastOut(this, getString(R.string.msg_require_trim_info), true)
                 return
             }
         } else {
             tabChange(2)
-            Toast.makeText(this, getString(R.string.msg_require_trim_info), Toast.LENGTH_SHORT).show()
+            ToastOut(this, getString(R.string.msg_require_trim_info), true)
             return
         }
 
@@ -239,17 +247,58 @@ class DesignInfoActivity : BaseActivity() {
         if (_selected_index < 0) {
             finish(false, 0, "ok", null)
         } else {
+            val idx = _filtered_list[_selected_index]["idx"]!!
+            val model = _filtered_list[_selected_index]["model"]!!
+            val article = _filtered_list[_selected_index]["article"]!!
+            val material_way = _filtered_list[_selected_index]["material_way"]!!
+            val component = _filtered_list[_selected_index]["component"]!!
+            val ct = _filtered_list[_selected_index]["ct"]!!
+
+            AppGlobal.instance.push_last_design(idx, model, article, material_way, component, ct)   // history 저장
+
             finish(true, 1, "ok", _filtered_list[_selected_index])
         }
     }
 
+    fun lastDesign() {
+        val intent = Intent(this, DesignInfoInputActivity::class.java)
+        startActivity(intent, { r, c, m, d ->
+            if (r && d!=null) {
+                val idx = d!!["idx"]!!.toString()
+                val model = d["model"]!!.toString()
+                val article = d["article"]!!.toString()
+                val material_way = d["material_way"]!!.toString()
+                val component = d["component"]!!.toString()
+                val ct = d["ct"]!!.toString()
+
+                for (j in 0..(_list.size-1)) {
+                    val item = _list[j]
+                    val item_idx = item["idx"] ?: ""
+                    val item_model = item["model"] ?: ""
+                    val item_article = item["article"] ?: ""
+                    val item_material_way = item["material_way"] ?: ""
+                    val item_component = item["component"] ?: ""
+                    val item_ct = item["ct"] ?: ""
+                    if (idx == item_idx && model == item_model && article == item_article &&
+                        material_way == item_material_way && component == item_component && ct == item_ct) {
+                        et_setting_server_ip.setText("")
+                        _selected_index = j
+                        list_adapter?.notifyDataSetChanged()
+                        lv_design_info.smoothScrollToPosition(j)
+                        break
+                    }
+                }
+//                    OEEUtil.LogWrite(d.toString(), "selected")
+            }
+        })
+    }
+
     private fun fetchData() {
         var list = AppGlobal.instance.get_design_info()
+        _list.removeAll(_list)
 
         for (i in 0..(list.length() - 1)) {
-
             val item = list.getJSONObject(i)
-
             if (item != null) {
                 var map = hashMapOf(
                     "idx" to item.getString("idx"),

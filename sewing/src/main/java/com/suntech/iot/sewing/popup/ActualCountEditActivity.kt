@@ -2,9 +2,12 @@ package com.suntech.iot.sewing.popup
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import com.suntech.iot.sewing.R
 import com.suntech.iot.sewing.base.BaseActivity
+import com.suntech.iot.sewing.common.AppGlobal
 import com.suntech.iot.sewing.db.DBHelperForDesign
+import com.suntech.iot.sewing.db.DBHelperForDownTime
 import com.suntech.iot.sewing.util.OEEUtil
 import kotlinx.android.synthetic.main.activity_actual_count_edit.*
 import kotlinx.android.synthetic.main.list_item_product_total.*
@@ -109,5 +112,27 @@ class ActualCountEditActivity : BaseActivity() {
         tv_item_row5?.text = "-"
         tv_item_row6?.text = total_defective.toString()
         tv_item_row7?.text = "-"
+
+        // 다운타임 값이 타겟에 영향을 미치는 경우 표시하기 위함
+        if (AppGlobal.instance.get_target_stop_when_downtime()) {
+            // Downtime
+            val down_db = DBHelperForDownTime(this)
+            val down_list = down_db.gets()
+            var down_target = 0
+            var real_millis = 0
+            down_list?.forEach { item ->
+                down_target += item["target"].toString().toInt()
+                real_millis += item["real_millis"].toString().toInt()
+            }
+            val final_target = total_target - down_target
+
+            ll_downtime_block?.visibility = View.VISIBLE
+            ll_downtime_block2?.visibility = View.VISIBLE
+            tv_item_row11?.text = "" + (real_millis / 60) + " min"
+            tv_item_row13?.text = down_target.toString()
+            tv_item_row23?.text = final_target.toString()
+            tv_item_row24?.text = total_actual.toString()
+            tv_item_row26?.text = total_defective.toString()
+        }
     }
 }

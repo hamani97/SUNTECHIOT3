@@ -190,12 +190,12 @@ class ProductionReportActivity : BaseActivity() {
     }
 
     private fun initView() {
-        tv_title.text = "PRODUCTION REPORT"
+        tv_title?.text = "PRODUCTION REPORT"
 
         val current_shift_time = AppGlobal.instance.get_current_shift_time()
         _current_time = OEEUtil.parseDateTime(current_shift_time?.getString("work_stime"))
 
-        tv_current_date.text = _current_time.toString("yyyy-MM-dd")
+        tv_current_date?.text = _current_time.toString("yyyy-MM-dd")
 
         ib_arrow_l.setOnClickListener {
             _current_time = _current_time.plusDays(-1)
