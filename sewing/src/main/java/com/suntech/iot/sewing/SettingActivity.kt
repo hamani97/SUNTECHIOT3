@@ -140,6 +140,7 @@ class SettingActivity : BaseActivity() {
         sw_sound_at_count?.isChecked = AppGlobal.instance.get_sound_at_count()
 //        sw_without_component?.isChecked = AppGlobal.instance.get_with_component()
         sw_screen_blink_effect?.isChecked = AppGlobal.instance.get_screen_blink()
+        sw_planned_count_process?.isChecked = AppGlobal.instance.get_planned_count_process()
         sw_target_stop_when_downtime?.isChecked = AppGlobal.instance.get_target_stop_when_downtime()
         sw_ask_when_clicking_defective?.isChecked = AppGlobal.instance.get_ask_when_clicking_defective()
 
@@ -413,6 +414,7 @@ class SettingActivity : BaseActivity() {
         AppGlobal.instance.set_worksheet_display_time(worksheet_time)
 
         AppGlobal.instance.set_screen_blink(sw_screen_blink_effect.isChecked)
+        AppGlobal.instance.set_planned_count_process(sw_planned_count_process.isChecked)
         AppGlobal.instance.set_target_stop_when_downtime(sw_target_stop_when_downtime.isChecked)
         AppGlobal.instance.set_ask_when_clicking_defective(sw_ask_when_clicking_defective.isChecked)
         AppGlobal.instance.set_remain_number(remain_num)

@@ -92,19 +92,30 @@ class DownTimeActivity : BaseActivity() {
         lv_downtimes.adapter = list_adapter
 
         var total_downtime = 0
+        var total_planned = 0
+
         _list?.forEach { item ->
             item.put("downtime", "")
             val start_dt = OEEUtil.parseDateTime(item["start_dt"])
             if (item["end_dt"]!=null) {
                 val end_dt = OEEUtil.parseDateTime(item["end_dt"])
+                val realtime = item["real_millis"].toString().toInt()
 
                 var dif = end_dt.millis - start_dt.millis
                 val downtime = (dif / 1000 / 60 ).toInt()
                 total_downtime += downtime
+
+                val plannedtime = (dif / 1000).toInt() - realtime
+                total_planned += plannedtime
+
                 item.set("downtime", downtime.toString()+ " min")
             }
         }
+        total_planned = total_planned / 60
+
         tv_item_downtime_total?.text = ""+total_downtime + " min"
+        tv_item_downtime_total1?.text = "-" + total_planned + " min"
+        tv_item_downtime_total2?.text = "" + (total_downtime - total_planned) + " min"
     }
 
     private var is_loop = true

@@ -69,6 +69,7 @@
     <string name="label_sound_at_count">Sound at Count</string>
     <string name="label_start_at_target_1">Start at target 1</string>
     <string name="label_downtime_enable">Downtime Enable</string>
+    <string name="label_planned_count_process" translatable="false">Planned Time Actual Count</string>
     <string name="label_target_stop_when_downtime" translatable="false">Target Q\'ty Stop When DownTime</string>
     <string name="label_ask_when_clicking_defective" translatable="false">Open window when clicking Defective</string>
 
@@ -233,6 +234,7 @@
 
     <!-- Message -->
     <string name="msg_no_operator">Operator not found</string>
+    <string name="msg_no_design" translatable="false">Design not found</string>
     <string name="msg_not_start_work">Checking Working Time</string>
     <string name="msg_select_component">Please select a component</string>
     <string name="msg_select_design">Please select a Design</string>
@@ -252,6 +254,7 @@
     <string name="msg_no_downtime">Downtime message not found</string>
     <string name="msg_component_not_enabled">Component function is not enabled.</string>
     <string name="msg_downtime_not_enabled">Downtime function is not enabled.</string>
+    <string name="msg_cannot_work_planned_time" translatable="false">You can not work during the Planned Time.</string>
 
     <string name="msg_exit_automatically">Workday ends automatically</string>
     <string name="msg_edit_current_design" translatable="false">Adjust the Defect value of the currently selected design.</string>

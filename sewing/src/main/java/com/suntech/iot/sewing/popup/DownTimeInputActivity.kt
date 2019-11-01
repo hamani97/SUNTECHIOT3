@@ -51,7 +51,7 @@ class DownTimeInputActivity : BaseActivity() {
     private fun initView() {
 
         val params = ViewGroup.MarginLayoutParams(ll_base_box.layoutParams)
-        val par_width = (params.width - 60) / 3 - 20 // 200
+        val par_width = (params.width - 60) / 3 - 8 // 200
         val height = par_width / 3 * 2
 
         var list = AppGlobal.instance.get_downtime_list()
@@ -66,8 +66,8 @@ class DownTimeInputActivity : BaseActivity() {
             btn.setText(down_name)
             btn.setTextColor(Color.WHITE)
             btn.setBackgroundColor(Color.parseColor("#"+item.getString("color")))
-            btn.textSize = 29f
-            btn.setPadding(20, 20, 20, 20)
+            btn.textSize = 17f
+            btn.setPadding(15, 15, 15, 15)
             if (i < 3) {
                 ll_btn_list.addView(btn)
             } else {
@@ -79,7 +79,7 @@ class DownTimeInputActivity : BaseActivity() {
                 p.width = par_width
                 p.height = height
                 p.gravity = Gravity.LEFT
-                p.setMargins(10, 10, 10, 10)
+                p.setMargins(6, 6, 6, 6)
                 btn.setLayoutParams(p)
             }
 

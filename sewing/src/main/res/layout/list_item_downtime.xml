@@ -21,15 +21,6 @@
                 android:textSize="15sp"
                 android:textColor="#333"/>
 
-        <!--<TextView-->
-                <!--android:id="@+id/tv_item_design_idx"-->
-                <!--android:layout_width="100dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:gravity="center"-->
-                <!--android:text="-"-->
-                <!--android:textSize="15sp"-->
-                <!--android:textColor="#333"/>-->
-
         <TextView
                 android:id="@+id/tv_item_start_time"
                 android:layout_width="0dp"

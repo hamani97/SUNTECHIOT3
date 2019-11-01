@@ -823,7 +823,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="8dp"
-                                    android:text="Seconds"
+                                    android:text="Sec"
                                     android:textColor="@color/colorGray"
                                     android:textSize="16sp" />
                         </LinearLayout>
@@ -863,6 +863,23 @@
                             android:orientation="vertical">
 
                         <LinearLayout style="@style/table_row">
+                            <TextView style="@style/table_row_title" android:text="@string/label_planned_count_process"
+                                    android:layout_width="240dp" />
+                            <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:background="@color/colorDefault">
+                                <Switch
+                                        android:id="@+id/sw_planned_count_process"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="12dp"
+                                        android:checked="false"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/table_row">
                             <TextView style="@style/table_row_title" android:text="@string/label_target_stop_when_downtime"
                                     android:layout_width="240dp" />
                             <LinearLayout
@@ -898,7 +915,7 @@
                         </LinearLayout>
 
 
-                        <TextView style="@style/table_title" android:text="@string/title_blink_effect" android:layout_marginTop="20dp"/>
+                        <TextView style="@style/table_title" android:text="@string/title_blink_effect" android:layout_marginTop="8dp"/>
 
                         <LinearLayout style="@style/table_row">
                             <TextView style="@style/table_row_title" android:text="@string/label_screen_blink_effect"
@@ -936,12 +953,12 @@
                         <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
+                                android:layout_marginTop="4dp"
                                 android:orientation="horizontal">
                             <TextView
                                     android:id="@+id/blink_color_f8ad13"
-                                    android:layout_width="55dp"
-                                    android:layout_height="52dp"
+                                    android:layout_width="42dp"
+                                    android:layout_height="42dp"
                                     android:layout_marginRight="8dp"
                                     android:gravity="center"
                                     android:text=""
@@ -951,8 +968,8 @@
                                     android:background="@color/colorOrange"/>
                             <TextView
                                     android:id="@+id/blink_color_ff0000"
-                                    android:layout_width="55dp"
-                                    android:layout_height="52dp"
+                                    android:layout_width="42dp"
+                                    android:layout_height="42dp"
                                     android:layout_marginRight="8dp"
                                     android:gravity="center"
                                     android:text=""
@@ -962,8 +979,8 @@
                                     android:background="@color/colorRed"/>
                             <TextView
                                     android:id="@+id/blink_color_0079BA"
-                                    android:layout_width="55dp"
-                                    android:layout_height="52dp"
+                                    android:layout_width="42dp"
+                                    android:layout_height="42dp"
                                     android:layout_marginRight="8dp"
                                     android:gravity="center"
                                     android:text=""
@@ -973,8 +990,8 @@
                                     android:background="@color/colorReadonly2"/>
                             <TextView
                                     android:id="@+id/blink_color_888888"
-                                    android:layout_width="55dp"
-                                    android:layout_height="52dp"
+                                    android:layout_width="42dp"
+                                    android:layout_height="42dp"
                                     android:gravity="center"
                                     android:text=""
                                     android:textSize="20sp"

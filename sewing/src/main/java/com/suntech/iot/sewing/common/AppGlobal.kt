@@ -99,6 +99,8 @@ class AppGlobal private constructor() {
     fun get_remain_number() : Int { return UtilLocalStorage.getInt(instance._context!!, "current_remain_number") }
     fun set_blink_color(value: String) { UtilLocalStorage.setString(instance._context!!, "current_blink_color", value) }
     fun get_blink_color() : String { return UtilLocalStorage.getString(instance._context!!, "current_blink_color") }
+    fun set_planned_count_process(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "planned_count", state) }
+    fun get_planned_count_process() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "planned_count") }
     fun set_target_stop_when_downtime(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "target_stop_downtime", state) }
     fun get_target_stop_when_downtime() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "target_stop_downtime") }
     fun set_ask_when_clicking_defective(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "ask_click_defective", state) }
@@ -318,6 +320,11 @@ class AppGlobal private constructor() {
     // 다운 타임
     fun set_downtime_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_downtime_idx", idx) }
     fun get_downtime_idx() : String { return UtilLocalStorage.getString(instance._context!!, "current_downtime_idx") }
+
+    // downtime 값이 Cycle Time 이라는 문자로 들어올 수도 있음
+    // 그외 숫자가 들어오면 "" 빈값
+    fun set_downtime_type(value: String) { UtilLocalStorage.setString(instance._context!!, "downtime_type", value) }
+    fun get_downtime_type() : String { return UtilLocalStorage.getString(instance._context!!, "downtime_type") }
 
     fun set_downtime_sec(value: String) { UtilLocalStorage.setString(instance._context!!, "current_downtime_sec", value) }
     fun get_downtime_sec() : String { return UtilLocalStorage.getString(instance._context!!, "current_downtime_sec") }
