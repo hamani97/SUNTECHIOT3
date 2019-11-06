@@ -576,7 +576,8 @@ class CountViewFragment : BaseFragment() {
 
                     // 디자인의 시작부터 시프트 종료시간까지 (초)
                     val work_time = ((shift_etime.millis - start_dt.millis) / 1000) - d1 - d2 - start_at_target
-                    val count = (work_time / current_cycle_time).toInt() + start_at_target // 현 시간에 만들어야 할 갯수
+
+                    var count = (work_time / current_cycle_time).toInt() + start_at_target // 현 시간에 만들어야 할 갯수
 
                     shift_total_target += count
 
@@ -589,7 +590,7 @@ class CountViewFragment : BaseFragment() {
 
                         // 디자인의 시작부터 현재까지 시간(초)
                         val work_time = ((now.millis - start_dt.millis) / 1000) - d1 - d2 - start_at_target
-                        val count = (work_time / current_cycle_time).toInt() + start_at_target // 현 시간에 만들어야 할 갯수
+                        count = (work_time / current_cycle_time).toInt() + start_at_target // 현 시간에 만들어야 할 갯수
 
                         total_target += count
                     }

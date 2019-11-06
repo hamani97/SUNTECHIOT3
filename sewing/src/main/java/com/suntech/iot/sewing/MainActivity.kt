@@ -39,7 +39,6 @@ import org.joda.time.DateTime
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.lang.Exception
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -64,6 +63,8 @@ class MainActivity : BaseActivity() {
     private var _last_count_received_time = DateTime()
 
     var _is_call = false
+
+    var watching_count = 0      // 디버깅 창용 변수
 
     private val _broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -109,7 +110,7 @@ class MainActivity : BaseActivity() {
         if (AppGlobal.instance.get_long_touch()) {
             btn_home.setOnLongClickListener { changeFragment(0); true }
             btn_push_to_app.setOnLongClickListener { startActivity(Intent(this, PushActivity::class.java)); true }
-            btn_actual_count_edit.setOnLongClickListener {startActivity(Intent(this, ActualCountEditActivity::class.java)); true }
+            btn_actual_count_edit.setOnLongClickListener { startActivity(Intent(this, ActualCountEditActivity::class.java)); true }
             btn_downtime.setOnLongClickListener {
                 if (AppGlobal.instance.get_downtime_enable()) {
                     startDowntimeActivity(); true
@@ -156,7 +157,7 @@ class MainActivity : BaseActivity() {
         } else {
             btn_home.setOnClickListener { changeFragment(0) }
             btn_push_to_app.setOnClickListener { startActivity(Intent(this, PushActivity::class.java)) }
-            btn_actual_count_edit.setOnClickListener {startActivity(Intent(this, ActualCountEditActivity::class.java)) }
+            btn_actual_count_edit.setOnClickListener { startActivity(Intent(this, ActualCountEditActivity::class.java)) }
             btn_downtime.setOnClickListener {
                 if (AppGlobal.instance.get_downtime_enable()) {
                     startDowntimeActivity()
@@ -198,6 +199,16 @@ class MainActivity : BaseActivity() {
             }
             btn_production_report.setOnClickListener { startActivity(Intent(this, ProductionReportTotalActivity::class.java)) }
             btn_component.setOnClickListener { startComponentActivity() }
+        }
+
+        // 디버깅용 창
+        top_logo.setOnClickListener {
+            if (watching_count >= 4) {
+                watching_count = 0
+                startActivity(Intent(this, WatchingActivity::class.java))
+            }
+            watching_count++
+            Handler().postDelayed({ watching_count = 0 }, 2000)
         }
 
         // fragment & swipe
@@ -1780,17 +1791,11 @@ class MainActivity : BaseActivity() {
 
     fun startNewProduct(didx:String, cycle_time:Int, model:String, article:String, material_way:String, component:String) {
 
-        val db = DBHelperForDesign(this)
-
         // 이전 작업과 동일한 디자인 번호이면 새작업이 아님
         val prev_didx = AppGlobal.instance.get_design_info_idx()
-        if (didx == prev_didx) return
+        val prev_work_idx = "" + AppGlobal.instance.get_product_idx()
 
-        // 이전 작업 완료 처리
-        var prev_work_idx = "" + AppGlobal.instance.get_product_idx()
-        if (prev_work_idx != "") db.updateWorkEnd(prev_work_idx)
-
-        var start_dt = DateTime().toString("yyyy-MM-dd HH:mm:ss")
+        var start_dt = DateTime().toString("yyyy-MM-dd HH:mm:ss")       // 새 디자인 시작시간
 
         AppGlobal.instance.set_design_info_idx(didx)
         AppGlobal.instance.set_model(model)
@@ -1799,30 +1804,124 @@ class MainActivity : BaseActivity() {
         AppGlobal.instance.set_component(component)
         AppGlobal.instance.set_cycle_time(cycle_time)
 
-//        val pieces_info = AppGlobal.instance.get_pieces_info()
-//        val pairs_info = AppGlobal.instance.get_pairs_info()
-
         val pieces_info = "1"
         val pairs_info = "1"
 
-            AppGlobal.instance.set_product_idx()
+        // 서버에서 받은 다운타임 타입이 초단위가 아니고 "Cycle Time" 이면 선택된 디자인의 Cycle Time 으로 세팅된다.
+        val target_type = AppGlobal.instance.get_target_type()
+        val downtime_type = AppGlobal.instance.get_downtime_type()
 
-        val s = db.gets()
-        val seq = (s?.size ?: 0) + 1
+        if (downtime_type=="Cycle Time") {
+            AppGlobal.instance.set_downtime_sec(cycle_time.toString())
+            OEEUtil.LogWrite(downtime_type + " = " + cycle_time.toString(), "Reset Downtime Sec")
+        }
+
+
+        val db = DBHelperForDesign(this)
+        val item = db.get(prev_work_idx)
+
+        if (didx == prev_didx) {
+            if (item != null) {
+                val work_info = AppGlobal.instance.get_current_shift_time()
+                val shift_idx = work_info?.getString("shift_idx") ?: ""
+                val shift_name = work_info?.getString("shift_name") ?: ""
+
+                OEEUtil.LogWrite("work_idx=" + prev_work_idx + ", shift_idx="+shift_idx+", shift_name="+shift_name+", didx="+didx+", cycle_time="+cycle_time, "startNewProduct")
+
+                db.updateDesignInfo(prev_work_idx, shift_idx, shift_name, cycle_time, pieces_info, pairs_info)
+                return
+            }
+        } else {
+            if (prev_work_idx != "") db.updateWorkEnd(prev_work_idx)    // 이전 작업 완료 처리
+        }
+
+
+        // 이전 디자인의 Actual이 0이면 (작업이 하나도 없는 경우, 실수로 선택한 경우 등)
+        // 해당 디자인을 지우고 시작 시간을 새 디자인의 시작 시간으로 업데이트한다.
+        if (item != null) {
+            val actual_cnt = item!!["actual"].toString().toInt()
+            if (actual_cnt == 0) {
+                start_dt = item!!["start_dt"].toString()        // 시작 시간을 이전 디자인의 시작 시간으로 재설정
+                db.deleteWorkIdx(prev_work_idx)                 // 이전 디자인 삭제
+
+                // Downtime 재계산
+                val down_db = DBHelperForDownTime(this)
+                val down_list = down_db.gets()
+
+                // From Server / From Device 에서 활용
+                val one_item_sec = AppGlobal.instance.get_current_maketime_per_piece()
+
+                for (i in 0..((down_list?.size ?: 1) - 1)) {
+                    val item = down_list?.get(i)
+                    val item_real_millis = item?.get("real_millis").toString().toInt()
+
+                    val start_dt_millis = OEEUtil.parseDateTime(start_dt).millis
+                    val item_start_dt_millis = OEEUtil.parseDateTime(item?.get("start_dt").toString()).millis
+
+                    if (item_start_dt_millis >= start_dt_millis) {
+                        val item_idx = item?.get("idx").toString()
+                        if (item_real_millis > 0) {
+                            if (target_type.substring(0, 6) == "cycle_") {
+                                if (cycle_time != 0) {
+                                    val new_target = item_real_millis / cycle_time
+                                    down_db.updateDidxTarget(item_idx, didx, new_target)
+                                } else {
+                                    down_db.updateDidxTarget(item_idx, didx, 0)
+                                }
+                            } else {
+                                if (one_item_sec != 0F) {
+                                    val new_target = item_real_millis / one_item_sec
+                                    down_db.updateDidxTarget(item_idx, didx, new_target.toInt())
+                                } else {
+                                    down_db.updateDidxTarget(item_idx, didx, 0)
+                                }
+                            }
+                        } else {
+                            down_db.updateDidxTarget(item_idx, didx, 0)
+                        }
+                    }
+                }
+            }
+        }
+
+        AppGlobal.instance.set_product_idx()
+
+        val max_seq = db.max_seq()
+        val seq = max_seq + 1
         Log.e("test", "seq = " + seq)
 
-        // 처음 시작이므로 Start 시작 시간을 Shift 시작 시간으로 세팅
+        // 처음 시작이면 Start 시간을 Shift 시작 시간으로 세팅
         if (seq == 1) {
-            val item = AppGlobal.instance.get_current_shift_time()
-            if (item != null) {
-                start_dt = item["work_stime"].toString()
+            val shift_time = AppGlobal.instance.get_current_shift_time()
+            if (shift_time != null) {
+                start_dt = shift_time["work_stime"].toString()
             }
         }
 
         val work_idx = "" + AppGlobal.instance.get_product_idx()
+
+        val now = DateTime().millis
         val work_info = AppGlobal.instance.get_current_shift_time()
-        val shift_idx = work_info?.getString("shift_idx") ?: ""
-        val shift_name = work_info?.getString("shift_name") ?: ""
+        var shift_idx = work_info?.getString("shift_idx") ?: ""
+        var shift_name = work_info?.getString("shift_name") ?: ""
+
+        if (work_info == null) {
+            // 현재 시프트가 없으므로 다가올 시프트 정보를 구한다.
+            val list = AppGlobal.instance.get_current_work_time()
+            for (i in 0..(list.length() - 1)) {
+                val work_time = list.getJSONObject(i)
+                var shift_stime = (OEEUtil.parseDateTime(work_time["work_stime"].toString())).millis
+
+                if (now <= shift_stime) {
+                    shift_idx = work_time?.getString("shift_idx") ?: ""
+                    shift_name = work_time?.getString("shift_name") ?: ""
+                    break
+                }
+            }
+        }
+
+        OEEUtil.LogWrite("work_idx=" + work_idx + ", shift_idx="+shift_idx+", shift_name="+shift_name+", didx="+didx+", cycle_time="+cycle_time, "startNewProduct")
+
         db.add(work_idx, start_dt, didx, shift_idx, shift_name, cycle_time, pieces_info, pairs_info,0, 0, 0, seq)
     }
 

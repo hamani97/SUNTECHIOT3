@@ -14,48 +14,48 @@
                 android:id="@+id/btn_home"
                 android:layout_width="34dp"
                 android:layout_height="34dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="26dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="22dp"
                 android:background="@drawable/btn_side_icon_home_on" />
 
         <ImageButton
                 android:id="@+id/btn_push_to_app"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginBottom="26dp"
+                android:layout_marginBottom="22dp"
                 android:background="@drawable/btn_side_icon_push" />
 
         <ImageButton
                 android:id="@+id/btn_actual_count_edit"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginBottom="26dp"
+                android:layout_marginBottom="22dp"
                 android:background="@drawable/btn_side_icon_actual_count_edit" />
 
         <ImageButton
                 android:id="@+id/btn_downtime"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginBottom="23dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_side_icon_downtime" />
 
         <ImageButton
                 android:id="@+id/btn_defective_info"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginBottom="26dp"
+                android:layout_marginBottom="23dp"
                 android:background="@drawable/btn_side_icon_defective_info" />
 
         <ImageButton
                 android:id="@+id/btn_worksheet"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginBottom="6dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/btn_side_icon_worksheet" />
 
         <RelativeLayout
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="54dp"
+                android:layout_height="48dp"
                 android:background="@color/transparent">
             <ImageButton
                     android:id="@+id/btn_component"
@@ -83,8 +83,8 @@
         </RelativeLayout>
 
         <RelativeLayout
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
                 android:background="@color/transparent">
             <ImageButton
                     android:id="@+id/btn_production_report"
