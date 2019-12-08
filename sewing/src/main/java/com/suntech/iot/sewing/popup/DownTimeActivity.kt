@@ -98,18 +98,28 @@ class DownTimeActivity : BaseActivity() {
             item.put("downtime", "")
             val start_dt = OEEUtil.parseDateTime(item["start_dt"])
             if (item["end_dt"]!=null) {
-                val end_dt = OEEUtil.parseDateTime(item["end_dt"])
-                val realtime = item["real_millis"].toString().toInt()
+                val millis = item["millis"].toString().toInt()
+                val downtime = item["real_millis"].toString().toInt()
+                val plannedtime = millis - downtime
 
-                var dif = end_dt.millis - start_dt.millis
-                val downtime = (dif / 1000 / 60 ).toInt()
-                total_downtime += downtime
-
-                val plannedtime = (dif / 1000).toInt() - realtime
+                total_downtime += (millis / 60)
                 total_planned += plannedtime
 
-                item.set("downtime", downtime.toString()+ " min")
+                item.set("downtime", (millis / 60).toString()+ " min")
             }
+//            if (item["end_dt"]!=null) {
+//                val end_dt = OEEUtil.parseDateTime(item["end_dt"])
+//                val realtime = item["real_millis"].toString().toInt()
+//
+//                var dif = end_dt.millis - start_dt.millis
+//                val downtime = (dif / 1000 / 60 ).toInt()
+//                total_downtime += downtime
+//
+//                val plannedtime = (dif / 1000).toInt() - realtime
+//                total_planned += plannedtime
+//
+//                item.set("downtime", downtime.toString()+ " min")
+//            }
         }
         total_planned = total_planned / 60
 

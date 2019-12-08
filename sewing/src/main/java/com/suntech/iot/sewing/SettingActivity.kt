@@ -366,12 +366,21 @@ class SettingActivity : BaseActivity() {
 //        }
 
         // target check
-        if (_selected_target_type.substring(0, 6) == "device") {
-            if (tv_shift_1.text.toString().trim()=="" || tv_shift_2.text.toString().trim()=="" || tv_shift_3.text.toString().trim()=="") {
-                tabChange(3)
-                Toast.makeText(this, getString(R.string.msg_require_target_quantity), Toast.LENGTH_SHORT).show()
-                return
-            }
+//        if (_selected_target_type.substring(0, 6) == "device") {
+//            if (tv_shift_1.text.toString().trim()=="" || tv_shift_2.text.toString().trim()=="" || tv_shift_3.text.toString().trim()=="") {
+//                tabChange(3)
+//                Toast.makeText(this, getString(R.string.msg_require_target_quantity), Toast.LENGTH_SHORT).show()
+//                return
+//            }
+//        }
+        if (tv_shift_1.text.toString().trim()=="") {
+            tv_shift_1.setText("0")
+        }
+        if (tv_shift_2.text.toString().trim()=="") {
+            tv_shift_2.setText("0")
+        }
+        if (tv_shift_3.text.toString().trim()=="") {
+            tv_shift_3.setText("0")
         }
 
         // option

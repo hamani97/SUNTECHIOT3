@@ -81,7 +81,7 @@ class HomeFragment : BaseFragment() {
         getBaseActivity().startActivity(intent, { r, c, m, d ->
             if (r && d!=null) {
                 val idx = d!!["idx"]!!
-                val cycle_time = d["ct"]!!.toInt()
+                val cycle_time = (d["ct"]!!.trim())?.toInt()
                 val model = d["model"]!!.toString()
                 val article = d["article"]!!.toString()
                 val material_way = d["material_way"]!!.toString()

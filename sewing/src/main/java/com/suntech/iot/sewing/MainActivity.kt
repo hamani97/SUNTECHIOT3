@@ -477,8 +477,8 @@ class MainActivity : BaseActivity() {
                 AppGlobal.instance.set_prev_work_time(list2)
 
                 // Log 확인
-//                OEEUtil.LogWrite(list1.toString(), "Today Shift info")
-//                OEEUtil.LogWrite(list2.toString(), "Yester Shift info")
+                OEEUtil.LogWrite(list1.toString(), "Today Shift info")
+                OEEUtil.LogWrite(list2.toString(), "Yester Shift info")
 
                 btn_work_info?.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
                 btn_work_info?.setBackgroundColor(Color.parseColor("#3581CA"))

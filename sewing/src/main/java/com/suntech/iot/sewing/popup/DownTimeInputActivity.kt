@@ -208,7 +208,6 @@ class DownTimeInputActivity : BaseActivity() {
                 val idx = AppGlobal.instance.get_downtime_idx()
                 AppGlobal.instance.set_downtime_idx("")
 
-                var db = DBHelperForDownTime(this)
                 _db.updateEnd(idx, down_name, now.toString("yyyy-MM-dd HH:mm:ss"), down_time, real_down_time, target)
 
                 ToastOut(this, msg, true)
